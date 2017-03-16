@@ -1,0 +1,30 @@
+.n-wizard {
+	.navigation {
+		border: solid 1px #ccc;
+		border-style: none none solid none;
+		text-align: center;
+		
+		ol {
+			padding: 0.5rem;
+			margin: 0.1rem;
+			.step {
+				border: solid 1px ${border/color};
+				border-radius: 0.2rem;
+				padding: 0.5rem;
+				display: inline-block;
+				margin: 0 0.2rem;
+				
+				.number {
+					&:after {
+						content: '. ';
+					}
+				}
+				
+				&.active {
+					background-color: #333;
+					color: #fff;
+				}
+			}
+		}
+	}
+}
