@@ -1,6 +1,72 @@
 {
 	"name": "web-components", 
 	"resources": {
+		"input": {
+			"combo": {
+				"combo.gcss": {
+					"url": "input/combo/combo.gcss"
+				}, 
+				"combo.js": {
+					"url": "input/combo/combo.js"
+				}, 
+				"combo.tpl": {
+					"url": "input/combo/combo.tpl"
+				}
+			}
+		}, 
+		"form": {
+			"input": {
+				"section": {
+					"section.js": {
+						"url": "form/input/section/section.js"
+					}, 
+					"section.tpl": {
+						"url": "form/input/section/section.tpl"
+					}
+				}, 
+				"check": {
+					"check.js": {
+						"url": "form/input/check/check.js"
+					}, 
+					"check.tpl": {
+						"url": "form/input/check/check.tpl"
+					}
+				}, 
+				"text": {
+					"text.tpl": {
+						"url": "form/input/text/text.tpl"
+					}, 
+					"text.js": {
+						"url": "form/input/text/text.js"
+					}
+				}
+			}, 
+			"plain": {
+				"form.gcss": {
+					"url": "form/plain/form.gcss"
+				}, 
+				"form.tpl": {
+					"url": "form/plain/form.tpl"
+				}, 
+				"form.js": {
+					"url": "form/plain/form.js"
+				}
+			}, 
+			"table": {
+				"table.gcss": {
+					"url": "form/table/table.gcss"
+				}, 
+				"table.tpl": {
+					"url": "form/table/table.tpl"
+				}, 
+				"table.js": {
+					"url": "form/table/table.js"
+				}
+			}, 
+			"form-utils.js": {
+				"url": "form/form-utils.js"
+			}
+		}, 
 		"containers": {
 			"wizard": {
 				"wizard.js": {
@@ -11,6 +77,27 @@
 				}, 
 				"wizard.gcss": {
 					"url": "containers/wizard/wizard.gcss"
+				}
+			}
+		}, 
+		"misc": {
+			"messages": {
+				"messages.js": {
+					"url": "misc/messages/messages.js"
+				}, 
+				"messages.tpl": {
+					"url": "misc/messages/messages.tpl"
+				}
+			}, 
+			"tags": {
+				"tags.js": {
+					"url": "misc/tags/tags.js"
+				}, 
+				"tags.tpl": {
+					"url": "misc/tags/tags.tpl"
+				}, 
+				"tags.gcss": {
+					"url": "misc/tags/tags.gcss"
 				}
 			}
 		}

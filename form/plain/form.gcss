@@ -1,0 +1,35 @@
+.n-form {
+	$input, select {
+		padding: 0.3rem 0.7rem;
+		box-shadow: none;
+		border-radius: 0px;
+		background-color: ${background/color/primary};
+		border: ${border/apply()};
+	
+		&[disabled] {
+			color: ${font/color/disabled};
+			background-color: ${background/color/disabled};
+		}
+	}
+	.n-form-component {
+		display: inline-block;
+		.n-form-input {
+			display: flex;
+		}
+	}
+	
+	.n-form-required {
+		&:after {
+			content: '*';
+		}
+	}
+	
+	.n-form-invalid {
+		border-color: ${levels/error/dark};
+		color: ${levels/error/dark};
+	}
+	
+	.n-form-hidden {
+		visibility: hidden;
+	}
+}

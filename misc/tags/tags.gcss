@@ -1,0 +1,21 @@
+.n-tags {
+	display: flex;
+	justify-content: center;
+	
+	.n-tag {
+		margin: 0.3rem;
+		.n-tag-remove {
+			cursor: pointer;
+			border: ${border/apply()};
+			border-style: ${border/style} ${border/style} ${border/style} none;
+			background-color: ${levels/error/dark};
+			color: ${levels/error/light};
+			font-weight: bold;
+			padding: 0.7rem;
+		}
+		.n-tag-title {
+			border: ${border/apply()};
+			padding: 0.7rem;
+		}
+	}
+}

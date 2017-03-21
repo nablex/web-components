@@ -1,0 +1,53 @@
+.n-combobox {
+	display: flex;
+	.n-combobox-input-container {
+		flex-grow: 1;
+		position: relative;
+		input {
+			margin: 0;
+			width: 100%;
+		}
+	}
+	.n-combobox-label-container {
+		padding: 0.8rem;
+		border: ${border/apply()};
+		border-style: ${border/style} none ${border/style} ${border/style};
+		.n-combobox-label, .n-combobox-dropdown-label {
+			cursor: pointer;
+		}
+	}
+	.n-combobox-dropdown {
+		border: ${border/apply()};
+		height: auto;
+		max-height: 16rem;
+		overflow: auto;
+		z-index: 1000;
+		position: absolute;
+		width: auto;
+		background-color: #fff;
+		margin: 0;
+		padding: 0;
+		.dropdown_item {
+			border-bottom: 1px solid #ddd;
+			cursor: pointer;
+			list-style: none;
+			margin: 0;
+			padding: 0.8rem 1rem;
+			&:last-child {
+				border-bottom: none;
+			}
+			&.active {
+				background-color: #e5e5e5;
+			}
+		}
+		
+		li {
+			text-align: center;
+			padding: 0.8rem;
+		}
+		
+		.n-combobox-dropdown-value {
+			cursor: pointer;
+		}
+	}
+}
