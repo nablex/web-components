@@ -1,0 +1,15 @@
+.n-form-date {
+	display: inline-block;
+	position: relative;
+	
+	.n-form-text {
+		display: inline-block;
+	}
+	.n-input-date {
+		position: absolute;
+		top: 100%;
+		max-width: 23rem;
+		border: ${border/apply()};
+		border-style: none ${border/style} none ${border/style};
+	}
+}

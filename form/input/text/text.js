@@ -10,7 +10,8 @@ Vue.component("n-form-text", {
 		// whether or not you are in edit mode
 		edit: {
 			type: Boolean,
-			required: false
+			required: false,
+			default: true
 		},
 		required: {
 			type: Boolean,

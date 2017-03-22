@@ -10,6 +10,9 @@ nabu.utils.vue.form = {
 		if (!schema && component.name && component.$parent && component.$parent.definition && component.$parent.definition.properties) {
 			schema = component.$parent.definition.properties[component.name];
 		}
+		if (!schema) {
+			schema = {};
+		}
 		// bind in the additional keys
 		var keys = ["minLength", "maxLength", "pattern", "maxItems", "minItems", "maximum", "minimum", "exclusiveMaximum", "exclusiveMinimum", "enum"];
 		for (var i = 0; i < keys.length; i++) {

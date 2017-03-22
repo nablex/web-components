@@ -2,6 +2,17 @@
 	"name": "web-components", 
 	"resources": {
 		"input": {
+			"date": {
+				"date.tpl": {
+					"url": "input/date/date.tpl"
+				}, 
+				"date.gcss": {
+					"url": "input/date/date.gcss"
+				}, 
+				"date.js": {
+					"url": "input/date/date.js"
+				}
+			}, 
 			"combo": {
 				"combo.gcss": {
 					"url": "input/combo/combo.gcss"
@@ -15,6 +26,17 @@
 			}
 		}, 
 		"form": {
+			"date": {
+				"date.tpl": {
+					"url": "form/date/date.tpl"
+				}, 
+				"date.gcss": {
+					"url": "form/date/date.gcss"
+				}, 
+				"date.js": {
+					"url": "form/date/date.js"
+				}
+			}, 
 			"input": {
 				"section": {
 					"section.js": {
@@ -33,6 +55,9 @@
 					}
 				}, 
 				"text": {
+					"text.gcss": {
+						"url": "form/input/text/text.gcss"
+					}, 
 					"text.tpl": {
 						"url": "form/input/text/text.tpl"
 					}, 

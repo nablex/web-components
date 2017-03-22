@@ -1,0 +1,57 @@
+.n-input-date {
+	caption {
+		height: 3rem;
+		line-height: 3rem;
+		position: relative;
+		background-color: ${levels/info/dark};
+		color: ${levels/info/light};
+		
+		.month {
+			font-weight: 700;
+			font-size: 1.2rem;
+		}
+		a {
+			font-size: 1.625rem;
+			height: 3rem;
+			width: 3rem;
+			position: absolute;
+			background-color: inherit;
+			color: inherit;
+			
+			&.n-input-date-previous {
+				left: 0;
+			}
+			&.n-input-date-next {
+				right: 0;
+			}
+			
+			&:hover {
+				background-color: ${levels/info/darkAccent};
+				text-decoration: none;
+			}
+		}
+	}
+	td {
+		text-align: center;
+		&:hover {
+			background-color: ${background/color/accent};
+		}
+	}
+	th {
+		text-align: center;
+	}
+	
+	$td, span {
+		&.n-input-date-today {
+			background-color: ${background/color/accent};
+		}
+		&.n-input-date-selected {
+			background-color: ${levels/warning/dark};
+			color: ${levels/warning/light};
+		}
+		&.n-input-date-available {
+			background-color: ${levels/success/dark};
+			color: ${levels/success/light};
+		}
+	}
+}

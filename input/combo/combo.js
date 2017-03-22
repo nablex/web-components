@@ -1,4 +1,4 @@
-Vue.component("n-combobox", {
+Vue.component("n-input-combo", {
 	props: {
 		value: {
 			required: true
@@ -17,7 +17,7 @@ Vue.component("n-combobox", {
 			required: false
 		}
 	},
-	template: "#n-combobox",
+	template: "#n-input-combo",
 	data: function() {
 		return {
 			label: null,

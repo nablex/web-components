@@ -1,6 +1,6 @@
-.n-combobox {
+.n-input-combo {
 	display: flex;
-	.n-combobox-input-container {
+	.n-input-combo-input-container {
 		flex-grow: 1;
 		position: relative;
 		input {
@@ -8,14 +8,14 @@
 			width: 100%;
 		}
 	}
-	.n-combobox-label-container {
+	.n-input-combo-label-container {
 		padding: 0;
 		border: ${border/apply()};
 		border-style: ${border/style} none ${border/style} ${border/style};
-		.n-combobox-label, .n-combobox-dropdown-label {
+		.n-input-combo-label, .n-input-combo-dropdown-label {
 			cursor: pointer;
 		}
-		.n-combobox-label {
+		.n-input-combo-label {
 			padding: 0.8rem;
 			
 			.n-icon {
@@ -29,7 +29,7 @@
 		}
 	}
 	
-	.n-combobox-dropdown {
+	.n-input-combo-dropdown {
 		border: ${border/apply()};
 		height: auto;
 		max-height: 16rem;
@@ -61,11 +61,11 @@
 			padding: 0.8rem;
 		}
 		
-		.n-combobox-dropdown-value {
+		.n-input-combo-dropdown-value {
 			cursor: pointer;
 		}
 		
-		&.n-combobox-dropdown-values {
+		&.n-input-combo-dropdown-values {
 			width: 100%;
 			top: calc(100% - ${border/width});
 		}
