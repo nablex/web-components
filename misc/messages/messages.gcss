@@ -1,0 +1,28 @@
+.n-messages {
+	.n-message {
+		padding: 1rem;
+		+ .n-message {
+			margin-top: 0.3rem;
+		}
+	}
+	.n-message-severity-info {
+		background-color: ${levels/info/dark};
+		color: ${levels/info/light};
+	}
+	.n-message-severity-error {
+		background-color: ${levels/error/dark};
+		color: ${levels/error/light};
+	}
+	.n-message-severity-critical {
+		background-color: ${levels/critical/dark};
+		color: ${levels/critical/light};
+	}
+	.n-message-severity-warning {
+		background-color: ${levels/warning/dark};
+		color: ${levels/warning/light};
+	}
+	.n-message-severity-trace {
+		background-color: ${levels/trace/dark};
+		color: ${levels/trace/light};
+	}
+}

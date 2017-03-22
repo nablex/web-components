@@ -9,7 +9,7 @@
 			<span class="n-form-read">{{ value }}</span>
 		</slot>
 		<slot name="bottom">
-			<n-messages :messages="messages"/>
+			<n-messages :messages="messages" v-if="messages && messages.length"/>
 		</slot>
 	</div>
 </template>

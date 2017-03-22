@@ -60,6 +60,10 @@ Vue.component("n-form-text", {
 		validator: {
 			type: Function,
 			required: false
+		},
+		unique: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-form-text",
@@ -82,6 +86,27 @@ Vue.component("n-form-text", {
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
+			}
+			if (this.unique && this.$group) {
+				var count = 0;
+				for (var i = 0; i < this.$group.length; i++) {
+					if (this.$group[i].value == this.value) {
+						count++;
+					}
+				}
+				if (count > 1) {
+					messages.push({
+						code: "unique",
+						component: this,
+						context: [],
+						severity: "error",
+						values: {
+							expected: 1,
+							actual: count,
+							value: this.value
+						}
+					});
+				}
 			}
 			if (this.validator) {
 				var additional = this.validator(this.value);

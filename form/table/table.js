@@ -28,13 +28,7 @@ Vue.component("n-form-table", {
 	},
 	events: {
 		'$vue.child.added': function(child) {
-			if (child.label) {
-				this.labels.push({ 
-					name: child.label,
-					component: child
-				});
-			}
-			else if (child.labels) {
+			if (child.labels) {
 				this.labels.splice(0, this.labels.length);
 				nabu.utils.arrays.merge(this.labels, child.labels);
 			}

@@ -9,13 +9,26 @@
 		}
 	}
 	.n-combobox-label-container {
-		padding: 0.8rem;
+		padding: 0;
 		border: ${border/apply()};
 		border-style: ${border/style} none ${border/style} ${border/style};
 		.n-combobox-label, .n-combobox-dropdown-label {
 			cursor: pointer;
 		}
+		.n-combobox-label {
+			padding: 0.8rem;
+			
+			.n-icon {
+				font-size: 0.7rem;
+				margin-left: 1rem;
+			}
+		}
+		position: relative;
+		ul {
+			top: 100%;
+		}
 	}
+	
 	.n-combobox-dropdown {
 		border: ${border/apply()};
 		height: auto;
@@ -41,13 +54,20 @@
 			}
 		}
 		
+		
 		li {
-			text-align: center;
+			list-style-type: none;
+			text-align: left;
 			padding: 0.8rem;
 		}
 		
 		.n-combobox-dropdown-value {
 			cursor: pointer;
+		}
+		
+		&.n-combobox-dropdown-values {
+			width: 100%;
+			top: calc(100% - ${border/width});
 		}
 	}
 }

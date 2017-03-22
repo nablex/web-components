@@ -65,7 +65,7 @@ Vue.component("n-form-checkbox", {
 			return messages;
 		}, 
 		toggleValue: function() {
-			if (!this.disabled) {
+			if (!this.disabled && this.edit) {
 				if (this.value instanceof Array) {
 					var index = this.value.indexOf(this.item);
 					if (index >= 0) {
@@ -88,12 +88,6 @@ Vue.component("n-form-checkbox", {
 					}
 				}
 			}
-		}
-	},
-	watch: {
-		// reset validity if the value is updated
-		value: function(newValue) {
-			this.valid = null;
 		}
 	}
 });

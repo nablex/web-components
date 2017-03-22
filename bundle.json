@@ -82,6 +82,9 @@
 		}, 
 		"misc": {
 			"messages": {
+				"messages.gcss": {
+					"url": "misc/messages/messages.gcss"
+				}, 
 				"messages.js": {
 					"url": "misc/messages/messages.js"
 				}, 

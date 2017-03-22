@@ -19,6 +19,16 @@ Vue.component("n-messages", {
 				}
 			}
 			return text;
+		},
+		highlight: function(message) {
+			if (message.component && message.component.$el) {
+				message.component.$el.setAttribute("highlight", "true");
+			}
+		},
+		unhighlight: function(message) {
+			if (message.component && message.component.$el) {
+				message.component.$el.removeAttribute("highlight");
+			}
 		}
 	}
 });
