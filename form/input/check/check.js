@@ -13,7 +13,8 @@ Vue.component("n-form-checkbox", {
 		// whether or not you are in edit mode
 		edit: {
 			type: Boolean,
-			required: false
+			required: false,
+			default: true
 		},
 		required: {
 			type: Boolean,
@@ -88,6 +89,17 @@ Vue.component("n-form-checkbox", {
 					}
 				}
 			}
+		}
+	}
+});
+
+Vue.directive("checked", {
+	bind: function(element, binding) {
+		if (binding.arg) {
+			element.setAttribute("checked", "true");
+		}
+		else {
+			element.removeAttribute("checked");
 		}
 	}
 });

@@ -13,6 +13,17 @@
 					"url": "input/date/date.js"
 				}
 			}, 
+			"file": {
+				"file.js": {
+					"url": "input/file/file.js"
+				}, 
+				"file.tpl": {
+					"url": "input/file/file.tpl"
+				}, 
+				"file.gcss": {
+					"url": "input/file/file.gcss"
+				}
+			}, 
 			"combo": {
 				"combo.gcss": {
 					"url": "input/combo/combo.gcss"
@@ -26,18 +37,18 @@
 			}
 		}, 
 		"form": {
-			"date": {
-				"date.tpl": {
-					"url": "form/date/date.tpl"
-				}, 
-				"date.gcss": {
-					"url": "form/date/date.gcss"
-				}, 
-				"date.js": {
-					"url": "form/date/date.js"
-				}
-			}, 
 			"input": {
+				"date": {
+					"date.tpl": {
+						"url": "form/input/date/date.tpl"
+					}, 
+					"date.gcss": {
+						"url": "form/input/date/date.gcss"
+					}, 
+					"date.js": {
+						"url": "form/input/date/date.js"
+					}
+				}, 
 				"section": {
 					"section.js": {
 						"url": "form/input/section/section.js"
@@ -63,6 +74,17 @@
 					}, 
 					"text.js": {
 						"url": "form/input/text/text.js"
+					}
+				}, 
+				"switch": {
+					"switch.gcss": {
+						"url": "form/input/switch/switch.gcss"
+					}, 
+					"switch.tpl": {
+						"url": "form/input/switch/switch.tpl"
+					}, 
+					"switch.js": {
+						"url": "form/input/switch/switch.js"
 					}
 				}
 			}, 
