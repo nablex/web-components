@@ -6,10 +6,31 @@
 		display: inline-block;
 	}
 	.n-input-date {
+		z-index: 1000;
 		position: absolute;
 		top: 100%;
 		max-width: 23rem;
 		border: ${border/apply()};
 		border-style: none ${border/style} none ${border/style};
+	}
+	.n-form-date-icon {
+		transition: all 250ms ease-in-out;
+		cursor: pointer;
+		background-color: ${levels/info/dark};
+		color: ${levels/info/light};
+		line-height: 2.7rem;
+		width: 3rem;
+		height: 3rem;
+		text-align: center;
+		display: inline-block;
+		
+		&:before {
+			font-size: 1.35rem;
+		}
+		
+		&.n-form-date-icon-show {
+			background-color: ${levels/error/dark};
+			color: ${levels/error/light};
+		}
 	}
 }

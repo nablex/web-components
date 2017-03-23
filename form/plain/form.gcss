@@ -1,4 +1,59 @@
 .n-form {
+	&.layout1 {
+		.n-form-content {
+			display: flex;
+			flex-direction: column;
+		
+			.n-form-component {
+				display: flex;
+				justify-content: center;
+				.n-form-label, input {
+					flex-grow: 1;
+					flex-basis: 0;
+				}
+			
+				.n-form-label {
+					text-align: right;
+					padding: 0.7rem;
+				
+					&:after {
+						content: ':';
+					}
+				}
+			}
+		}
+	}
+	&.layout2 {
+		.n-form-content {
+			display: flex;
+			flex-direction: column;
+			.n-form-component {
+				margin: 0.5rem 0;
+				label {
+					display: block;
+					color: ${font/color/secondary};
+					padding: 0.4rem 0;
+				}
+			}
+		}
+		.n-form-component {
+			width: 100%;
+			&.n-form-text {
+				input {
+					width: calc(100% - 2rem);
+					
+					&[type=date] {
+						width: calc(100% - 5rem);
+					}
+				}
+			}
+		}
+	}
+	label.n-form-input-required:after {
+		content: '*';
+		color: ${levels/error/dark};
+		padding: 0 0.4rem;
+	}
 	$input, select {
 		padding: 0.3rem 0.7rem;
 		box-shadow: none;
@@ -27,6 +82,10 @@
 	.n-form-invalid {
 		border-color: ${levels/error/dark};
 		color: ${levels/error/dark};
+	}
+	
+	.n-form-valid {
+		border-color: ${levels/success/dark};
 	}
 	
 	.n-form-hidden {

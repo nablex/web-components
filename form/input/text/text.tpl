@@ -2,7 +2,7 @@
 	<div class="n-form-component n-form-text" :class="{ 'n-form-hidden': hide }" :optional="hide != null">
 		<slot name="top"></slot>
 		<slot name="label">
-			<span class="n-form-label" v-if="label">{{ label }}</span>
+			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 		</slot>
 		<input 
 			@input="updateValue($event.target.value)" 
@@ -13,10 +13,11 @@
 			class="field" 
 			v-if="edit" 
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
-			@focus="$emit('focus')"/>
-			
-		<i class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></i>
-		<i class="n-input-result n-icon n-icon-times" v-if="valid != null && !valid && edit"></i>
+			@focus="$emit('focus')"
+			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span>	
+		
+		<span class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></span>
+		<span class="n-input-result n-icon n-icon-times" v-if="valid != null && !valid && edit"></span>
 		<slot v-if="!edit">
 			<span class="n-form-read">{{ value }}</span>
 		</slot>

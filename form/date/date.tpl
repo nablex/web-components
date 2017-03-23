@@ -1,9 +1,6 @@
 <template id="n-form-date">
 	<div class="n-form-date" v-auto-close="function() { show = false }">
 		<slot name="top"></slot>
-		<slot name="label">
-			<span class="n-form-label" v-if="label">{{ label }}</span>
-		</slot>
 		
 		<n-form-text class="n-form-date-input" 
 			@focus="show = edit" 
@@ -22,10 +19,10 @@
 			:disabled="disabled"
 			:validator="dateValidate"
 			:unique="unique"
-			ref="text"
-			/>
+			ref="text">
 			
-		<span class="n-form-date-icon n-icon-calendar" @click="show = edit" v-show="edit"></span>
+			<span slot="after-input" class="n-icon n-form-date-icon" :class="{ 'n-icon-calendar': !show, 'n-icon-times': show, 'n-form-date-icon-show': show }" @click="edit ? show = !show : show = false" v-show="edit"></span>
+		</n-form-text>
 		
 		<n-input-date 
 			:formatter="formatter" 

@@ -106,7 +106,7 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
-			if (this.$refs.dateInput && isNaN(this.$refs.dateInput.parse(value).getTime())) {
+			if (value && this.$refs.dateInput && isNaN(this.$refs.dateInput.parse(value).getTime())) {
 				messages.push({
 					severity: "error",
 					code: "type",
@@ -128,6 +128,9 @@ Vue.component("n-form-date", {
 	watch: {
 		date: function(newValue) {
 			this.$emit("input", newValue);
+		},
+		value: function(newValue) {
+			this.date = newValue;
 		}
 	}
 });

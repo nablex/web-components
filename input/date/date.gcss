@@ -32,6 +32,7 @@
 		}
 	}
 	td {
+		background-color: ${background/color/primary};
 		text-align: center;
 		&:hover {
 			background-color: ${background/color/accent};
