@@ -8,8 +8,5 @@
 		<slot name="overlay" :toggle="toggleValue">
 			<label @click="toggleValue($event)" class="n-form-checkbox-label"></label>
 		</slot>
-		<slot name="bottom">
-			<n-messages :messages="messages"/>
-		</slot>
 	</div>
 </template>

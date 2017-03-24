@@ -1,0 +1,26 @@
+.n-form-richtext {
+	margin: 1rem;
+
+	.n-form-richtext-content {
+		min-width: 30rem;
+		min-height: 20rem;
+		border: ${border/apply()};
+	}
+	
+	.n-form-richtext-menu {
+		text-align: center;
+		button {
+			margin: 0 0.2rem;
+			height: 3rem;
+			width: 3rem;
+			border: ${border/apply()};
+			border-style: ${border/style} ${border/style} none ${border/style};
+			
+			.n-form-richtext-button-description {
+				font-size: 0.55rem;
+				display: block;
+				margin-top: 0.2rem;
+			}
+		}
+	}
+}

@@ -57,6 +57,36 @@
 						"url": "form/input/section/section.tpl"
 					}
 				}, 
+				"richtext": {
+					"richtext.tpl": {
+						"url": "form/input/richtext/richtext.tpl"
+					}, 
+					"richtext.js": {
+						"url": "form/input/richtext/richtext.js", 
+						"requires": {
+							"undo.js": {
+								"url": "https://raw.githubusercontent.com/jzaefferer/undo/master/undo.js"
+							}, 
+							"rangy.js": {
+								"url": "https://raw.githubusercontent.com/timdown/rangy/master/lib/rangy-core.js"
+							}, 
+							"rangy-classapplier.js": {
+								"url": "https://raw.githubusercontent.com/timdown/rangy/master/lib/rangy-classapplier.js"
+							}, 
+							"medium.js": {
+								"url": "https://raw.githubusercontent.com/jakiestfu/Medium.js/master/medium.js"
+							}
+						}
+					}, 
+					"richtext.gcss": {
+						"url": "form/input/richtext/richtext.gcss", 
+						"requires": {
+							"medium.css": {
+								"url": "https://raw.githubusercontent.com/jakiestfu/Medium.js/master/medium.css"
+							}
+						}
+					}
+				}, 
 				"check": {
 					"check.js": {
 						"url": "form/input/check/check.js"

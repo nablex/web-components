@@ -1,8 +1,9 @@
 .n-form-switch {
-	position: relative;
 	display: inline-block;
+	height: 1.5rem;
 	
 	input.n-form-checkbox-input + .n-form-switch-label {
+		height: 1.5rem;
 		line-height: 1.5rem;
 		position: relative;
 		display: inline-block;
