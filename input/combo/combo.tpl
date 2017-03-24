@@ -1,6 +1,6 @@
 <template id="n-input-combo">
 	<div class="n-component n-input-combo">
-		<div class="n-input-combo-label-container" v-auto-close="function() { showLabels = false }">
+		<div class="n-input-combo-label-container" v-auto-close="function() { showLabels = false }" v-if="labels">
 			<div class="n-component-label n-input-combo-label" v-if="label" @click="showLabels = !showLabels">
 				<slot name="label" :label="label"><span>{{ label.title }}</span><i class="n-icon n-icon-arrow-down"></i></slot>
 			</div>

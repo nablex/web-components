@@ -95,7 +95,7 @@ Vue.component("n-form-checkbox", {
 
 Vue.directive("checked", {
 	bind: function(element, binding) {
-		if (binding.arg) {
+		if (binding.value) {
 			element.setAttribute("checked", "true");
 		}
 		else {
