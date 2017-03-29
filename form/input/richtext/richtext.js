@@ -7,57 +7,7 @@ Vue.component("n-form-richtext", {
 	template: "#n-form-richtext",
 	data: function() {
 		return {
-			medium: null
 		};
-	},
-	ready: function() {
-		this.medium = new Medium({
-			element: this.$refs.input,
-			modifier: 'auto',
-			placeholder: "",
-			autofocus: false,
-			autoHR: true,
-			mode: Medium.richMode,
-			maxLength: -1,
-			modifiers: {
-				'b': 'bold',
-				'i': 'italicize',
-				'u': 'underline',
-				'v': 'paste'
-			},
-			tags: {
-				'break': 'br',
-				'horizontalRule': 'hr',
-				'paragraph': 'p',
-				'outerLevel': ['pre', 'blockquote', 'figure', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'ul', 'table'],
-				'innerLevel': ['a', 'b', 'u', 'i', 'img', 'strong', 'em', 'li', 'ul']
-			},
-			cssClasses: {
-				editor: 'Medium',
-				pasteHook: 'Medium-paste-hook',
-				placeholder: 'Medium-placeholder',
-				clear: 'Medium-clear'
-			},
-			attributes: {
-				remove: ['style', 'class']
-			},
-			pasteAsText: true,
-			beforeInvokeElement: function () {
-				// this = Medium.Element
-			},
-			beforeInsertHtml: function () {
-				// this = Medium.Html
-			},
-			beforeAddTag: function (tag, shouldFocus, isEditable, afterElement) {
-			},
-			keyContext: null,
-			pasteEventHandler: function(e) {
-				// default paste event handler
-			}
-		});
-		if (this.value) {
-			this.medium.value(this.value);
-		}
 	},
 	methods: {
 		insertTable: function() {
@@ -70,7 +20,6 @@ Vue.component("n-form-richtext", {
 			document.execCommand("insertHTML", null, "<" + tag + ">" + window.getSelection() + "</" + tag+ ">");
 		},
 		bold: function() {
-			console.log("bolding...");
 			document.execCommand("bold", false, null);
 		},
 		italic: function() {
@@ -85,6 +34,21 @@ Vue.component("n-form-richtext", {
 				document.execCommand("createLink", false, link);
 			}
 		},
+		paste: function(event) {
+			for (var i = 0; i < event.clipboardData.items.length; i++) {
+				if (event.clipboardData.items[i].type.toLowerCase() == "text/html") {
+					event.clipboardData.items[i].getAsString(function(content) {
+						console.log("pre-strip", content);
+						document.execCommand("insertHTML", null, nabu.utils.elements.clean(
+							content,
+							["p", "strong", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "strong", "em", "b", "i", "u", "ul", "ol", "li", "br"],
+							["head", "script", "style", "meta"]));
+					});
+					break;
+				}
+			}
+			event.preventDefault();
+		},
 		tab: function(event) {
 			document.execCommand("insertHTML", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
 			event.preventDefault();
@@ -98,8 +62,5 @@ Vue.component("n-form-richtext", {
 		clean: function() {
 			document.execCommand("removeFormat", false, null);
 		}
-	},
-	beforeDestroy: function() {
-		this.medium.destroy();
 	}
 });

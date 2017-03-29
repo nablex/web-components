@@ -82,13 +82,30 @@
 	.n-form-invalid {
 		border-color: ${levels/error/dark};
 		color: ${levels/error/dark};
+		
+		input {
+			border-color: ${levels/error/dark};
+			color: ${levels/error/dark};
+		}
 	}
 	
 	.n-form-valid {
 		border-color: ${levels/success/dark};
+		input {
+			border-color: ${levels/success/dark};
+		}
 	}
 	
 	.n-form-hidden {
 		visibility: hidden;
+	}
+	
+	.n-form-component {
+		.n-input-result.n-icon-check {
+			color: ${levels/success/dark};
+		}
+		.n-input-result.n-icon-times {
+			color: ${levels/error/dark};
+		}
 	}
 }

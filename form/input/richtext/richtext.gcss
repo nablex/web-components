@@ -5,11 +5,13 @@
 		min-width: 30rem;
 		min-height: 20rem;
 		border: ${border/apply()};
+		background-color: ${background/color/primary};
 	}
 	
 	.n-form-richtext-menu {
 		text-align: center;
 		button {
+			background-color: ${background/color/accent};
 			margin: 0 0.2rem;
 			height: 3rem;
 			width: 3rem;

@@ -1,6 +1,6 @@
 <template id="n-form-richtext">
 	<div class="n-form-richtext">
-		<div class="n-form-richtext-menu">
+		<div class="n-form-richtext-menu" v-if="edit">
 			<button @click="bold">
 				<span class="n-icon n-icon-bold"></span>
 				<span class="n-form-richtext-button-description">%{text:Bold}</span>
@@ -38,6 +38,6 @@
 				<span class="n-form-richtext-button-description">%{text:Plain}</span>
 			</button>
 		</div>
-		<div @keydown.tab="tab($event)" class="n-form-richtext-content" ref="input" @input="$emit('input', $event.target.innerHTML)"></div>
+		<div @keydown.tab="tab($event)" class="n-form-richtext-content" ref="input" @paste="paste($event)" contenteditable="true" @input="$emit('input', $event.target.innerHTML)"></div>
 	</div>
 </template>

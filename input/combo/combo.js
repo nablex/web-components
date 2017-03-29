@@ -67,6 +67,7 @@ Vue.component("n-input-combo", {
 			}
 			// try to finetune the results
 			else if (this.filter) {
+				this.$emit("input", null);
 				this.filterItems(value, this.label);
 			}
 		},

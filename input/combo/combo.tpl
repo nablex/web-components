@@ -21,5 +21,6 @@
 				</li>
 			</ul>
 		</div>
+		<slot name="bottom"></slot>
 	</div>
 </template>

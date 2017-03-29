@@ -49,6 +49,17 @@
 						"url": "form/input/date/date.js"
 					}
 				}, 
+				"combo": {
+					"combo.gcss": {
+						"url": "form/input/combo/combo.gcss"
+					}, 
+					"combo.js": {
+						"url": "form/input/combo/combo.js"
+					}, 
+					"combo.tpl": {
+						"url": "form/input/combo/combo.tpl"
+					}
+				}, 
 				"section": {
 					"section.js": {
 						"url": "form/input/section/section.js"
@@ -96,9 +107,6 @@
 					}
 				}, 
 				"text": {
-					"text.gcss": {
-						"url": "form/input/text/text.gcss"
-					}, 
 					"text.tpl": {
 						"url": "form/input/text/text.tpl"
 					}, 

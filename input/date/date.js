@@ -70,7 +70,7 @@ Vue.component("n-input-date", {
 				0, // hours,
 				0, // minutes
 				0, // seconds
-				0, // milliseconds
+				0 // milliseconds
 			); 
 		},
 		format: function(date) {
@@ -144,16 +144,17 @@ Vue.component("n-input-date", {
 				});
 			}
 
+			// add empty cells at the back
 			if (cells.length % 7 > 0) {
-				// add empty cells at the back
-				for (var i = 0; i < 7 - (cells.length % 7); i++) {
+				var amountToAdd = 7 - (cells.length % 7);
+				for (var i = 0; i < amountToAdd; i++) {
 					cells.push({
 						label: null,
 						value: null
 					});
 				}
 			}
-
+			
 			// divide days in weeks
 			for (var i = 0; i < cells.length; i++) {
 				weeks[week].push(cells[i]);

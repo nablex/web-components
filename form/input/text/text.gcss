@@ -1,8 +1,0 @@
-.n-form-text {
-	.n-icon-check {
-		color: ${levels/success/dark};
-	}
-	.n-icon-times {
-		color: ${levels/error/dark};
-	}
-}
