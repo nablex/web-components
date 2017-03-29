@@ -2,12 +2,54 @@ Vue.component("n-form-richtext", {
 	props: {
 		value: {
 			required: true
+		},
+		edit: {
+			type: Boolean,
+			required: false,
+			default: true
+		},
+		required: {
+			type: Boolean,
+			required: false,
+			// explicitly set default value to null, otherwise vue will make it false which we can't distinguish from "not set"
+			default: null
+		},
+		name: {
+			type: String,
+			required: false
+		},
+		// a json schema component stating the definition
+		schema: {
+			type: Object,
+			required: false
+		},
+		pattern: {
+			type: String,
+			required: false
+		},
+		minLength: {
+			type: Number,
+			required: false
+		},
+		maxLength: {
+			type: Number,
+			required: false
 		}
 	},
 	template: "#n-form-richtext",
 	data: function() {
 		return {
+			messages: [],
+			valid: null
 		};
+	},
+	computed: {
+		definition: function() {
+			return nabu.utils.vue.form.definition(this);
+		},
+		mandatory: function() {
+			return nabu.utils.vue.form.mandatory(this);
+		}
 	},
 	methods: {
 		insertTable: function() {
@@ -61,6 +103,20 @@ Vue.component("n-form-richtext", {
 		},
 		clean: function() {
 			document.execCommand("removeFormat", false, null);
+		},
+		validate: function() {
+			var messages = nabu.utils.schema.json.validate(this.definition, this.value ? this.value.replace(/<[^>]+>/, "") : this.value, this.mandatory);
+			for (var i = 0; i < messages.length; i++) {
+				messages[i].component = this;
+			}
+			this.valid = messages.length == 0;
+			return messages;
 		}
+	}
+});
+
+Vue.directive("html-once", {
+	bind: function(element, binding) {
+		element.innerHTML = binding.value;
 	}
 });

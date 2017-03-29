@@ -1,0 +1,5 @@
+.n-form-checkbox {
+	.n-form-checkbox-label {
+		height: 1rem;
+	}
+}

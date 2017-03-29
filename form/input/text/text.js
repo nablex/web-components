@@ -91,8 +91,11 @@ Vue.component("n-form-text", {
 			if (this.unique && this.$group) {
 				var count = 0;
 				for (var i = 0; i < this.$group.length; i++) {
-					if (this.$group[i].value == this.value) {
-						count++;
+					// only count visible items
+					if (this.$group[i].$el && this.$document.body.contains(this.$group[i].$el)) {
+						if (this.$group[i].value == this.value) {
+							count++;
+						}
 					}
 				}
 				if (count > 1) {

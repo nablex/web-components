@@ -1,11 +1,23 @@
 .n-form-richtext {
 	margin: 1rem;
 
-	.n-form-richtext-content {
-		min-width: 30rem;
-		min-height: 20rem;
-		border: ${border/apply()};
-		background-color: ${background/color/primary};
+	.n-form-richtext-editor {
+		display: flex;
+		.n-form-richtext-content {
+			flex-basis: 0;
+			flex-grow: 1;
+			&[contenteditable=true] {
+				min-width: 30rem;
+				min-height: 20rem;
+				border: ${border/apply()};
+				background-color: ${background/color/primary};
+			}
+		}
+		span {
+			flex-basis: 0;
+			flex-grow: 0;
+			padding: 0.3rem;
+		}
 	}
 	
 	.n-form-richtext-menu {

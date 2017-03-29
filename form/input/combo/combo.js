@@ -50,7 +50,6 @@ Vue.component("n-form-combo", {
 	},
 	methods: {
 		validate: function() {
-			console.log("validating", this.value, this.mandatory);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;

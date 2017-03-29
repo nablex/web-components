@@ -34,9 +34,6 @@
 			v-model="date"
 			ref="dateInput"/>
 		
-		<slot v-if="!edit">
-			<span class="n-form-read">{{ value }}</span>
-		</slot>
 		<slot name="bottom">
 			<n-messages :messages="messages" v-if="messages && messages.length"/>
 		</slot>

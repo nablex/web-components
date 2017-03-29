@@ -27,7 +27,9 @@ Vue.component("n-input-file", {
 			return (("draggable" in div) || ("ondragstart" in div && "ondrop" in div)) && "FormData" in window && "FileReader" in window;
 		},
 		selectFiles: function(event) {
-			return this.addFiles(event.target.files || event.dataTransfer.files);
+			var result = this.addFiles(event.target.files || event.dataTransfer.files);
+			event.preventDefault();
+			return result;
 		},
 		addFiles: function(fileList) {
 			var notAllowed = [];
