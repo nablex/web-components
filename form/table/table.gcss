@@ -37,12 +37,15 @@
 	.n-form-table {
 		.n-form-section {
 			flex-direction: column;
+			.n-form-section {
+				display: block;
+			}
 		}
 		.n-form-table-header {
 			display: none;
 		}
 		.n-form-component {
-			display: flex;
+			display: inline-block;
 			
 			> * {
 				flex-grow: 1;

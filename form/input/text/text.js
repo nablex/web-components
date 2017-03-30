@@ -65,6 +65,11 @@ Vue.component("n-form-text", {
 		unique: {
 			type: Boolean,
 			required: false
+		},
+		caseSensitive: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-form-text",
@@ -94,6 +99,9 @@ Vue.component("n-form-text", {
 					// only count visible items
 					if (this.$group[i].$el && this.$document.body.contains(this.$group[i].$el)) {
 						if (this.$group[i].value == this.value) {
+							count++;
+						}
+						else if (!this.caseSensitive && this.$group[i].value && this.value && this.$group[i].value.toLowerCase() == this.value.toLowerCase()) {
 							count++;
 						}
 					}

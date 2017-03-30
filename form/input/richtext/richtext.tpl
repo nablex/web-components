@@ -29,7 +29,7 @@
 				<span class="n-form-richtext-button-description">%{text:Plain}</span>
 			</button></div>
 		<div class="n-form-richtext-editor">
-			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value" ref="input" @paste="paste($event)" :contenteditable="edit" @input="$emit('input', $event.target.innerHTML)"></div>
+			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
 			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
 		</div>
 	</div>

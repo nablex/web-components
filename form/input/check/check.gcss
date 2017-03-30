@@ -2,4 +2,7 @@
 	.n-form-checkbox-label {
 		height: 1rem;
 	}
+	.n-form-checkbox-content {
+		display: inline-block;
+	}
 }

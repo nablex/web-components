@@ -14,7 +14,7 @@
 			:schema="schema"
 			:minLength="minLength"
 			:maxLength="maxLength"
-			type="date"
+			type="text"
 			:hide="hide"
 			:disabled="disabled"
 			:validator="dateValidate"
