@@ -31,6 +31,10 @@ nabu.components.wizard = Vue.component("n-wizard", {
 		browse: {
 			type: Boolean,
 			required: false
+		},
+		loader: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-wizard",
@@ -45,11 +49,17 @@ nabu.components.wizard = Vue.component("n-wizard", {
 	methods: {
 		hasNext: function() {
 			var index = this.steps.indexOf(this.current);
-			return this.loop || index < this.steps.length - 1;
+			if (index < this.steps.length - 1) {
+				return !this.steps[index + 1].disabled;
+			}
+			return false;
 		},
 		hasPrevious: function() {
 			var index = this.steps.indexOf(this.current);
-			return this.loop || index > 0;
+			if (index > 0) {
+				return !this.steps[index - 1].disabled;
+			}
+			return false;
 		},
 		next: function() {
 			// it could be that for some reason your step is not in the list, could be you have a special first step
@@ -91,11 +101,11 @@ nabu.components.wizard = Vue.component("n-wizard", {
 	},
 	watch: {
 		current: function(newValue) {
-				console.log("RENDERING", newValue);
 			if (newValue && newValue.content) {
 				this.$render({
 					target: this.$refs.container, 
-					content: newValue.content
+					content: newValue.content,
+					loader: this.loader
 				});
 			}
 		}

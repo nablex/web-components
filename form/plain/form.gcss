@@ -15,10 +15,6 @@
 				.n-form-label {
 					text-align: right;
 					padding: 0.7rem;
-				
-					&:after {
-						content: ':';
-					}
 				}
 			}
 		}

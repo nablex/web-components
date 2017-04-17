@@ -1,18 +1,20 @@
 .n-wizard {
 	.navigation {
-		border: solid 1px #ccc;
-		border-style: none none solid none;
 		text-align: center;
 		
 		ol {
-			padding: 0.5rem;
-			margin: 0.1rem;
+			position: relative;
+			padding: 0rem;
+			margin: 0rem;
 			.step {
-				border: solid 1px ${border/color};
-				border-radius: 0.2rem;
-				padding: 0.5rem;
+				border: ${border/apply()};
+				border-style: ${border/style} none ${border/style} ${border/style};
+				padding: 0.5rem 1rem;
 				display: inline-block;
-				margin: 0 0.2rem;
+				
+				&:last-child {
+					border-style: ${border/style};
+				}
 				
 				.number {
 					&:after {
@@ -21,8 +23,35 @@
 				}
 				
 				&.active {
-					background-color: #333;
-					color: #fff;
+					background-color: ${levels/info/dark};
+					color: ${levels/info/light};
+
+					&:after {
+						content: ' ';
+						width: 0; 
+						height: 0;
+						border-top: 1.25rem solid transparent;
+						border-bottom: 1.25rem solid transparent;
+						border-left: 0.7rem solid ${levels/info/dark};
+						z-index: 10;
+						position: absolute;
+						top: 2px;
+						margin-left: 1rem;
+					}
+					
+					&:last-child {
+						&:after {
+							content: none;
+						}
+					}
+				}
+				
+				&.active + .step {
+					padding-left: 1.7rem;
+				}
+				
+				&[disabled=disabled] {
+					background-color: ${background/color/disabled};
 				}
 			}
 		}

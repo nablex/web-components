@@ -3,7 +3,7 @@
 		<div class="navigation" ref="navigation">
 			<slot name="left" :next="next" :previous="previous"></slot>
 			<ol class="steps">
-				<li class="step" v-for="(step, index) in steps" :class="{ 'button': browse, active: step == current, inactive: step == current }">
+				<li :disabled="step.disabled" class="step" v-for="(step, index) in steps" :class="{ 'button': browse, active: step == current, inactive: step == current }">
 					<slot name="step" step="step">
 						<span class="number" v-if="number">{{ index + 1 }}</span>
 						<span class="title">{{ step.name }}</span>

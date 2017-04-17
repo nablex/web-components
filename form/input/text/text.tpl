@@ -14,7 +14,7 @@
 			v-if="edit" 
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 			@focus="$emit('focus')"
-			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span>	
+			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
 		
 		<span class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></span>
 		<span class="n-input-result n-icon n-icon-times" v-if="valid != null && !valid && edit"></span>

@@ -1,0 +1,35 @@
+.n-menu-dropdown {
+	margin: 0;
+	padding: 0;
+	li {
+		cursor: pointer;
+		position: relative;
+		list-style: none;
+		padding: 0.7rem;
+		display: inline-block;
+		
+		&:hover {
+			background-color: ${background/color/accent};
+			
+		}
+		li {
+			display: block;
+		}
+		$span, a {
+			white-space: nowrap;
+			display: block;
+		}
+	}
+	ul {
+		background-color: ${background/color/primary};
+		position: absolute;
+		top: 100%;
+		left: 0;
+		z-index: 10;
+		
+		.n-menu-dropdown {
+			top: 0;
+			left: 100%;
+		}
+	}
+}

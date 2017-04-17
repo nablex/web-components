@@ -149,6 +149,19 @@
 				}
 			}
 		}, 
+		"menus": {
+			"dropdown": {
+				"dropdown.tpl": {
+					"url": "menus/dropdown/dropdown.tpl"
+				}, 
+				"dropdown.js": {
+					"url": "menus/dropdown/dropdown.js"
+				}, 
+				"dropdown.gcss": {
+					"url": "menus/dropdown/dropdown.gcss"
+				}
+			}
+		}, 
 		"misc": {
 			"messages": {
 				"messages.gcss": {
