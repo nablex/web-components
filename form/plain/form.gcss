@@ -7,7 +7,7 @@
 			.n-form-component {
 				display: flex;
 				justify-content: center;
-				.n-form-label, input {
+				.n-form-label, input, textarea {
 					flex-grow: 1;
 					flex-basis: 0;
 				}
@@ -35,7 +35,7 @@
 		.n-form-component {
 			width: 100%;
 			&.n-form-text {
-				input {
+				$input, textarea {
 					width: calc(100% - 2rem);
 					
 					&[type=date] {
@@ -44,7 +44,7 @@
 				}
 			}
 			&.n-form-text.n-form-date-input {
-				input {
+				$input, textarea {
 					width: calc(100% - 5rem);
 				}
 			}
@@ -55,7 +55,7 @@
 		color: ${levels/error/dark};
 		padding: 0 0.4rem;
 	}
-	$input, select {
+	$input, select, textarea {
 		padding: 0.3rem 0.7rem;
 		box-shadow: none;
 		border-radius: 0px;
@@ -84,7 +84,7 @@
 		border-color: ${levels/error/dark};
 		color: ${levels/error/dark};
 		
-		input {
+		$input, textarea {
 			border-color: ${levels/error/dark};
 			color: ${levels/error/dark};
 		}
@@ -92,7 +92,7 @@
 	
 	.n-form-valid {
 		border-color: ${levels/success/dark};
-		input {
+		$input, textarea {
 			border-color: ${levels/success/dark};
 		}
 	}

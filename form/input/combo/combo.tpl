@@ -11,7 +11,8 @@
 			:filter="filter" 
 			:formatter="formatter" 
 			:class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
-			@input="updateValue">
+			@input="updateValue"
+			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">
 				<span class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></span>

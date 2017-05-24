@@ -57,3 +57,38 @@
 		}
 	}
 }
+
+@media ${devices/phone} {
+	.n-wizard {
+		.navigation {
+			ol {
+				.step {
+					font-size: 0.9rem;
+					padding: 0.5rem 0.7rem;
+					.number {
+						&:after {
+							content: none;
+						}
+					}
+					.title {
+						display: none;
+					}
+					&.active {
+						.number {
+							display: none;
+						}
+						.title {
+							display: inline-block;
+						}
+						&:after {
+							content: none;
+						}
+					}
+					&.active + .step {
+						padding-left: 0.7rem;
+					}
+				}
+			}
+		}
+	}
+}

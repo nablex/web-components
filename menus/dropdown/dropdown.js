@@ -14,7 +14,8 @@ Vue.component("n-menu-dropdown", {
 	methods: {
 		handle: function(action) {
 			if (action.handler) {
-				action.handler();
+				// we pass in the action again so you can add structural parameters to it
+				action.handler(action);
 			}
 		},
 		hide: function(action) {

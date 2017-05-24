@@ -80,6 +80,12 @@ Vue.component("n-form-date", {
 		allow: {
 			type: Function,
 			required: false
+		},
+		// whether you want a string or a date as object
+		stringify: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-date",
@@ -92,11 +98,21 @@ Vue.component("n-form-date", {
 		}
 	},
 	created: function() {
-		this.date = this.value;
+		if (this.value instanceof Date) {
+			this.date = this.formatter ? this.formatter(this.value) : this.value.toISOString().substring(0, 10);
+		}
+		else {
+			this.date = this.value;
+		}
 	},
 	methods: {
 		updateValue: function(value) {
-			this.$emit("input", value);
+			if (this.stringify) {
+				this.$emit("input", value);
+			}
+			else {
+				this.$emit("input", this.parser ? this.parser(value) : new Date(value));
+			}
 		},
 		dateValidate: function(value) {
 			var messages = [];
@@ -127,10 +143,20 @@ Vue.component("n-form-date", {
 	},
 	watch: {
 		date: function(newValue) {
-			this.$emit("input", newValue);
+			if (this.stringify) {
+				this.$emit("input", newValue);
+			}
+			else {
+				this.$emit("input", this.parser ? this.parser(newValue) : new Date(newValue));
+			}
 		},
 		value: function(newValue) {
-			this.date = newValue;
+			if (newValue instanceof Date) {
+				this.date = this.formatter ? this.formatter(newValue) : newValue.toISOString().substring(0, 10);
+			}
+			else {
+				this.date = newValue;
+			}
 		}
 	}
 });

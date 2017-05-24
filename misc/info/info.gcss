@@ -1,0 +1,29 @@
+.n-info {
+	position: relative;
+	display: inline-block;
+	.n-icon {
+		cursor: pointer;
+	}
+	
+	.n-info-content {
+		z-index: 10;
+		position: absolute;
+		top: 100%;
+		background-color: ${background/color/contrast};
+		color: ${font/color/contrast};
+		padding: 1rem;
+		min-width: 20rem;
+		
+		a {
+			color: ${link/color/contrast};
+		}
+		*:first-child {
+			margin-top: 0;
+			padding-top: 0;
+		}
+		*:last-child {
+			margin-bottom: 0;
+			padding-bottom: 0;
+		}
+	}
+}

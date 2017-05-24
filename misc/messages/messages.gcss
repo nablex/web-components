@@ -4,6 +4,10 @@
 		+ .n-message {
 			margin-top: 0.3rem;
 		}
+		a {
+			color: inherit;
+			text-decoration: underline;
+		}
 	}
 	.n-message-severity-info {
 		background-color: ${levels/info/dark};

@@ -59,6 +59,9 @@ Vue.component("n-form-combo", {
 		},
 		updateValue: function(value) {
 			this.$emit("input", value);
+		},
+		clear: function() {
+			this.$refs.combo.clear();
 		}
 	},
 	watch: {

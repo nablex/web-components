@@ -4,5 +4,12 @@
 	}
 	.n-form-checkbox-content {
 		display: inline-block;
+		input[type="checkbox"] {
+		    opacity: 0;
+		    position: absolute;
+		}
+	}
+	.n-form-label {
+		cursor: pointer;
 	}
 }

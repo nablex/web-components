@@ -16,6 +16,7 @@
 			cursor: pointer;
 		}
 		.n-input-combo-label {
+			white-space: nowrap;
 			padding: 0.8rem;
 			
 			.n-icon {
@@ -68,6 +69,18 @@
 		&.n-input-combo-dropdown-values {
 			width: 100%;
 			top: calc(100% - ${border/width});
+		}
+	}
+}
+
+@media ${devices/phone} {
+	.n-input-combo {
+		.n-input-combo-label-container {
+			.n-input-combo-label {
+				.n-icon {
+					margin-left: 0.5rem;
+				}
+			}
 		}
 	}
 }

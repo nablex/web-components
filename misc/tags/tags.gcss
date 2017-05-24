@@ -1,9 +1,9 @@
 .n-tags {
 	display: flex;
 	justify-content: center;
-	
+	flex-wrap: wrap;
 	.n-tag {
-		margin: 0.3rem;
+		margin: 1rem 0.3rem;
 		.n-tag-remove {
 			cursor: pointer;
 			border: ${border/apply()};
