@@ -33,13 +33,18 @@ Vue.component("n-input-file", {
 		},
 		addFiles: function(fileList) {
 			var notAllowed = [];
+			var changed = false;
 			for (var i = 0; i < fileList.length; i++) {
 				if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(fileList.item(i).type)) {
+					changed = true;
 					this.value.push(fileList.item(i));
 				}
 				else {
 					notAllowed.push(fileList.item(i));
 				}
+			}
+			if (changed) {
+				this.$emit("change", this.value);
 			}
 			return notAllowed;
 		},
@@ -47,14 +52,19 @@ Vue.component("n-input-file", {
 			var files = event.clipboardData ? event.clipboardData.items : null;
 			var notAllowed = [];
 			if (files) {
+				var changed = false;
 				for (var i = 0; i < files.length; i++) {
 					if (this.isAllowedType(files[i].type)) {
 						var blob = files[i].getAsFile();
+						changed = true;
 						this.value.push(new File([blob], "pasted_file_" + this.counter++, { type: files[i].type}));
 					}
 					else {
 						notAllowed.push(files[i]);
 					}
+				}
+				if (changed) {
+					this.$emit("change", this.value);
 				}
 			}
 			return notAllowed;

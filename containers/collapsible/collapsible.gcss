@@ -1,0 +1,5 @@
+.n-collapsible {
+	.n-collapsible-title {
+		cursor: pointer;
+	}
+}
