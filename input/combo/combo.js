@@ -47,8 +47,9 @@ Vue.component("n-input-combo", {
 				nabu.utils.arrays.merge(this.values, result);
 			}
 			else if (result.then) {
+				var self = this;
 				result.then(function(results) {
-					nabu.utils.arrays.merge(this.values, results);
+					nabu.utils.arrays.merge(self.values, results);
 				});
 			}
 		},

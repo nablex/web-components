@@ -2,4 +2,7 @@
 	.n-collapsible-title {
 		cursor: pointer;
 	}
+	.n-icon-spinner {
+		height: 3rem;
+	}
 }

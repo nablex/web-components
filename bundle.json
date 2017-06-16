@@ -195,6 +195,17 @@
 					"url": "misc/messages/messages.tpl"
 				}
 			}, 
+			"paging": {
+				"paging.tpl": {
+					"url": "misc/paging/paging.tpl"
+				}, 
+				"paging.gcss": {
+					"url": "misc/paging/paging.gcss"
+				}, 
+				"paging.js": {
+					"url": "misc/paging/paging.js"
+				}
+			}, 
 			"info": {
 				"info.js": {
 					"url": "misc/info/info.js"

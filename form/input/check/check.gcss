@@ -1,4 +1,6 @@
 .n-form-checkbox {
+	display: inline-block;
+	margin: 0 0.7rem;
 	.n-form-checkbox-label {
 		height: 1rem;
 	}
@@ -11,5 +13,44 @@
 	}
 	.n-form-label {
 		cursor: pointer;
+	}
+	input + label {
+		cursor: pointer;
+		line-height: 1.5rem;
+		margin-right: 1.5rem;
+		position: relative;
+		display: inline-block;
+		&:before {
+			border: ${border/apply()};
+			display: inline-block;
+			content: "";
+			height: 1.125rem;
+			width: 1.125rem;
+			position: absolute;
+			left: 0;
+			top: 0.25rem;
+			background-color: ${background/color/secondary};
+		}
+		&:after {
+			icon/initialize()
+			top: .0625rem;
+			color: ${levels/info/dark};
+			content: "\f00c";
+			font-size: 0.75rem;
+			opacity: 0;
+			position: absolute;
+			left: .25rem;
+			text-align: center;
+			color: ${levels/info/light};
+		}
+	}
+	input:checked + label {
+		&:after {
+			opacity: 1;
+		}
+		&:before {
+			background: ${levels/info/dark};
+			border: ${border/apply()};
+		}
 	}
 }
