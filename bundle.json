@@ -183,6 +183,14 @@
 				}
 			}
 		}, 
+		"email": {
+			"components.js": {
+				"url": "email/components.js"
+			},
+			"foundation-emails.css": {
+				"url": "email/foundation-emails-2.2.1.css"
+			}
+		}, 
 		"misc": {
 			"messages": {
 				"messages.gcss": {
