@@ -4,7 +4,7 @@ Vue.component("n-form-checkbox", {
 			required: true
 		},
 		item: {
-			required: false,
+			required: false
 		},
 		label: {
 			type: String,

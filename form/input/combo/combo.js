@@ -3,6 +3,10 @@ Vue.component("n-form-combo", {
 		value: {
 			required: true
 		},
+		label: {
+			type: String,
+			required: false
+		},
 		labels: {
 			type: Array,
 			required: false
@@ -30,6 +34,14 @@ Vue.component("n-form-combo", {
 		edit: {
 			type: Boolean,
 			required: false,
+			default: true
+		},
+		items: {
+			type: Array,
+			required: false
+		},
+		nillable: {
+			type: Boolean,
 			default: true
 		}
 	},

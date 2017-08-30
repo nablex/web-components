@@ -7,7 +7,7 @@
 			.n-form-component {
 				display: flex;
 				justify-content: center;
-				.n-form-label, input, textarea {
+				.n-form-label, input, textarea, .n-component {
 					flex-grow: 1;
 					flex-basis: 0;
 				}

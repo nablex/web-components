@@ -15,6 +15,13 @@ Vue.component("n-input-combo", {
 		formatter: {
 			type: Function,
 			required: false
+		},
+		items: {
+			required: false
+		},
+		nillable: {
+			type: Boolean,
+			default: true
 		}
 	},
 	template: "#n-input-combo",
@@ -34,6 +41,9 @@ Vue.component("n-input-combo", {
 		this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
 		if (this.filter) {
 			this.filterItems(this.content, this.label);
+		}
+		else if (this.items) {
+			nabu.utils.arrays.merge(this.values, this.items);
 		}
 	},
 	methods: {
@@ -63,7 +73,7 @@ Vue.component("n-input-combo", {
 				}
 			}
 			// only update the value if it matches a value in the dropdown list 
-			if (match != null) {
+			if (match != null || (!value && this.nillable)) {
 				this.$emit("input", match);
 			}
 			// try to finetune the results
@@ -83,6 +93,14 @@ Vue.component("n-input-combo", {
 				this.filterItems(this.content, label);
 			}
 			this.label = label;
+		}
+	},
+	watch: {
+		items: function(newValue) {
+			this.values.splice(0, this.values.length);
+			if (newValue) {
+				nabu.utils.arrays.merge(this.values, newValue);
+			}
 		}
 	}
 });

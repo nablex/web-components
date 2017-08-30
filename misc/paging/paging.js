@@ -102,7 +102,7 @@ Vue.component("n-paging", {
 	},
 	watch: {
 		value: function(newValue) {
-			this.page = value;
+			this.page = newValue;
 		}
 	}
 });

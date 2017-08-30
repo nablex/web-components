@@ -1,6 +1,9 @@
 <template id="n-form-combo">
 	<div class="n-form-combo n-form-component">
 	
+		<slot name="label" :label="label" :mandatory="mandatory">
+			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
+		</slot>
 		<slot v-if="!edit">
 			<span class="n-form-read">{{ formatter && value ? formatter(value) : value }}</span>
 		</slot>
@@ -12,6 +15,8 @@
 			:formatter="formatter" 
 			:class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 			@input="updateValue"
+			:items="items"
+			:nillable="nillable"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">
