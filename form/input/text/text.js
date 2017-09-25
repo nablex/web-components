@@ -70,13 +70,18 @@ Vue.component("n-form-text", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		timeout: {
+			type: Number,
+			required: false
 		}
 	},
 	template: "#n-form-text",
 	data: function() {
 		return {
 			messages: [],
-			valid: null
+			valid: null,
+			timer: null
 		};
 	},
 	computed: {
@@ -136,7 +141,19 @@ Vue.component("n-form-text", {
 			return messages;
 		}, 
 		updateValue: function(value) {
-			this.$emit("input", value);
+			if (this.timer) {
+				clearTimeout(this.timer);
+				this.timer = null;
+			}
+			if (this.timeout) {
+				var self = this;
+				this.timer = setTimeout(function() {
+					self.$emit("input", value);
+				}, this.timeout);
+			}
+			else {
+				this.$emit("input", value);
+			}
 		}
 	},
 	watch: {

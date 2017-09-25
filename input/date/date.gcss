@@ -1,4 +1,8 @@
 .n-input-date {
+	table {
+		border: ${border/apply()}
+		border-style: none none solid none;
+	}
 	caption {
 		height: 3rem;
 		line-height: 3rem;
@@ -34,11 +38,16 @@
 	td {
 		background-color: ${background/color/primary};
 		text-align: center;
+		padding: 0.7rem;
 		&:hover {
 			background-color: ${background/color/accent};
 		}
 	}
 	th {
+		padding: 0.7rem;
+		background-color: ${background/color/accent};
+		border: ${border/apply()};
+		border-style: none none solid none;
 		text-align: center;
 	}
 	

@@ -11,6 +11,11 @@ Vue.component("n-input-file", {
 		// amount of files allowed (default unlimited)
 		amount: {
 			required: false
+		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-input-file",
@@ -54,7 +59,7 @@ Vue.component("n-input-file", {
 			if (files) {
 				var changed = false;
 				for (var i = 0; i < files.length; i++) {
-					if (this.isAllowedType(files[i].type)) {
+					if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(files[i].type)) {
 						var blob = files[i].getAsFile();
 						changed = true;
 						this.value.push(new File([blob], "pasted_file_" + this.counter++, { type: files[i].type}));

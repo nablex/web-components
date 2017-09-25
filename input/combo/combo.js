@@ -22,6 +22,14 @@ Vue.component("n-input-combo", {
 		nillable: {
 			type: Boolean,
 			default: true
+		},
+		timeout: {
+			type: Number,
+			required: false
+		},
+		placeholder: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-input-combo",
@@ -31,7 +39,8 @@ Vue.component("n-input-combo", {
 			showLabels: false,
 			showValues: false,
 			values: [],
-			content: null
+			content: null,
+			timer: null
 		}
 	},
 	created: function() {
@@ -49,6 +58,7 @@ Vue.component("n-input-combo", {
 	methods: {
 		clear: function() {
 			this.content = null;
+			this.filterItems(this.content, this.label);
 		},
 		filterItems: function(content, label) {
 			var result = this.filter(content, label);
@@ -59,6 +69,14 @@ Vue.component("n-input-combo", {
 			else if (result.then) {
 				var self = this;
 				result.then(function(results) {
+					if (!(results instanceof Array)) {
+						for (var key in results) {
+							if (results[key] instanceof Array) {
+								results = results[key];
+								break;
+							}
+						}
+					}
 					nabu.utils.arrays.merge(self.values, results);
 				});
 			}
@@ -76,11 +94,27 @@ Vue.component("n-input-combo", {
 			if (match != null || (!value && this.nillable)) {
 				this.$emit("input", match);
 			}
-			// try to finetune the results
-			else if (this.filter) {
+			// make sure we have no value selected
+			else {
 				this.$emit("input", null);
-				this.filterItems(value, this.label);
 			}
+
+			// try to finetune the results
+			if (this.filter) {
+				if (this.timer) {
+					clearTimeout(this.timer);
+					this.timer = null;
+				}
+				if (this.timeout) {
+					var self = this;
+					this.timer = setTimeout(function() {
+						self.filterItems(value, self.label);
+					}, this.timeout);
+				}
+				else {
+					this.filterItems(value, this.label);
+				}
+			 }
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {

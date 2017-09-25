@@ -43,6 +43,14 @@ Vue.component("n-form-combo", {
 		nillable: {
 			type: Boolean,
 			default: true
+		},
+		timeout: {
+			type: Number,
+			required: false
+		},
+		placeholder: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
