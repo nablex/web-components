@@ -41,6 +41,7 @@
 		background-color: #fff;
 		margin: 0;
 		padding: 0;
+		min-width: 100%;
 		.dropdown_item {
 			border-bottom: 1px solid #ddd;
 			cursor: pointer;
@@ -64,10 +65,18 @@
 		
 		.n-input-combo-dropdown-value {
 			cursor: pointer;
+			&:hover {
+				background-color: ${background/color/hover};
+			}
+			&.active {
+				background-color: ${background/color/active};
+			}
+			span {
+				white-space: nowrap;
+			}
 		}
 		
 		&.n-input-combo-dropdown-values {
-			width: 100%;
 			top: calc(100% - ${border/width});
 		}
 	}

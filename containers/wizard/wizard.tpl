@@ -4,7 +4,7 @@
 			<slot name="left" :next="next" :previous="previous"></slot>
 			<ol class="steps">
 				<li :disabled="step.disabled" class="step" v-for="(step, index) in steps" :class="{ 'button': browse, active: step == current, inactive: step == current }">
-					<slot name="step" step="step">
+					<slot name="step" :step="step">
 						<span class="number" v-if="number">{{ index + 1 }}</span>
 						<span class="title">{{ step.name }}</span>
 					</slot>
@@ -12,7 +12,7 @@
 			</ol>
 			<slot name="right" next="next" previous="previous"></slot>
 		</div>
-		<div class="container" ref="container"></div>
-		<slot name="bottom" :next="next" :previous="previous" :hasNext="hasNext" :hasPrevious="hasPrevious"></slot>
+		<slot name="container" :next="next" :previous="previous" :hasNext="hasNext" :hasPrevious="hasPrevious" :step="current"><div class="container" ref="container"></div></slot>
+		<slot name="bottom" :next="next" :previous="previous" :hasNext="hasNext" :hasPrevious="hasPrevious" :step="current"></slot>
 	</div>
 </template>

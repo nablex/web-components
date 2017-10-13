@@ -101,7 +101,7 @@ nabu.components.wizard = Vue.component("n-wizard", {
 	},
 	watch: {
 		current: function(newValue) {
-			if (newValue && newValue.content) {
+			if (newValue && newValue.content && this.$refs.container) {
 				this.$render({
 					target: this.$refs.container, 
 					content: newValue.content,

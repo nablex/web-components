@@ -84,7 +84,7 @@ Vue.component("e-item", {
 });
 
 Vue.component("e-spacer", {
-	template: "<table class=\"spacer\"><tbody><tr><td height=\"100px\" style=\"font-size:100px;line-height:100px;\">&#xA0;</td></tr></tbody></table>"
+	template: "<table class=\"spacer\"><tbody><tr><td height=\"35px\" style=\"font-size:35px;line-height:35px;\">&#xA0;</td></tr></tbody></table>"
 });
 
 Vue.component("e-callout", {

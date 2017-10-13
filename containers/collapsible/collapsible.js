@@ -28,17 +28,21 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 					this.load().then(function() {
 						self.show = true;
 						self.loading = false;
+						self.$emit("show", self);
 					}, function() {
 						self.show = false;
 						self.loading = false;
+						self.$emit("hide", self);
 					});
 				}
 				else {
 					this.show = true;
+					this.$emit("show", this);
 				}
 			}
 			else {
 				this.show = false;
+				this.$emit("hide", this);
 			}
 		}
 	}

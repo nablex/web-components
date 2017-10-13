@@ -2,7 +2,7 @@
 	<div class="n-form-component n-form-checkbox" :class="{ 'n-form-hidden': hide, 'n-form-disabled': disabled }" :optional="hide != null">
 		<slot name="top"></slot>
 		<slot name="label" :toggle="toggleValue"><span class="n-form-label" @click="toggleValue(); $event.stopPropagation()" v-if="label">{{ label }}</span></slot>
-		<div class="n-form-checkbox-content">
+		<div class="n-form-checkbox-content n-form-component-content">
 			<input ref="input" 
 				@click="toggleValue()" 
 				type="checkbox" 

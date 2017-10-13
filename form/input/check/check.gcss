@@ -6,6 +6,7 @@
 	}
 	.n-form-checkbox-content {
 		display: inline-block;
+		padding: 0.3rem;
 		input[type="checkbox"] {
 		    opacity: 0;
 		    position: absolute;

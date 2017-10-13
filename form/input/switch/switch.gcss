@@ -1,7 +1,6 @@
 .n-form-switch {
 	display: inline-block;
-	height: 1.5rem;
-	
+		
 	input.n-form-checkbox-input + .n-form-switch-label {
 		height: 1.5rem;
 		line-height: 1.5rem;
@@ -43,4 +42,5 @@
 		margin-left: 1.375rem;
 		background-color: ${levels/success/dark};
 	}
+	
 }
