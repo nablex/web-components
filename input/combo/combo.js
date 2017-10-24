@@ -30,6 +30,11 @@ Vue.component("n-input-combo", {
 		placeholder: {
 			type: String,
 			required: false
+		},
+		autoclose: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-input-combo",

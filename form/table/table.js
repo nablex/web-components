@@ -4,6 +4,10 @@ Vue.component("n-form-table", {
 		schema: {
 			type: Object,
 			required: false
+		},
+		mode: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-table",
@@ -22,8 +26,8 @@ Vue.component("n-form-table", {
 		}
 	},
 	methods: {
-		validate: function() {
-			return nabu.utils.vue.form.validateChildren(this);
+		validate: function(soft) {
+			return nabu.utils.vue.form.validateChildren(this, soft);
 		}
 	},
 	events: {

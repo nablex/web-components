@@ -20,6 +20,10 @@ Vue.component("n-form-section", {
 		validator: {
 			type: Function,
 			required: false
+		},
+		mode: {
+			type: String,
+			required: false
 		}
 	},
 	data: function() {
@@ -37,8 +41,8 @@ Vue.component("n-form-section", {
 		}
 	},
 	methods: {
-		validate: function() {
-			var messages = nabu.utils.vue.form.validateChildren(this);
+		validate: function(soft) {
+			var messages = nabu.utils.vue.form.validateChildren(this, soft);
 			if (this.validator) {
 				var additional = this.validator(this.value);
 				if (additional && additional.length) {

@@ -54,11 +54,39 @@ nabu.utils.vue.form = {
 		}
 		return labels.length ? labels : null;
 	},
-	validateChildren: function(component) {
+	mode: function(component) {
+		while (component) {
+			if (component.mode) {
+				return component.mode;
+			}
+			component = component.$parent;
+		}
+		return null;
+	},
+	localMessages: function(component, messages) {
+		var localMessages = [];
+		if (!messages || !messages.length) {
+			return localMessages;
+		}
+		var mode = nabu.utils.vue.form.mode(component);
+		messages.sort(function(a, b) {
+			var priorityA = typeof(a.priority) != "undefined" ? a.priority : 0;
+			var priorityB = typeof(b.priority) != "undefined" ? b.priority : 0;
+			return priorityA - priorityB;
+		});
+		if (mode == "single") {
+			localMessages.push(messages[0]);
+		}
+		else if (mode == "all") {
+			nabu.utils.arrays.merge(localMessages, messages);
+		}
+		return localMessages;
+	},
+	validateChildren: function(component, soft) {
 		var messages = [];
 		for (var i = 0; i < component.$children.length; i++) {
 			if (component.$children[i].validate) {
-				var childMessages = component.$children[i].validate();
+				var childMessages = component.$children[i].validate(soft);
 				if (component.$children[i].name) {
 					for (var j = 0; j < childMessages.length; j++) {
 						childMessages[j].context.push(component.$children[i].name);

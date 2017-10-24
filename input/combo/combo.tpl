@@ -18,7 +18,7 @@
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"></slot>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && values && values.length">
-				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': potential == value }" @click="updateValue(potential)" auto-close>
+				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': potential == value }" @click="updateValue(potential)" :auto-close="autoclose">
 					<slot name="value" :value="potential"><span>{{ formatter ? formatter(potential) : potential }}</span></slot>
 				</li>
 			</ul>

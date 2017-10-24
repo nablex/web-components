@@ -26,11 +26,11 @@ Vue.component("e-wrapper", {
 });
 
 Vue.component("e-container", {
-	template: "<table class=\"container\"><tr><td><slot></slot></td></tr></table>"
+	template: "<table class=\"container\"><tbody><tr><td><slot></slot></td></tr></tbody></table>"
 });
 
 Vue.component("e-row", {
-	template: "<table class=\"row\"><tr><th><slot></slot></th></tr></table>"
+	template: "<table class=\"row\"><tbody><tr><slot></slot></tr></tbody></table>"
 });
 
 Vue.component("e-columns", {

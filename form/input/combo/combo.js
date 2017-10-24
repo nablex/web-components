@@ -51,6 +51,11 @@ Vue.component("n-form-combo", {
 		placeholder: {
 			type: String,
 			required: false
+		},
+		autoclose: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-form-combo",
