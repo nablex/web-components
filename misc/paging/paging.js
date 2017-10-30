@@ -23,6 +23,12 @@ Vue.component("n-paging", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		// whether or not to perform an initial load
+		initialize: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-paging",
@@ -34,7 +40,7 @@ Vue.component("n-paging", {
 	},
 	mounted: function() {
 		this.page = this.value;
-		if (this.load) {
+		if (this.load && this.initial) {
 			this.load(this.page);
 		}
 	},
