@@ -40,7 +40,7 @@ Vue.component("n-paging", {
 	},
 	mounted: function() {
 		this.page = this.value;
-		if (this.load && this.initial) {
+		if (this.load && this.initialize) {
 			this.load(this.page);
 		}
 	},
