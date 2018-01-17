@@ -143,11 +143,21 @@ Vue.component("n-form-date", {
 	},
 	watch: {
 		date: function(newValue) {
-			if (this.stringify) {
-				this.$emit("input", newValue);
+			if (!newValue) {
+				if (this.value) {
+					this.$emit("input", null);
+				}
+			}
+			else if (this.stringify) {
+				if (this.value != newValue) {
+					this.$emit("input", newValue);
+				}
 			}
 			else {
-				this.$emit("input", this.parser ? this.parser(newValue) : new Date(newValue));
+				newValue = this.parser ? this.parser(newValue) : new Date(newValue);
+				if (!this.value || newValue.getTime() != this.value.getTime()) {
+					this.$emit("input", newValue);
+				}
 			}
 		},
 		value: function(newValue) {

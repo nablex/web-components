@@ -8,7 +8,7 @@ Vue.component("n-paging", {
 		amount: {
 			type: Number,
 			required: false,
-			default: 9
+			default: 7
 		},
 		total: {
 			type: Number,
@@ -51,10 +51,10 @@ Vue.component("n-paging", {
 			var surrounding = (this.amount - 2 - 1) / 2;
 			if (this.page >= surrounding) {
 				buttons.push(1);
-				if (surrounding >= 2 && this.page > surrounding) {
+				if (surrounding > 2 && this.page > surrounding) {
 					buttons.push(2);
 				}
-				if (this.page > surrounding + 1) {
+				if (this.page >= surrounding + 1) {
 					buttons.push(null);
 				}
 			}
@@ -62,10 +62,10 @@ Vue.component("n-paging", {
 				buttons.push(i + 1);
 			}
 			if (this.page + surrounding < this.total) {
-				if (this.page < this.total - surrounding - 2) {
+				if (this.page < this.total - surrounding - 1) {
 					buttons.push(null);
 				}
-				if (surrounding >= 2 && this.page < this.total - surrounding - 1) {
+				if (surrounding > 2 && this.page < this.total - surrounding - 1) {
 					buttons.push(this.total - 1);
 				}
 				buttons.push(this.total);

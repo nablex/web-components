@@ -186,12 +186,31 @@
 		"email": {
 			"components.js": {
 				"url": "email/components.js"
-			},
-			"foundation-emails.css": {
+			}, 
+			"foundation-emails-2.2.1.css": {
 				"url": "email/foundation-emails-2.2.1.css"
 			}
 		}, 
 		"misc": {
+			"button": {
+				"button.tpl": {
+					"url": "misc/button/button.tpl"
+				}, 
+				"button.js": {
+					"url": "misc/button/button.js"
+				}
+			}, 
+			"windowing": {
+				"windowing.tpl": {
+					"url": "misc/windowing/windowing.tpl"
+				}, 
+				"windowing.gcss": {
+					"url": "misc/windowing/windowing.gcss"
+				}, 
+				"windowing.js": {
+					"url": "misc/windowing/windowing.js"
+				}
+			}, 
 			"messages": {
 				"messages.gcss": {
 					"url": "misc/messages/messages.gcss"

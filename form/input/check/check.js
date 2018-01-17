@@ -39,6 +39,11 @@ Vue.component("n-form-checkbox", {
 		disabled: {
 			type: Boolean,
 			required: false
+		},
+		inverse: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-checkbox",
@@ -50,7 +55,7 @@ Vue.component("n-form-checkbox", {
 		};
 	},
 	created: function() {
-		this.calculatedValue = this.value instanceof Array ? this.value.indexOf(this.item) >= 0 : this.value;
+		this.calculatedValue = this.invertIfNecessary(this.value instanceof Array ? this.value.indexOf(this.item) >= 0 : this.value);
 	},
 	computed: {
 		definition: function() {
@@ -61,6 +66,9 @@ Vue.component("n-form-checkbox", {
 		}
 	},
 	methods: {
+		invertIfNecessary: function(value) {
+			return this.invert ? !value : value;
+		},
 		validate: function() {
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
@@ -98,7 +106,7 @@ Vue.component("n-form-checkbox", {
 	},
 	watch: {
 		value: function(newValue) {
-			this.calculatedValue = newValue instanceof Array ? newValue.indexOf(this.item) >= 0 : newValue;
+			this.calculatedValue = this.invertIfNecessary(newValue instanceof Array ? newValue.indexOf(this.item) >= 0 : newValue);
 			this.updateChecked(this.calculatedValue);
 		}
 	}

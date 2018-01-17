@@ -13,6 +13,7 @@
 			class="field" 
 			v-if="edit && type != 'area'" 
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
+			:maxlength="maxLength"
 			@focus="$emit('focus')"
 			/><textarea
 				@input="updateValue($event.target.value)" 

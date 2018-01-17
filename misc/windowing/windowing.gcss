@@ -1,0 +1,25 @@
+.n-paging {
+	margin: 1rem auto;
+	text-align: center;
+	
+	button {
+		background-color: ${background/color/secondary};
+		color: ${font/color/secondary};
+		margin: 0.1rem;
+		line-height: 1rem;
+		.n-icon {
+			margin: 0;
+		}
+		&[disabled] {
+			background-color: ${background/color/accentSecondary};
+			color: ${font/color/accentSecondary};
+		}
+	}
+	
+	.n-paging-previous {
+		margin-right: 0.5rem;
+	}
+	.n-paging-next {
+		margin-left: 0.5rem;
+	}
+}

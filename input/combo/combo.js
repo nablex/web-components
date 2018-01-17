@@ -52,13 +52,13 @@ Vue.component("n-input-combo", {
 		if (this.labels) {
 			this.label = this.labels[0];
 		}
-		this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
 		if (this.filter) {
 			this.filterItems(this.content, this.label);
 		}
 		else if (this.items) {
 			nabu.utils.arrays.merge(this.values, this.items);
 		}
+		this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
 	},
 	methods: {
 		clear: function() {
@@ -74,6 +74,7 @@ Vue.component("n-input-combo", {
 			else if (result.then) {
 				var self = this;
 				result.then(function(results) {
+					self.values.splice(0, self.values.length);
 					if (!(results instanceof Array)) {
 						for (var key in results) {
 							if (results[key] instanceof Array) {
@@ -100,7 +101,7 @@ Vue.component("n-input-combo", {
 				this.$emit("input", match);
 			}
 			// make sure we have no value selected
-			else {
+			else if (this.nillable) {
 				this.$emit("input", null);
 			}
 
@@ -113,11 +114,11 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(value, self.label);
+						self.filterItems(match ? null : value, self.label);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(value, this.label);
+					this.filterItems(match ? null : value, this.label);
 				}
 			 }
 		},
@@ -125,6 +126,22 @@ Vue.component("n-input-combo", {
 		updateValue: function(value) {
 			this.$emit("input", value);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
+			// reset the results to match everything once you have selected something
+			if (this.filter) {
+				if (this.timer) {
+					clearTimeout(this.timer);
+					this.timer = null;
+				}
+				if (this.timeout) {
+					var self = this;
+					this.timer = setTimeout(function() {
+						self.filterItems(null, self.label);
+					}, this.timeout);
+				}
+				else {
+					this.filterItems(null, this.label);
+				}
+			 }
 		},
 		selectLabel: function(label) {
 			this.content = null;
@@ -140,6 +157,9 @@ Vue.component("n-input-combo", {
 			if (newValue) {
 				nabu.utils.arrays.merge(this.values, newValue);
 			}
+		},
+		value: function(newValue) {
+			this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
 		}
 	}
 });

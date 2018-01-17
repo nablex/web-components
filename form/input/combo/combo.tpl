@@ -19,6 +19,7 @@
 			:nillable="nillable"
 			:timeout="timeout"
 			:autoclose="autoclose"
+			:placeholder="placeholder"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">
