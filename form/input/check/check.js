@@ -83,9 +83,11 @@ Vue.component("n-form-checkbox", {
 					var index = this.value.indexOf(this.item);
 					if (index >= 0) {
 						this.value.splice(index, 1);
+						this.$emit("remove", this.item);
 					}
 					else {
 						this.value.push(this.item);
+						this.$emit("add", this.item);
 					}
 				}
 				else {

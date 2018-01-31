@@ -36,6 +36,10 @@ Vue.component("n-form-text", {
 			type: String,
 			required: false
 		},
+		patternComment: {
+			type: String,
+			required: false
+		},
 		minLength: {
 			type: Number,
 			required: false
