@@ -40,7 +40,7 @@ Vue.component("n-form-checkbox", {
 			type: Boolean,
 			required: false
 		},
-		inverse: {
+		invert: {
 			type: Boolean,
 			required: false,
 			default: false
@@ -91,7 +91,7 @@ Vue.component("n-form-checkbox", {
 					}
 				}
 				else {
-					this.$emit("input", !this.calculatedValue);
+					this.$emit("input", this.invertIfNecessary(!this.calculatedValue));
 				}
 			}
 		},

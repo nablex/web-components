@@ -45,7 +45,8 @@ Vue.component("n-input-combo", {
 			showValues: false,
 			values: [],
 			content: null,
-			timer: null
+			timer: null,
+			updatingContent: false
 		}
 	},
 	created: function() {
@@ -65,11 +66,14 @@ Vue.component("n-input-combo", {
 			this.content = null;
 			this.filterItems(this.content, this.label);
 		},
-		filterItems: function(content, label) {
+		filterItems: function(content, label, match) {
 			var result = this.filter(content, label);
 			this.values.splice(0, this.values.length);
 			if (result instanceof Array) {
 				nabu.utils.arrays.merge(this.values, result);
+				if (match) {
+					this.checkForMatch(content);
+				}
 			}
 			else if (result.then) {
 				var self = this;
@@ -84,10 +88,13 @@ Vue.component("n-input-combo", {
 						}
 					}
 					nabu.utils.arrays.merge(self.values, results);
+					if (match) {
+						self.checkForMatch(content);
+					}
 				});
 			}
 		},
-		updateContent: function(value) {
+		checkForMatch: function(value) {
 			var match = null;
 			for (var i = 0; i < this.values.length; i++) {
 				var formatted = this.values[i] != null && this.formatter ? this.formatter(this.values[i]) : this.values[i];
@@ -98,12 +105,18 @@ Vue.component("n-input-combo", {
 			}
 			// only update the value if it matches a value in the dropdown list 
 			if (match != null || (!value && this.nillable)) {
+				this.updatingContent = true;
 				this.$emit("input", match);
 			}
-			// make sure we have no value selected
-			else if (this.nillable) {
+			// if it is nillable and the current bound value has some value, reset it to null
+			else if (this.nillable && this.value) {
+				this.updatingContent = true;
 				this.$emit("input", null);
 			}
+			return match;
+		},
+		updateContent: function(value) {
+			var match = this.checkForMatch(value);
 
 			// try to finetune the results
 			if (this.filter) {
@@ -114,11 +127,11 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(match ? null : value, self.label);
+						self.filterItems(match || !value ? null : value, self.label, true);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(match ? null : value, this.label);
+					this.filterItems(match || !value ? null : value, this.label, true);
 				}
 			 }
 		},
@@ -135,11 +148,11 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(null, self.label);
+						self.filterItems(null, self.label, false);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(null, this.label);
+					this.filterItems(null, this.label, false);
 				}
 			 }
 		},
@@ -158,8 +171,13 @@ Vue.component("n-input-combo", {
 				nabu.utils.arrays.merge(this.values, newValue);
 			}
 		},
-		value: function(newValue) {
-			this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
+		value: function(newValue, oldValue) {
+			if (!this.updatingContent) {
+				this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
+			}
+			else {
+				this.updatingContent = false;
+			}
 		}
 	}
 });
