@@ -4,6 +4,11 @@ Vue.component("n-info", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		icon: {
+			type: String,
+			required: false,
+			default: "n-icon-info-circle"
 		}
 	},
 	template: "#n-info",

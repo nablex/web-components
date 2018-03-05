@@ -56,6 +56,10 @@ Vue.component("n-form-combo", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		disabled: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
@@ -87,11 +91,6 @@ Vue.component("n-form-combo", {
 		},
 		clear: function() {
 			this.$refs.combo.clear();
-		}
-	},
-	watch: {
-		value: function(newValue) {
-			console.log("new value is", newValue);
 		}
 	}
 });

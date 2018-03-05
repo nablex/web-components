@@ -20,6 +20,7 @@
 			:timeout="timeout"
 			:autoclose="autoclose"
 			:placeholder="placeholder"
+			:disabled="disabled"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">

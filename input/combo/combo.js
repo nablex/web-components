@@ -35,6 +35,11 @@ Vue.component("n-input-combo", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-input-combo",
@@ -53,7 +58,7 @@ Vue.component("n-input-combo", {
 		if (this.labels) {
 			this.label = this.labels[0];
 		}
-		if (this.filter) {
+		if (this.filter && !this.disabled) {
 			this.filterItems(this.content, this.label);
 		}
 		else if (this.items) {
@@ -177,6 +182,13 @@ Vue.component("n-input-combo", {
 			}
 			else {
 				this.updatingContent = false;
+			}
+		},
+		disabled: function(newValue, oldValue) {
+			if (newValue ==false && oldValue == true) {
+				if (this.filter) {
+					this.filterItems(this.content, this.label);
+				}
 			}
 		}
 	}

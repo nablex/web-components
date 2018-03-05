@@ -13,7 +13,9 @@
 		</div>
 		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false }">
 		
-			<input @focus="showValues = true" autocomplete="off" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" v-model="content">
+			<input @focus="showValues = true" autocomplete="off" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+				v-model="content"
+				:disabled="disabled">
 		
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"></slot>
 			

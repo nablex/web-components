@@ -190,6 +190,8 @@ Vue.component("n-form-text", {
 					clearTimeout(this.timer);
 					this.timer = null;
 				}
+				// always emit the change event, it is not subject to timeout
+				this.$emit("change", value);
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
