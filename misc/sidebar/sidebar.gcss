@@ -1,0 +1,29 @@
+.n-sidebar {
+	z-index: 100;
+	position: fixed;
+	height: 100vh;
+	width: 40vw;
+	top: 0;
+	right: 0;
+	background-color: ${background/color/primary};
+	border: ${border/apply()};
+	
+	header {
+		height: 3rem;
+		padding: 1rem;
+		.close {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			cursor: pointer;
+		}
+	}
+	main {
+		padding: 1rem 2rem;
+		height: calc(100vh - 6rem);
+		overflow: auto;
+	}
+	footer {
+		height: 3rem;
+	}
+}

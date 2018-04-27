@@ -40,7 +40,9 @@ Vue.component("n-form-richtext", {
 	data: function() {
 		return {
 			messages: [],
-			valid: null
+			valid: null,
+			showBlock: false,
+			color: "#000000"
 		};
 	},
 	computed: {
@@ -59,7 +61,7 @@ Vue.component("n-form-richtext", {
 			document.execCommand("insertHTML", null, "<ul><li>" + window.getSelection() + "</li></ul>");
 		},
 		wrap: function(tag) {
-			document.execCommand("insertHTML", null, "<" + tag + ">" + window.getSelection() + "</" + tag+ ">");
+			document.execCommand("insertHTML", null, "<" + tag + ">" + window.getSelection() + "</" + tag + ">");
 		},
 		bold: function() {
 			document.execCommand("bold", false, null);
@@ -111,6 +113,10 @@ Vue.component("n-form-richtext", {
 			}
 			this.valid = messages.length == 0;
 			return messages;
+		},
+		applyColor: function() {
+			console.log("coloring",  "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
+			document.execCommand("insertHTML", null, "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
 		}
 	}
 });

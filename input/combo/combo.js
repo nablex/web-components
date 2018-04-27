@@ -7,6 +7,9 @@ Vue.component("n-input-combo", {
 			type: Array,
 			required: false
 		},
+		initialLabel: {
+			required: false
+		},
 		filter: {
 			type: Function,
 			required: false
@@ -56,13 +59,21 @@ Vue.component("n-input-combo", {
 	},
 	created: function() {
 		if (this.labels) {
-			this.label = this.labels[0];
+			this.label = this.initialLabel && this.labels.indexOf(this.initialLabel) >= 0 ? this.initialLabel : this.labels[0];
 		}
 		if (this.filter && !this.disabled) {
 			this.filterItems(this.content, this.label);
 		}
 		else if (this.items) {
-			nabu.utils.arrays.merge(this.values, this.items);
+			if (this.items.then) {
+				var self = this;
+				this.items.then(function(items) {
+					nabu.utils.arrays.merge(self.values, items);
+				});
+			}
+			else {
+				nabu.utils.arrays.merge(this.values, this.items);
+			}
 		}
 		this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
 	},
@@ -111,7 +122,7 @@ Vue.component("n-input-combo", {
 			// only update the value if it matches a value in the dropdown list 
 			if (match != null || (!value && this.nillable)) {
 				this.updatingContent = true;
-				this.$emit("input", match);
+				this.$emit("input", match, this.label);
 			}
 			// if it is nillable and the current bound value has some value, reset it to null
 			else if (this.nillable && this.value) {
@@ -142,7 +153,7 @@ Vue.component("n-input-combo", {
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {
-			this.$emit("input", value);
+			this.$emit("input", value, this.label);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
 			if (this.filter) {
@@ -171,9 +182,18 @@ Vue.component("n-input-combo", {
 	},
 	watch: {
 		items: function(newValue) {
-			this.values.splice(0, this.values.length);
-			if (newValue) {
-				nabu.utils.arrays.merge(this.values, newValue);
+			if (newValue && newValue.then) {
+				var self = this;
+				newValue.then(function(items) {
+					self.values.splice(0, self.values.length);
+					nabu.utils.arrays.merge(self.values, items);
+				});
+			}
+			else {
+				this.values.splice(0, this.values.length);
+				if (newValue) {
+					nabu.utils.arrays.merge(this.values, newValue);
+				}
 			}
 		},
 		value: function(newValue, oldValue) {
@@ -189,6 +209,13 @@ Vue.component("n-input-combo", {
 				if (this.filter) {
 					this.filterItems(this.content, this.label);
 				}
+			}
+		},
+		labels: function(newValue) {
+			// if the current label is no longer valid, change it
+			if (this.label && newValue.indexOf(this.label) < 0) {
+				this.label = newValue.length ? newValue[0] : null;
+				this.filterItems(this.content, this.label);
 			}
 		}
 	}

@@ -103,6 +103,11 @@ Vue.component("n-form-text", {
 		mode: {
 			type: String,
 			required: false
+		},
+		autoSelect: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -126,6 +131,12 @@ Vue.component("n-form-text", {
 		}
 	},
 	methods: {
+		focus: function($event) {
+			this.$emit('focus', $event);
+			if (this.autoSelect) {
+				this.$refs.input.select();
+			}
+		},
 		validate: function(soft) {
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {

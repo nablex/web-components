@@ -14,7 +14,8 @@
 			v-if="edit && type != 'area'" 
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 			:maxlength="maxLength"
-			@focus="$emit('focus', $event)"
+			@focus="focus"
+			ref="input"
 			/><textarea
 				@input="updateValue($event.target.value)" 
 				:placeholder="placeholder" 
@@ -24,6 +25,7 @@
 				v-if="edit && type == 'area'" 
 				:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 				@focus="$emit('focus')"
+				ref="input"
 			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
 		
 		<span class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></span>

@@ -11,6 +11,9 @@ Vue.component("n-form-combo", {
 			type: Array,
 			required: false
 		},
+		initialLabel: {
+			required: false
+		},
 		filter: {
 			type: Function,
 			required: false
@@ -86,8 +89,8 @@ Vue.component("n-form-combo", {
 			this.valid = messages.length == 0;
 			return messages;
 		},
-		updateValue: function(value) {
-			this.$emit("input", value);
+		updateValue: function(value, label) {
+			this.$emit("input", value, label);
 		},
 		clear: function() {
 			this.$refs.combo.clear();

@@ -211,6 +211,17 @@
 					"url": "misc/windowing/windowing.js"
 				}
 			}, 
+			"sidebar": {
+				"sidebar.gcss": {
+					"url": "misc/sidebar/sidebar.gcss"
+				}, 
+				"sidebar.js": {
+					"url": "misc/sidebar/sidebar.js"
+				}, 
+				"sidebar.tpl": {
+					"url": "misc/sidebar/sidebar.tpl"
+				}
+			}, 
 			"messages": {
 				"messages.gcss": {
 					"url": "misc/messages/messages.gcss"

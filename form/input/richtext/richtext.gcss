@@ -16,13 +16,26 @@
 		span {
 			flex-basis: 0;
 			flex-grow: 0;
-			padding: 0.3rem;
 		}
 	}
 	
+	
 	.n-form-richtext-menu {
 		text-align: center;
-		button {
+		> button {
+			position: relative;
+		}
+		.n-form-richtext-choices {
+			position: absolute;
+			top: 100%;
+			white-space: nowrap;
+			text-align: left;
+			button {
+				border-style: solid;
+				display: inline-block;
+			}
+		}
+		$button, input {
 			background-color: ${background/color/accent};
 			margin: 0 0.2rem;
 			height: 3rem;
@@ -35,6 +48,9 @@
 				display: block;
 				margin-top: 0.2rem;
 			}
+		}
+		input {
+			vertical-align: bottom;
 		}
 	}
 }

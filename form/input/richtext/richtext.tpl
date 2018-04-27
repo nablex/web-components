@@ -1,6 +1,39 @@
 <template id="n-form-richtext">
 	<div class="n-form-richtext n-form-component">
-		<div class="n-form-richtext-menu" v-if="edit"><button @click="bold">
+		<div class="n-form-richtext-menu" v-if="edit" v-auto-close="function() { showBlock = false }"><button @click="showBlock = !showBlock">
+				<span class="n-icon n-icon-th-large"></span>
+				<span class="n-form-richtext-button-description">%{text:Block}</span>
+				<div v-if="showBlock" class="n-form-richtext-choices">
+					<button @click="wrap('p')">
+						<span class="n-icon n-icon-paragraph"></span>
+						<span class="n-form-richtext-button-description">%{text:Paragraph}</span>
+					</button>
+					<button @click="wrap('h1')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H1}</span>
+					</button>
+					<button @click="wrap('h2')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H2}</span>
+					</button>
+					<button @click="wrap('h3')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H3}</span>
+					</button>
+					<button @click="wrap('h4')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H4}</span>
+					</button>
+					<button @click="wrap('h5')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H5}</span>
+					</button>
+					<button @click="wrap('h6')">
+						<span class="n-icon n-icon-header"></span>
+						<span class="n-form-richtext-button-description">%{text:H6}</span>
+					</button>
+				</div>
+			</button><button @click="bold()">
 				<span class="n-icon n-icon-bold"></span>
 				<span class="n-form-richtext-button-description">%{text:Bold}</span>
 			</button><button @click="italic">
@@ -27,6 +60,9 @@
 			</button><button @click="clean">
 				<span class="n-icon n-icon-eraser"></span>
 				<span class="n-form-richtext-button-description">%{text:Plain}</span>
+			</button><input type="color" v-model="color"><button @click="applyColor()">
+				<span class="n-icon n-icon-paint-brush"></span>
+				<span class="n-form-richtext-button-description">%{text:Paint}</span>
 			</button></div>
 		<div class="n-form-richtext-editor">
 			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
