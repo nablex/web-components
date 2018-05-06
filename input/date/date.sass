@@ -1,0 +1,67 @@
+.n-input-date {
+	table {
+		border: $beta-border solid 1px;
+		border-style: none none solid none;
+	}
+	caption {
+		height: 3rem;
+		line-height: 3rem;
+		position: relative;
+		background-color: $primary-color;
+		color: $primary-contrast;
+		
+		.month {
+			font-weight: 700;
+			font-size: 1.2rem;
+		}
+		a {
+			font-size: 1.625rem;
+			height: 3rem;
+			width: 3rem;
+			position: absolute;
+			background-color: inherit;
+			color: inherit;
+			
+			&.n-input-date-previous {
+				left: 0;
+			}
+			&.n-input-date-next {
+				right: 0;
+			}
+			
+			&:hover {
+				background-color: darken($primary-color, 10%);
+				text-decoration: none;
+			}
+		}
+	}
+	td {
+		background-color: $primary-color;
+		text-align: center;
+		padding: 0.7rem;
+		&:hover {
+			background-color: darken($primary-color, 10%);
+		}
+	}
+	th {
+		padding: 0.7rem;
+		background-color: $primary-color;
+		border: $beta-border solid 1px;
+		border-style: none none solid none;
+		text-align: center;
+	}
+	
+	td, span {
+		&.n-input-date-today {
+			background-color: $secondary-color;
+		}
+		&.n-input-date-selected {
+			background-color: $warning-color;
+			color: $warning-contrast;
+		}
+		&.n-input-date-available {
+			background-color: $success-color;
+			color: $success-contrast;
+		}
+	}
+}

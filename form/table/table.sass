@@ -1,0 +1,56 @@
+.n-form-table {
+	margin: 1rem auto;
+	
+	.n-form-table-header {
+		display: flex;
+		
+		.n-form-label {
+			flex-grow: 1;
+			flex-basis: 0;
+		}
+	}
+	.n-form-component {
+		display: inline-block;
+		flex-grow: 1;
+		flex-basis: 0;
+	}
+	
+	.n-form-section {
+		&:nth-child {
+			background-color: darken($beta-color, 15%);
+		}
+		display: flex;
+	}
+}
+
+@media #{$desktop} {
+	.n-form-table {
+		.n-form-table-content {
+			.n-form-label {
+				display: none;
+			}
+		}
+	}
+}
+
+@media #{$phone} {
+	.n-form-table {
+		.n-form-section {
+			flex-direction: column;
+			.n-form-section {
+				display: block;
+			}
+		}
+		.n-form-table-header {
+			display: none;
+		}
+		.n-form-component {
+			display: inline-block;
+			
+			> * {
+				flex-grow: 1;
+				flex-basis: 0;
+			}
+		}
+	}
+}

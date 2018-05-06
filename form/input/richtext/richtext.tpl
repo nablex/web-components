@@ -1,67 +1,67 @@
 <template id="n-form-richtext">
 	<div class="n-form-richtext n-form-component">
 		<div class="n-form-richtext-menu" v-if="edit" v-auto-close="function() { showBlock = false }"><button @click="showBlock = !showBlock">
-				<span class="n-icon n-icon-th-large"></span>
+				<span class="n-icon fa n-icon-th-large fa-th-large"></span>
 				<span class="n-form-richtext-button-description">%{text:Block}</span>
 				<div v-if="showBlock" class="n-form-richtext-choices">
 					<button @click="wrap('p')">
-						<span class="n-icon n-icon-paragraph"></span>
+						<span class="n-icon fa n-icon-paragraph fa-paragraph"></span>
 						<span class="n-form-richtext-button-description">%{text:Paragraph}</span>
 					</button>
 					<button @click="wrap('h1')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H1}</span>
 					</button>
 					<button @click="wrap('h2')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H2}</span>
 					</button>
 					<button @click="wrap('h3')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H3}</span>
 					</button>
 					<button @click="wrap('h4')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H4}</span>
 					</button>
 					<button @click="wrap('h5')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H5}</span>
 					</button>
 					<button @click="wrap('h6')">
-						<span class="n-icon n-icon-header"></span>
+						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H6}</span>
 					</button>
 				</div>
 			</button><button @click="bold()">
-				<span class="n-icon n-icon-bold"></span>
+				<span class="n-icon fa n-icon-bold fa-bold"></span>
 				<span class="n-form-richtext-button-description">%{text:Bold}</span>
 			</button><button @click="italic">
-				<span class="n-icon n-icon-italic"></span>
+				<span class="n-icon fa n-icon-italic fa-italic"></span>
 				<span class="n-form-richtext-button-description">%{text:Italic}</span>
 			</button><button @click="underline">
-				<span class="n-icon n-icon-underline"></span>
+				<span class="n-icon fa n-icon-underline fa-underline"></span>
 				<span class="n-form-richtext-button-description">%{text:Underline}</span>
 			</button><button @click="insertTable">
-				<span class="n-icon n-icon-table"></span>
+				<span class="n-icon fa n-icon-table fa-table"></span>
 				<span class="n-form-richtext-button-description">%{text:Table}</span>
 			</button><button @click="link">
-				<span class="n-icon n-icon-link"></span>
+				<span class="n-icon fa n-icon-link fa-link"></span>
 				<span class="n-form-richtext-button-description">%{text:Link}</span>
 			</button><button @click="list">
-				<span class="n-icon n-icon-list"></span>
+				<span class="n-icon fa n-icon-list fa-list"></span>
 				<span class="n-form-richtext-button-description">%{text:List}</span>
 			</button><button @click="indent">
-				<span class="n-icon n-icon-indent"></span>
+				<span class="n-icon fa n-icon-indent fa-indent"></span>
 				<span class="n-form-richtext-button-description">%{text:Indent}</span>
 			</button><button @click="outdent">
-				<span class="n-icon n-icon-outdent"></span>
+				<span class="n-icon fa n-icon-outdent fa-outdent"></span>
 				<span class="n-form-richtext-button-description">%{text:Outdent}</span>
 			</button><button @click="clean">
-				<span class="n-icon n-icon-eraser"></span>
+				<span class="n-icon fa n-icon-eraser fa-eraser"></span>
 				<span class="n-form-richtext-button-description">%{text:Plain}</span>
 			</button><input type="color" v-model="color"><button @click="applyColor()">
-				<span class="n-icon n-icon-paint-brush"></span>
+				<span class="n-icon fa n-icon-paint-brush fa-paint-brush"></span>
 				<span class="n-form-richtext-button-description">%{text:Paint}</span>
 			</button></div>
 		<div class="n-form-richtext-editor">

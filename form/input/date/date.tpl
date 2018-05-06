@@ -21,7 +21,8 @@
 			:unique="unique"
 			ref="text">
 			
-			<span slot="after-input" class="n-icon n-form-date-icon" :class="{ 'n-icon-calendar': !show, 'n-icon-times': show, 'n-form-date-icon-show': show }" @click="edit && !disabled ? show = !show : show = false" v-show="edit"></span>
+			<span slot="after-input" class="n-icon fa n-form-date-icon" 
+				:class="{ 'n-icon-calendar': !show, 'fa-calendar-alt': !show, 'n-icon-times': show, 'fa-times': show, 'n-form-date-icon-show': show }" @click="edit && !disabled ? show = !show : show = false" v-show="edit"></span>
 		</n-form-text>
 		
 		<n-input-date 

@@ -1,0 +1,36 @@
+.n-form-date {
+	display: inline-block;
+	position: relative;
+	
+	.n-form-text {
+		display: inline-block;
+	}
+	.n-input-date {
+		z-index: 1000;
+		position: absolute;
+		top: 100%;
+		max-width: 23rem;
+		border: $border;
+		border-style: none solid none solid;
+	}
+	.n-form-date-icon {
+		transition: all 250ms ease-in-out;
+		cursor: pointer;
+		background-color: $primary-color;
+		color: $primary-contrast;
+		line-height: 2.7rem;
+		width: 3rem;
+		height: 3rem;
+		text-align: center;
+		display: inline-block;
+		
+		&:before {
+			font-size: 1.35rem;
+		}
+		
+		&.n-form-date-icon-show {
+			background-color: $danger-color;
+			color: $danger-contrast;
+		}
+	}
+}

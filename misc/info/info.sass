@@ -1,0 +1,21 @@
+.n-info {
+	position: relative;
+	display: inline-block;
+	.n-icon, fa {
+		cursor: pointer;
+	}
+	
+	.n-info-content {
+		z-index: 10;
+		position: absolute;
+		top: 100%;
+		background-color: $dark-color;
+		color: $dark-contrast;
+		padding: 1rem;
+		min-width: 20rem;
+		
+		a {
+			color: darken($dark-contrast, 10%);
+		}
+	}
+}

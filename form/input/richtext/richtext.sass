@@ -1,0 +1,55 @@
+.n-form-richtext {
+	margin: 1rem;
+
+	.n-form-richtext-editor {
+		display: flex;
+		.n-form-richtext-content {
+			flex-basis: 0;
+			flex-grow: 1;
+			&[contenteditable=true] {
+				min-width: 30rem;
+				min-height: 20rem;
+				border: $border;
+				background-color: $beta-color;
+			}
+		}
+		span {
+			flex-basis: 0;
+			flex-grow: 0;
+		}
+	}
+	
+	.n-form-richtext-menu {
+		text-align: center;
+		> button {
+			position: relative;
+		}
+		.n-form-richtext-choices {
+			position: absolute;
+			top: 100%;
+			white-space: nowrap;
+			text-align: left;
+			button {
+				border-style: solid;
+				display: inline-block;
+			}
+		}
+		button, input {
+			background-color: $beta-accent-color;
+			margin: 0 0.2rem;
+			height: 3rem;
+			width: 3rem;
+			border: $beta-border solid 1px;
+			border-style: solid solid none solid;
+			
+			.n-form-richtext-button-description {
+				font-size: 0.55rem;
+				display: block;
+				margin-top: 0.2rem;
+			}
+		}
+		input {
+			vertical-align: bottom;
+		}
+	}
+}

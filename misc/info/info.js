@@ -8,7 +8,7 @@ Vue.component("n-info", {
 		icon: {
 			type: String,
 			required: false,
-			default: "n-icon-info-circle"
+			default: "n-icon-info-circle fa-info-circle"
 		}
 	},
 	template: "#n-info",

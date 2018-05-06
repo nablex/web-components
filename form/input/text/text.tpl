@@ -10,7 +10,9 @@
 			:type="type" 
 			:disabled="disabled" 
 			:value="value" 
-			class="field" 
+			class="field"
+			:min="minimum"
+			:max="maximum"
 			v-if="edit && type != 'area'" 
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 			:maxlength="maxLength"
@@ -28,8 +30,8 @@
 				ref="input"
 			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
 		
-		<span class="n-input-result n-icon n-icon-check" v-if="valid != null && valid && edit"></span>
-		<span class="n-input-result n-icon n-icon-times" v-if="valid != null && !valid && edit"></span>
+		<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>
+		<span class="n-input-result n-icon n-icon-times fa fa-times" v-if="valid != null && !valid && edit"></span>
 		<slot v-if="!edit">
 			<span class="n-form-read">{{ value }}</span>
 		</slot>
