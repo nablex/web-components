@@ -14,6 +14,11 @@ Vue.component("n-form-switch", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-switch",
@@ -27,7 +32,9 @@ Vue.component("n-form-switch", {
 	},
 	methods: {
 		updateValue: function(newValue) {
-			this.$emit("input", newValue);
+			if (!this.disabled) {
+				this.$emit("input", newValue);
+			}
 		}
 	},
 	watch: {
