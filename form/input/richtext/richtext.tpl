@@ -1,6 +1,6 @@
 <template id="n-form-richtext">
 	<div class="n-form-richtext n-form-component">
-		<div class="n-form-richtext-menu" v-if="edit" v-auto-close="function() { showBlock = false }"><button @click="showBlock = !showBlock">
+		<div class="n-form-richtext-menu" v-if="edit" v-auto-close="function() { showBlock = false; showJustify = false; }"><button @click="showBlock = !showBlock">
 				<span class="n-icon fa n-icon-th-large fa-th-large"></span>
 				<span class="n-form-richtext-button-description">%{text:Block}</span>
 				<div v-if="showBlock" class="n-form-richtext-choices">
@@ -31,6 +31,27 @@
 					<button @click="wrap('h6')">
 						<span class="n-icon fa n-icon-header fa-header"></span>
 						<span class="n-form-richtext-button-description">%{text:H6}</span>
+					</button>
+				</div>
+			</button><button @click="showJustify = !showJustify">
+				<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
+				<span class="n-form-richtext-button-description">%{text:Justify}</span>
+				<div v-if="showJustify" class="n-form-richtext-choices">
+					<button @click="justify('justifyCenter')">
+						<span class="n-icon fa n-icon-align-center fa-align-center"></span>
+						<span class="n-form-richtext-button-description">%{text:Center}</span>
+					</button>
+					<button @click="justify('justifyLeft')">
+						<span class="n-icon fa n-icon-align-left fa-align-left"></span>
+						<span class="n-form-richtext-button-description">%{text:Left}</span>
+					</button>
+					<button @click="justify('justifyRight')">
+						<span class="n-icon fa n-icon-align-right fa-align-right"></span>
+						<span class="n-form-richtext-button-description">%{text:Right}</span>
+					</button>
+					<button @click="justify('justifyFull')">
+						<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
+						<span class="n-form-richtext-button-description">%{text:Full}</span>
 					</button>
 				</div>
 			</button><button @click="bold()">

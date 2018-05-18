@@ -23,6 +23,11 @@ Vue.component("n-form-combo", {
 			type: Function,
 			required: false
 		},
+		// used to extract the actual value from the suggested items
+		extracter: {
+			type: Function,
+			required: false
+		},
 		required: {
 			type: Boolean,
 			required: false,

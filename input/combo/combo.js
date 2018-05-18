@@ -19,6 +19,11 @@ Vue.component("n-input-combo", {
 			type: Function,
 			required: false
 		},
+		// used to extract the actual value from the suggested items
+		extracter: {
+			type: Function,
+			required: false
+		},
 		items: {
 			required: false
 		},
@@ -54,7 +59,8 @@ Vue.component("n-input-combo", {
 			values: [],
 			content: null,
 			timer: null,
-			updatingContent: false
+			updatingContent: false,
+			actualValue: null
 		}
 	},
 	created: function() {
@@ -69,15 +75,48 @@ Vue.component("n-input-combo", {
 				var self = this;
 				this.items.then(function(items) {
 					nabu.utils.arrays.merge(self.values, items);
+					self.synchronizeValue(true);
 				});
 			}
 			else {
 				nabu.utils.arrays.merge(this.values, this.items);
+				this.synchronizeValue(true);
 			}
 		}
-		this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
+		// do a synchronization if we do not have an extracter, we are not dependend on values being loaded then
+		if (!this.extracter) {
+			this.synchronizeValue(true);
+		}
 	},
 	methods: {
+		synchronizeValue: function(initial) {
+			if (this.value) {
+				if (this.extracter) {
+					// only look for a match if we haven't found one already
+					// normally in the initial state, a match should be found but once we start filtering it might disappear
+					// at that point we can't match it anymore even though it is a "valid" value
+					if (!this.actualValue || this.extracter(this.actualValue) != this.value) {
+						for (var i = 0; i < this.values.length; i++) {
+							if (this.extracter(this.values[i]) == this.value) {
+								this.actualValue = this.values[i];
+								break;
+							}
+						}
+					}
+				}
+				else {
+					this.actualValue = this.value;
+				}
+			}
+			else {
+				this.actualValue = null;
+			}
+			// only update the content if this is the initial setting
+			// afterwards people just type and it remains
+			if (initial) {
+				this.content = this.actualValue ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+			}
+		},
 		clear: function() {
 			this.content = null;
 			this.filterItems(this.content, this.label);
@@ -87,6 +126,7 @@ Vue.component("n-input-combo", {
 			this.values.splice(0, this.values.length);
 			if (result instanceof Array) {
 				nabu.utils.arrays.merge(this.values, result);
+				this.synchronizeValue();
 				if (match) {
 					this.checkForMatch(content);
 				}
@@ -95,6 +135,7 @@ Vue.component("n-input-combo", {
 				var self = this;
 				result.then(function(results) {
 					self.values.splice(0, self.values.length);
+					// if it is not an array, find the first array child, rest service returns always have a singular root
 					if (!(results instanceof Array)) {
 						for (var key in results) {
 							if (results[key] instanceof Array) {
@@ -104,6 +145,7 @@ Vue.component("n-input-combo", {
 						}
 					}
 					nabu.utils.arrays.merge(self.values, results);
+					self.synchronizeValue();
 					if (match) {
 						self.checkForMatch(content);
 					}
@@ -122,7 +164,7 @@ Vue.component("n-input-combo", {
 			// only update the value if it matches a value in the dropdown list 
 			if (match != null || (!value && this.nillable)) {
 				this.updatingContent = true;
-				this.$emit("input", match, this.label);
+				this.$emit("input", this.extracter && match ? this.extracter(match) : match, this.label);
 			}
 			// if it is nillable and the current bound value has some value, reset it to null
 			else if (this.nillable && this.value) {
@@ -153,7 +195,7 @@ Vue.component("n-input-combo", {
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {
-			this.$emit("input", value, this.label);
+			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
 			if (this.filter) {
@@ -187,25 +229,27 @@ Vue.component("n-input-combo", {
 				newValue.then(function(items) {
 					self.values.splice(0, self.values.length);
 					nabu.utils.arrays.merge(self.values, items);
+					self.synchronizeValue();
 				});
 			}
 			else {
 				this.values.splice(0, this.values.length);
 				if (newValue) {
 					nabu.utils.arrays.merge(this.values, newValue);
+					this.synchronizeValue();
 				}
 			}
 		},
 		value: function(newValue, oldValue) {
 			if (!this.updatingContent) {
-				this.content = this.value != null && this.formatter ? this.formatter(this.value) : this.value;
+				this.synchronizeValue();
 			}
 			else {
 				this.updatingContent = false;
 			}
 		},
 		disabled: function(newValue, oldValue) {
-			if (newValue ==false && oldValue == true) {
+			if (newValue == false && oldValue == true) {
 				if (this.filter) {
 					this.filterItems(this.content, this.label);
 				}

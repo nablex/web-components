@@ -42,6 +42,7 @@ Vue.component("n-form-richtext", {
 			messages: [],
 			valid: null,
 			showBlock: false,
+			showJustify: false,
 			color: "#000000"
 		};
 	},
@@ -54,6 +55,9 @@ Vue.component("n-form-richtext", {
 		}
 	},
 	methods: {
+		justify: function(direction) {
+			document.execCommand(direction, false, null)
+		},
 		insertTable: function() {
 			document.execCommand("insertHTML", null, "<table cellspacing='0' cellpadding='0'><tr><td>" + window.getSelection() + "</td></tr></table>");
 		},
