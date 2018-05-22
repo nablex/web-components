@@ -68,7 +68,7 @@ Vue.component("n-input-combo", {
 			this.label = this.initialLabel && this.labels.indexOf(this.initialLabel) >= 0 ? this.initialLabel : this.labels[0];
 		}
 		if (this.filter && !this.disabled) {
-			this.filterItems(this.content, this.label);
+			this.filterItems(this.content, this.label, null, true);
 		}
 		else if (this.items) {
 			if (this.items.then) {
@@ -121,12 +121,12 @@ Vue.component("n-input-combo", {
 			this.content = null;
 			this.filterItems(this.content, this.label);
 		},
-		filterItems: function(content, label, match) {
+		filterItems: function(content, label, match, initial) {
 			var result = this.filter(content, label);
 			this.values.splice(0, this.values.length);
 			if (result instanceof Array) {
 				nabu.utils.arrays.merge(this.values, result);
-				this.synchronizeValue();
+				this.synchronizeValue(initial);
 				if (match) {
 					this.checkForMatch(content);
 				}
@@ -145,7 +145,7 @@ Vue.component("n-input-combo", {
 						}
 					}
 					nabu.utils.arrays.merge(self.values, results);
-					self.synchronizeValue();
+					self.synchronizeValue(initial);
 					if (match) {
 						self.checkForMatch(content);
 					}
