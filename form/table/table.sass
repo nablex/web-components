@@ -23,7 +23,7 @@
 	}
 }
 
-@media #{$desktop} {
+@include media(">=desktop") {
 	.n-form-table {
 		.n-form-table-content {
 			.n-form-label {
@@ -33,7 +33,7 @@
 	}
 }
 
-@media #{$phone} {
+@include media("<desktop") {
 	.n-form-table {
 		.n-form-section {
 			flex-direction: column;
