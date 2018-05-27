@@ -1,5 +1,5 @@
 <template id="n-form-text">
-	<div class="n-form-component n-form-text" :class="{ 'n-form-hidden': hide }" :optional="hide != null">
+	<div class="n-form-component n-form-text" :class="[{ 'n-form-hidden': hide }, type ? 'n-form-text-' + type : null ]" :optional="hide != null">
 		<slot name="top"></slot>
 		<slot name="label" :label="label" :mandatory="mandatory">
 			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
@@ -18,6 +18,7 @@
 			:maxlength="maxLength"
 			@focus="focus"
 			ref="input"
+			:name="name"
 			/><textarea
 				@input="updateValue($event.target.value)" 
 				:placeholder="placeholder" 
@@ -28,6 +29,7 @@
 				:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 				@focus="$emit('focus')"
 				ref="input"
+				:name="name"
 			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
 		
 		<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>

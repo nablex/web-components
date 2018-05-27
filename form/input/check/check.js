@@ -44,6 +44,10 @@ Vue.component("n-form-checkbox", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		validator: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-checkbox",
@@ -70,9 +74,22 @@ Vue.component("n-form-checkbox", {
 			return this.invert ? !value : value;
 		},
 		validate: function() {
-			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
+			// if the checkbox is mandatory but the calculated value is null, false or undefined or anything but true, we imitate a null value to trigger the mandatory validation
+			var messages = nabu.utils.schema.json.validate(this.definition, this.mandatory && !this.calculatedValue ? null : this.calculatedValue, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
+			}
+			if (this.validator) {
+				var additional = this.validator(this.value);
+				if (additional && additional.length) {
+					for (var i = 0; i < additional.length; i++) {
+						additional[i].component = this;
+						if (typeof(additional[i].context) == "undefined") {
+							additional[i].context = [];
+						}
+						messages.push(additional[i]);
+					}
+				}
 			}
 			this.valid = messages.length == 0;
 			return messages;

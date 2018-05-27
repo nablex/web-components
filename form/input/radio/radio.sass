@@ -1,0 +1,109 @@
+$n-form-radio-color: $primary-color !default;
+$n-form-radio-contrast: $primary-contrast !default;
+$n-form-radio-disabled: $disabled-color !default;
+$n-form-radio-line-height: 1rem !default;
+$n-form-radio-icon-family: $icon-family !default;
+
+.n-form-radio, .n-form-checkbox {
+	display: block;
+	&:not(:last-child) {
+		margin-bottom: 0.3rem;
+	}
+	padding-left: $n-form-radio-line-height;
+	position: relative;
+	input {
+		height: 0;
+		width: 0;
+		appearance: none;
+		cursor: pointer;
+		line-height: normal;
+		opacity: 0;
+		padding: 0;
+		position: absolute;
+		z-index: 0;
+
+		&:checked + label {
+			&:before {
+				background-color: $n-form-radio-color;
+				box-shadow: 0 0 0 1px $n-form-radio-color inset;
+			}
+		}
+
+		&:disabled + label {
+			color: $n-form-radio-disabled;
+			cursor: not-allowed;
+	
+			&:before {
+				box-shadow: 0 0 0 1px $n-form-radio-disabled inset;
+			}
+		}
+	}
+	label {
+		cursor: pointer;
+		display: inline-block;
+		line-height: $n-form-radio-line-height;
+		max-width: 100%;
+		min-height: $n-form-radio-line-height;
+		padding-left: 0.7rem;
+		position: relative;
+		vertical-align: middle;
+
+		&:before {
+			background-color: $n-form-radio-contrast;
+			box-shadow: 0 0 0 1px $n-form-radio-color inset;
+			content: '';
+			display: inline-block;
+			height: $n-form-radio-line-height;
+			left: 0;
+			margin-left: -$n-form-radio-line-height;
+			position: absolute;
+			transition-duration: 0.5s;
+			transition-property: background, box-shadow;
+			width: $n-form-radio-line-height;
+		}
+
+		&:after {
+			display: inline-block;
+			font-size: $icon-size;
+			height: $n-form-radio-line-height;
+			left: 0;
+			margin-left: -$n-form-radio-line-height;
+			position: absolute;
+			text-align: center;
+			top: 0;
+			width: $n-form-radio-line-height;
+			font-family: $icon-family;
+		}
+	}
+}
+
+.n-form-check input[type='checkbox']:checked {
+	+ label:after {
+		content: '\f00c';
+	}
+
+	&:disabled {
+		+ label:before {
+			background-color: $n-form-radio-disabled;
+		}
+	}
+}
+
+.n-form-radio input[type='radio'] {
+	+ label:before {
+		border-radius: 50%;
+	}
+
+	&:checked {
+		+ label:before {
+			background: $n-form-radio-contrast;
+			box-shadow: 0 0 0 5px $n-form-radio-color inset;
+		}
+
+		&:disabled {
+			+ label:before {
+				box-shadow: 0 0 0 6px $n-form-radio-disabled inset;
+			}
+		}
+	}
+}

@@ -101,9 +101,6 @@
 					"check.gcss": {
 						"url": "form/input/check/check.gcss"
 					}, 
-					"check.sass": {
-						"url": "form/input/check/check.sass"
-					}, 
 					"check.js": {
 						"url": "form/input/check/check.js"
 					}, 
@@ -131,6 +128,17 @@
 					}, 
 					"switch.js": {
 						"url": "form/input/switch/switch.js"
+					}
+				}, 
+				"radio": {
+					"radio.tpl": {
+						"url": "form/input/radio/radio.tpl"
+					}, 
+					"radio.js": {
+						"url": "form/input/radio/radio.js"
+					}, 
+					"radio.sass": {
+						"url": "form/input/radio/radio.sass"
 					}
 				}
 			}, 
