@@ -1,14 +1,27 @@
+$n-form-date-hero-color: $primary-color !default;
+$n-form-date-hero-contrast: $primary-contrast !default;
+
+$n-form-date-color: $beta-color !default;
+$n-form-date-contrast: $beta-contrast !default;
+$n-form-date-border: $beta-border !default;
+
+$n-form-line-height: 3rem !default;
+
 .n-input-date {
+	.fa:before {
+		display: inline-block;
+		margin-top: 1rem;
+	}
 	table {
-		border: $beta-border solid 1px;
-		border-style: none none solid none;
+		border: $n-form-date-border solid 1px;
+		border-style: none solid solid none;
 	}
 	caption {
-		height: 3rem;
-		line-height: 3rem;
+		height: $n-form-line-height;
+		line-height: $n-form-line-height;
 		position: relative;
-		background-color: $primary-color;
-		color: $primary-contrast;
+		background-color: $n-form-date-hero-color;
+		color: $n-form-date-hero-contrast;
 		
 		.month {
 			font-weight: 700;
@@ -16,52 +29,66 @@
 		}
 		a {
 			font-size: 1.625rem;
-			height: 3rem;
-			width: 3rem;
+			height: $n-form-line-height;
+			width: $n-form-line-height;
 			position: absolute;
 			background-color: inherit;
 			color: inherit;
 			
-			&.n-input-date-previous {
+			&.n-input-date-previous-year {
 				left: 0;
 			}
-			&.n-input-date-next {
+			&.n-input-date-previous {
+				left: $n-form-line-height;
+			}
+			&.n-input-date-next-year {
 				right: 0;
 			}
-			
+			&.n-input-date-next {
+				right: $n-form-line-height;
+			}
 			&:hover {
-				background-color: darken($primary-color, 10%);
+				background-color: darken($n-form-date-hero-color, 10%);
 				text-decoration: none;
 			}
 		}
 	}
 	td {
-		background-color: $primary-color;
+		background-color: $n-form-date-color;
+		color: $n-form-date-contrast;
 		text-align: center;
 		padding: 0.7rem;
 		&:hover {
-			background-color: darken($primary-color, 10%);
+			background-color: darken($n-form-date-color, 20%);
 		}
 	}
 	th {
 		padding: 0.7rem;
-		background-color: $primary-color;
+		background-color: $n-form-date-contrast;
+		color: $n-form-date-color;
 		border: $beta-border solid 1px;
 		border-style: none none solid none;
 		text-align: center;
 	}
 	
-	td, span {
+	td, span{
 		&.n-input-date-today {
-			background-color: $secondary-color;
+			background-color: $warning-color;
+			a {
+				color: $warning-contrast;
+			}
 		}
 		&.n-input-date-selected {
-			background-color: $warning-color;
-			color: $warning-contrast;
+			background-color: $success-color;
+			a {
+				color: $success-contrast;
+			}
 		}
 		&.n-input-date-available {
-			background-color: $success-color;
-			color: $success-contrast;
+			background-color: $info-color;
+			a {
+				color: $info-contrast;
+			}
 		}
 	}
 }

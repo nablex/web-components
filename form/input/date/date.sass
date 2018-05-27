@@ -1,7 +1,13 @@
+$n-form-line-height: 3rem !default;
+
 .n-form-date {
 	display: inline-block;
 	position: relative;
-	
+
+	input {
+		line-height: $n-form-line-height;
+		height: $n-form-line-height;
+	}	
 	.n-form-text {
 		display: inline-block;
 	}
@@ -19,8 +25,8 @@
 		background-color: $primary-color;
 		color: $primary-contrast;
 		line-height: 2.7rem;
-		width: 3rem;
-		height: 3rem;
+		width: $n-form-line-height;
+		height: $n-form-line-height;
 		text-align: center;
 		display: inline-block;
 		

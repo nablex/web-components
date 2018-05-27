@@ -2,11 +2,13 @@
 	<div class="n-input-date">
 		<table class="table" cellspacing="0" cellpadding="0">
 			<caption>
-				<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="date = incrementMonth(-1)" v-show="canIncrementMonth(-1)"></a>
+				<a href="javascript:void(0)" class="n-input-date-previous-year n-icon n-icon-chevron-circle-left fa fa-chevron-circle-left" @click="date = incrementMonth(-12)" :disabled="!canIncrementMonth(-12)"></a>
+				<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="date = incrementMonth(-1)" :disabled="!canIncrementMonth(-1)"></a>
 
 				<span class="month">{{ months[date.getMonth()] }} {{ date.getFullYear() }}</span>
 
-				<a href="javascript:void(0)" class="n-input-date-next n-icon n-icon-chevron-right fa fa-chevron-right" @click="date = incrementMonth(1)" v-show="canIncrementMonth(1)"></a>
+				<a href="javascript:void(0)" class="n-input-date-next n-icon n-icon-chevron-right fa fa-chevron-right" @click="date = incrementMonth(1)" :disabled="!canIncrementMonth(1)"></a>
+				<a href="javascript:void(0)" class="n-input-date-next-year n-icon n-icon-chevron-circle-right fa fa-chevron-circle-right" @click="date = incrementMonth(12)" :disabled="!canIncrementMonth(12)"></a>
 			</caption>
 			<thead>
 				<tr>
