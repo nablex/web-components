@@ -64,7 +64,9 @@ $n-form-radio-icon-family: $icon-family !default;
 
 		&:after {
 			display: inline-block;
-			font-size: $icon-size;
+			font-size: $icon-size - 2px;
+			font-weight: 900;
+			color: $n-form-radio-contrast;
 			height: $n-form-radio-line-height;
 			left: 0;
 			margin-left: -$n-form-radio-line-height;
@@ -73,6 +75,17 @@ $n-form-radio-icon-family: $icon-family !default;
 			top: 0;
 			width: $n-form-radio-line-height;
 			font-family: $icon-family;
+		}
+	}
+}
+
+.n-form-checkbox, .n-form-radio {
+	&.n-form-invalid {
+		label {
+			&:before {
+				box-shadow: 0 0 0 1px $danger-color inset;
+				background-color: transparentize($danger-color, 0.9);
+			}
 		}
 	}
 }
