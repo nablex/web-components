@@ -30,6 +30,12 @@
 					color: $beta-contrast;
 					padding: 0.4rem 0;
 				}
+				&.n-form-checkbox, &.n-form-radio {
+					label {
+						padding: 0;
+						padding-left: 0.5rem;
+					}
+				}
 			}
 		}
 		.n-form-component {
@@ -59,12 +65,6 @@
 		display: inline-block;
 		.n-form-input {
 			display: flex;
-		}
-	}
-	
-	.n-form-required {
-		&:after {
-			content: '*';
 		}
 	}
 	

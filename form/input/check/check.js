@@ -131,13 +131,11 @@ Vue.component("n-form-checkbox", {
 	}
 });
 
-Vue.directive("checked", {
-	bind: function(element, binding) {
-		if ((binding.value instanceof Array && binding.length) || (!(binding.value instanceof Array) && binding.value)) {
-			element.setAttribute("checked", "true");
-		}
-		else {
-			element.removeAttribute("checked");
-		}
+Vue.directive("checked", function(element, binding) {
+	if ((binding.value instanceof Array && binding.length) || (!(binding.value instanceof Array) && binding.value)) {
+		element.setAttribute("checked", "true");
+	}
+	else {
+		element.removeAttribute("checked");
 	}
 });

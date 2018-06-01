@@ -102,6 +102,8 @@ Vue.component("n-form-radio", {
 		select: function(option) {
 			if (!this.disabled && this.edit) {
 				this.$emit("input", this.extracter ? this.extracter(option) : option);
+				// we don't know if it's valid at this point
+				this.valid = null;
 			}
 		}
 	}
