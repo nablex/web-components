@@ -1,11 +1,20 @@
+$n-form-line-height: 3rem !default;
+
 .n-input-combo {
 	display: flex;
 	.n-input-combo-input-container {
 		flex-grow: 1;
 		position: relative;
 		input {
+			height: $n-form-line-height;
+			line-height: $n-form-line-height;
 			margin: 0;
 			width: 100%;
+		}
+		.fa {
+			position: absolute;
+			right: 0.7rem;
+			top: ($n-form-line-height / 2) - 0.5rem;
 		}
 	}
 	.n-input-combo-label-container {
