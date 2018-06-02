@@ -2,7 +2,7 @@
 	<div class="n-component n-input-combo" :class="{ 'n-input-combo-no-labels': !labels }">
 		<div class="n-input-combo-label-container" v-auto-close="function() { showLabels = false }" v-if="labels">
 			<div class="n-component-label n-input-combo-label" v-if="label" @click="showLabels = !showLabels">
-				<slot name="label" :label="label"><span>{{ typeof(label) == "string" ? label : label.title }}</span><i class="n-icon n-icon-arrow-down"></i></slot>
+				<slot name="label" :label="label"><span>{{ typeof(label) == "string" ? label : label.title }}</span><span class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
 			</div>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-labels" v-if="labels.length > 1 && showLabels">
