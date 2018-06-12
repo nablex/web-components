@@ -10,7 +10,7 @@
 			:name="name"
 			v-if="!hide" 
 			class="n-form-checkbox-input"
-		/><slot name="label" :toggle="toggleValue"><label class="n-form-label" @click="toggleValue(); $event.stopPropagation()" v-if="label"
+		/><slot name="label" :toggle="toggleValue"><label class="n-form-label" @click="toggleValue(); $event.stopPropagation()"
 			:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory }">{{ label }}</label></slot>
 	</div>
 </template>
