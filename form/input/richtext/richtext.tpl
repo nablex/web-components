@@ -6,30 +6,30 @@
 				<div v-if="showBlock" class="n-form-richtext-choices">
 					<button @click="wrap('p')">
 						<span class="n-icon fa n-icon-paragraph fa-paragraph"></span>
-						<span class="n-form-richtext-button-description">%{text:Paragraph}</span>
+						<span class="n-form-richtext-button-description">%{text:Block}</span>
 					</button>
 					<button @click="wrap('h1')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H1}</span>
 					</button>
 					<button @click="wrap('h2')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H2}</span>
 					</button>
 					<button @click="wrap('h3')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H3}</span>
 					</button>
 					<button @click="wrap('h4')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H4}</span>
 					</button>
 					<button @click="wrap('h5')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H5}</span>
 					</button>
 					<button @click="wrap('h6')">
-						<span class="n-icon fa n-icon-header fa-header"></span>
+						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H6}</span>
 					</button>
 				</div>
@@ -62,7 +62,7 @@
 				<span class="n-form-richtext-button-description">%{text:Italic}</span>
 			</button><button @click="underline">
 				<span class="n-icon fa n-icon-underline fa-underline"></span>
-				<span class="n-form-richtext-button-description">%{text:Underline}</span>
+				<span class="n-form-richtext-button-description">%{text:Line}</span>
 			</button><button @click="insertTable">
 				<span class="n-icon fa n-icon-table fa-table"></span>
 				<span class="n-form-richtext-button-description">%{text:Table}</span>
@@ -86,7 +86,7 @@
 				<span class="n-form-richtext-button-description">%{text:Paint}</span>
 			</button></div>
 		<div class="n-form-richtext-editor">
-			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
+			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
 			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
 		</div>
 	</div>

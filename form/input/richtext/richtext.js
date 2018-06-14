@@ -89,7 +89,7 @@ Vue.component("n-form-richtext", {
 						console.log("pre-strip", content);
 						document.execCommand("insertHTML", null, nabu.utils.elements.clean(
 							content,
-							["p", "strong", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "strong", "em", "b", "i", "u", "ul", "ol", "li", "br", "span"],
+							["p", "strong", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "strong", "em", "b", "i", "u", "ul", "ol", "li", "br", "span", "div"],
 							["head", "script", "style", "meta"]));
 					});
 					break;
