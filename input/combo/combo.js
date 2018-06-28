@@ -48,6 +48,10 @@ Vue.component("n-input-combo", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		name: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-input-combo",

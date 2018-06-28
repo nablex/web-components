@@ -1,5 +1,5 @@
 Vue.component("e-root", {
-	template: "<table class=\"body\"><tr><td class=\"float-center\" align=\"center\" valign=\"top\"><center><slot></slot></center></td></tr></table>",
+	template: "<!--mailroot--><table class=\"body\"><tr><td class=\"float-center\" align=\"center\" valign=\"top\"><center><slot></slot></center></td></tr></table><!--/mailroot-->",
 	ready: function() {
 		/*var link = document.createElement("link");
 		link.setAttribute("rel", "stylesheet");

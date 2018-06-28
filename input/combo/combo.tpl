@@ -14,10 +14,11 @@
 		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false }">
 		
 			<input @focus="showValues = true" autocomplete="off" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+				:name="name"
 				v-model="content"
 				:disabled="disabled">
 		
-			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValue = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
+			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValues = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && values && values.length">
 				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': potential == value }" @click="updateValue(potential)" :auto-close="autoclose">

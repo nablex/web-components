@@ -23,6 +23,7 @@
 			:disabled="disabled"
 			:initial-label="initialLabel"
 			:extracter="extracter"
+			:name="name"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">

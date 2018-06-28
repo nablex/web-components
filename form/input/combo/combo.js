@@ -68,6 +68,10 @@ Vue.component("n-form-combo", {
 		disabled: {
 			type: Boolean,
 			required: false
+		},
+		name: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-combo",

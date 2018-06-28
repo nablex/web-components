@@ -22,7 +22,7 @@ $n-form-radio-icon-family: $icon-family !default;
 		position: absolute;
 		z-index: 0;
 
-		&:checked + label {
+		&[checked] + label {
 			&:before {
 				background-color: $n-form-radio-color;
 				box-shadow: 0 0 0 1px $n-form-radio-color inset;
@@ -90,7 +90,7 @@ $n-form-radio-icon-family: $icon-family !default;
 	}
 }
 
-.n-form-checkbox input[type='checkbox']:checked {
+.n-form-checkbox input[type='checkbox'][checked] {
 	+ label:after {
 		content: '\f00c';
 	}
@@ -107,10 +107,13 @@ $n-form-radio-icon-family: $icon-family !default;
 		border-radius: 50%;
 	}
 
-	&:checked {
+	&[checked] {
 		+ label:before {
 			background: $n-form-radio-contrast;
 			box-shadow: 0 0 0 5px $n-form-radio-color inset;
+		}
+		+ label:after {
+			content: '';
 		}
 
 		&:disabled {
