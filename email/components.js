@@ -1,4 +1,11 @@
 Vue.component("e-root", {
+	props: {
+		inlineAll: {
+			type: Boolean,
+			required: false,
+			default: false
+		}
+	},
 	template: "<!--mailroot--><table class=\"body\"><tr><td class=\"float-center\" align=\"center\" valign=\"top\"><center><slot></slot></center></td></tr></table><!--/mailroot-->",
 	ready: function() {
 		/*var link = document.createElement("link");
@@ -16,7 +23,7 @@ Vue.component("e-root", {
 	methods: {
 		inlineCss: function() {
 			// list of css properties is retrieved from the foundation css
-			nabu.utils.elements.inlineCss(this.$el, true, "email");
+			nabu.utils.elements.inlineCss(this.$el, true, this.inlineAll ? null : "email");
 		}
 	}
 });
