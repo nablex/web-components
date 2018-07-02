@@ -75,7 +75,7 @@ Vue.component("n-input-file", {
 			return notAllowed;
 		},
 		isAllowedType: function(type) {
-			return type && (!this.types || !this.types.length || this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace("/.*$", "")) >= 0);
+			return type && (!this.types || !this.types.length || this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "")) >= 0);
 		},
 		browse: function() {
 			this.$refs.input.click();
