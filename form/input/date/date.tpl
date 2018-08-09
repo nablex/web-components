@@ -3,7 +3,7 @@
 		<slot name="top"></slot>
 		
 		<n-form-text class="n-form-date-input" 
-			@focus="show = edit && !disabled" 
+			@focus="showPopup" 
 			:pattern="pattern ? pattern : '^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$'" 
 			v-model="date" 
 			:placeholder="placeholder"
@@ -19,7 +19,8 @@
 			:disabled="disabled"
 			:validator="dateValidate"
 			:unique="unique"
-			ref="text">
+			ref="text"
+			:timeout="timeout">
 			
 			<span slot="after-input" class="n-icon fa n-form-date-icon" 
 				:class="{ 'n-icon-calendar': !show, 'fa-calendar-alt': !show, 'n-icon-times': show, 'fa-times': show, 'n-form-date-icon-show': show }" @click="edit && !disabled ? show = !show : show = false" v-show="edit"></span>

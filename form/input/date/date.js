@@ -86,6 +86,21 @@ Vue.component("n-form-date", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		// the timeout is the timeout that is used when manually typing the date
+		// make sure this is high enough, because once it times out, the system will try to parse whatever there is to a date
+		// so if you just typed "1" and it immediately parses it, this becomes very annoying
+		// also: selenium can't handle a timeout of 0 as it sends key by key, so the first key triggers a date generation and the other keys are just pasted after the date
+		timeout: {
+			type: Number,
+			required: false,
+			default: 600
+		},
+		// selenium has problems clearing the popup if the timeout is below say 100ms
+		// because when the popup opens, it grabs focus (presumably) and the clear goes to the popup, not the input form
+		popup: {
+			type: Number,
+			required: false
 		}
 	},
 	template: "#n-form-date",
@@ -139,6 +154,14 @@ Vue.component("n-form-date", {
 			var messages = this.$refs.text.validate();
 			this.valid = !messages.length;
 			return messages;
+		},
+		showPopup: function() {
+			if (this.popup) {
+				var self = this;
+				setTimeout(function() {
+					self.show = self.edit && !self.disabled;
+				}, this.popup);
+			}
 		}
 	},
 	watch: {
