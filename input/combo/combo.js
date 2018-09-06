@@ -148,13 +148,12 @@ Vue.component("n-input-combo", {
 							}
 						}
 					}
-					// if results from promise are not empty
-					if (results) {
+					if (results && results.length) {
 						nabu.utils.arrays.merge(self.values, results);
-						self.synchronizeValue(initial);
-						if (match) {
-							self.checkForMatch(content);
-						}
+					}	
+					self.synchronizeValue(initial);
+					if (match) {
+						self.checkForMatch(content);
 					}
 				});
 			}
