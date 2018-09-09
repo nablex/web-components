@@ -148,7 +148,9 @@ Vue.component("n-input-combo", {
 							}
 						}
 					}
-					nabu.utils.arrays.merge(self.values, results);
+					if (results && results.length) {
+						nabu.utils.arrays.merge(self.values, results);
+					}	
 					self.synchronizeValue(initial);
 					if (match) {
 						self.checkForMatch(content);
