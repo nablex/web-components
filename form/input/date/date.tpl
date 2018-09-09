@@ -4,14 +4,14 @@
 		
 		<n-form-text class="n-form-date-input" 
 			@focus="showPopup" 
-			:pattern="pattern ? pattern : '^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$'" 
+			:pattern="pattern ? pattern : dynamicPattern" 
 			v-model="date" 
 			:placeholder="placeholder"
 			:label="label"
 			:edit="edit"
 			:required="required"
 			:name="name"
-			:schema="schema"
+			:schema="customizedSchema"
 			:minLength="minLength"
 			:maxLength="maxLength"
 			type="text"
@@ -34,6 +34,9 @@
 			:allow="allow"
 			v-show="show" 
 			v-model="date"
+			:includeHours="includeHours"
+			:includeMinutes="includeMinutes"
+			:includeSeconds="includeSeconds"
 			ref="dateInput"/>
 		
 		<slot name="bottom">

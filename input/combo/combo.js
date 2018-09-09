@@ -189,11 +189,11 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(match || !value ? null : value, self.label, true);
+						self.filterItems(match || !value ? null : value, self.label, !match);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(match || !value ? null : value, this.label, true);
+					this.filterItems(match || !value ? null : value, this.label, !match);
 				}
 			 }
 		},

@@ -29,6 +29,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<div v-if="includeHours || includeMinutes || includeSeconds" class="time">
+			<n-form-text type="number"
+				v-model="hours"
+				v-if="includeHours"
+				@input="select(date)"/>
+			<n-form-text type="number"
+				v-model="minutes"
+				v-if="includeMinutes"
+				@input="select(date)"/>
+			<n-form-text type="number"
+				v-model="seconds"
+				v-if="includeSeconds"
+				@input="select(date)"/>
+		</div>
 		<div class="n-input-date-legend" v-if="allow">
 			<span class="n-input-date-available">%{date:Available Dates}</span>
 			<span class="n-input-date-selected">%{date:Selected Date}</span>

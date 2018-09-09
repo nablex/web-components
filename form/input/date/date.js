@@ -101,6 +101,31 @@ Vue.component("n-form-date", {
 		popup: {
 			type: Number,
 			required: false
+		},
+		includeHours: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		includeMinutes: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		includeSeconds: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		timestamp: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		secondsTimestamp: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-date",
@@ -109,18 +134,80 @@ Vue.component("n-form-date", {
 			messages: [],
 			valid: null,
 			show: false,
-			date: null
+			date: null,
+			customizedSchema: null
+		}
+	},
+	computed: {
+		dynamicPattern: function() {
+			// the basic pattern
+			var pattern = '^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])';
+			if (this.includeHours) {
+				pattern += " [0-9]{2}";
+				if (this.includeMinutes) {
+					pattern += ":[0-9]{2}";
+					if (this.includeSeconds) {
+						pattern += ":[0-9]{2}";
+					}
+				}
+			}
+			pattern += "$";
+			return pattern;
 		}
 	},
 	created: function() {
-		if (this.value instanceof Date) {
-			this.date = this.formatter ? this.formatter(this.value) : this.value.toISOString().substring(0, 10);
+		if (this.schema) {
+			// we are expecting timestamp, but this won't validate correctly because we are working with strings
+			if (this.schema.type == "integer") {
+				this.customizedSchema = nabu.utils.objects.deepClone(this.schema);
+				this.customizedSchema.type = "string";
+				this.customizedSchema.format = "date-time";
+			}
+			else {
+				this.customizedSchema = this.schema;
+			}
+		}
+		if (this.value instanceof Date || typeof(this.value) == "number") {
+			this.date = this.formatValue(this.value);
 		}
 		else {
 			this.date = this.value;
 		}
 	},
 	methods: {
+		formatValue: function(value) {
+			var date = value instanceof Date ? value : new Date(this.secondsTimestamp ? value * 1000 : value);
+			if (this.formatter) {
+				date = this.formatter(date);
+			}
+			else {
+				// because we depend on ISO string (which returns in UTC), we manually increment the date with the local timezone offset
+				// presumably you don't want to edit the date in UTC but rather in local time
+				date = new Date(
+					date.getFullYear(),
+					date.getMonth(),
+					date.getDate(),
+					date.getHours(),
+					date.getMinutes() - date.getTimezoneOffset(),
+					date.getSeconds(),
+					0
+				);
+				if (this.includeHours && this.includeMinutes && this.includeSeconds) {
+					date = date.toISOString().substring(0, 19).replace("T", " ");
+				}
+				else if (this.includeHours && this.includeMinutes) {
+					date = date.toISOString().substring(0, 16).replace("T", " ");
+				}
+				else if (this.includeHours) {
+					date = date.toISOString().substring(0, 13).replace("T", " ");
+				}
+				else {
+					date = date.toISOString().substring(0, 10);
+				}
+				return date;
+			}
+		},
+		// not used?
 		updateValue: function(value) {
 			if (this.stringify) {
 				this.$emit("input", value);
@@ -162,6 +249,21 @@ Vue.component("n-form-date", {
 					self.show = self.edit && !self.disabled;
 				}, this.popup);
 			}
+		},
+		valueToDate: function(value) {
+			if (this.parser) {
+				return this.parser(value);
+			}
+			if (!this.includeHours) {
+				value += " 00:00:00"
+			}
+			else if (!this.includeMinutes) {
+				value += ":00:00"
+			}
+			else if (!this.includeSeconds) {
+				value += ":00";
+			}
+			return new Date(value);
 		}
 	},
 	watch: {
@@ -171,21 +273,33 @@ Vue.component("n-form-date", {
 					this.$emit("input", null);
 				}
 			}
+			else if (this.secondsTimestamp) {
+				if (this.formatValue(this.value) != newValue) {
+					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
+					this.$emit("input", newValue.getTime() / 1000);
+				}
+			}
+			else if (this.timestamp) {
+				if (this.formatValue(this.value) != newValue) {
+					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
+					this.$emit("input", newValue.getTime());
+				}
+			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
 					this.$emit("input", newValue);
 				}
 			}
 			else {
-				newValue = this.parser ? this.parser(newValue) : new Date(newValue);
+				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 				if (!this.value || newValue.getTime() != this.value.getTime()) {
 					this.$emit("input", newValue);
 				}
 			}
 		},
 		value: function(newValue) {
-			if (newValue instanceof Date) {
-				this.date = this.formatter ? this.formatter(newValue) : newValue.toISOString().substring(0, 10);
+			if (newValue instanceof Date || typeof(newValue) == "number") {
+				this.date = this.formatValue(this.value);
 			}
 			else {
 				this.date = newValue;

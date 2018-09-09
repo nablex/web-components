@@ -16,6 +16,16 @@ $n-form-line-height: 3rem !default;
 		border: $n-form-date-border solid 1px;
 		border-style: none solid solid none;
 	}
+	.time {
+		padding: 0;
+		display: flex;
+		.n-form-component {
+			margin: 0 !important;
+			input {
+				width: 100% !important;
+			}
+		}
+	}
 	caption {
 		height: $n-form-line-height;
 		line-height: $n-form-line-height;
@@ -63,7 +73,7 @@ $n-form-line-height: 3rem !default;
 		}
 	}
 	th {
-		padding: 0.7rem;
+		padding: 0.7rem 1rem;
 		background-color: $n-form-date-contrast;
 		color: $n-form-date-color;
 		border: $beta-border solid 1px;
