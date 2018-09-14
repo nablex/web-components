@@ -197,6 +197,10 @@ Vue.component("n-form-text", {
 				value = value.trim();
 			}
 			if (value != this.value) {
+				// empty string means empty text field, we assume it is null then
+				if (value == "") {
+					value = null;
+				}
 				if (this.timer) {
 					clearTimeout(this.timer);
 					this.timer = null;

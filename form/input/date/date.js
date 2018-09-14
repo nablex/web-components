@@ -274,13 +274,13 @@ Vue.component("n-form-date", {
 				}
 			}
 			else if (this.secondsTimestamp) {
-				if (this.formatValue(this.value) != newValue) {
+				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime() / 1000);
 				}
 			}
 			else if (this.timestamp) {
-				if (this.formatValue(this.value) != newValue) {
+				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime());
 				}
