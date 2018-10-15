@@ -72,6 +72,10 @@ Vue.component("n-form-combo", {
 		name: {
 			type: String,
 			required: false
+		},
+		autocomplete: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
