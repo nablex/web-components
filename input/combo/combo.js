@@ -52,6 +52,10 @@ Vue.component("n-input-combo", {
 		name: {
 			type: String,
 			required: false
+		},
+		autocomplete: {
+			type: String,
+			default: "off"
 		}
 	},
 	template: "#n-input-combo",
