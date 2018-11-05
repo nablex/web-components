@@ -24,6 +24,7 @@
 			:initial-label="initialLabel"
 			:extracter="extracter"
 			:name="name"
+			:autoselect-single="autoselectSingle"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">

@@ -140,19 +140,22 @@ Vue.component("n-form-date", {
 	},
 	computed: {
 		dynamicPattern: function() {
-			// the basic pattern
-			var pattern = '^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])';
-			if (this.includeHours) {
-				pattern += " [0-9]{2}";
-				if (this.includeMinutes) {
-					pattern += ":[0-9]{2}";
-					if (this.includeSeconds) {
+			// if we have a custom formatter, we have no pattern
+			if (!this.formatter) {
+				// the basic pattern
+				var pattern = '^[0-9]{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])';
+				if (this.includeHours) {
+					pattern += " [0-9]{2}";
+					if (this.includeMinutes) {
 						pattern += ":[0-9]{2}";
+						if (this.includeSeconds) {
+							pattern += ":[0-9]{2}";
+						}
 					}
 				}
+				pattern += "$";
+				return pattern;
 			}
-			pattern += "$";
-			return pattern;
 		}
 	},
 	created: function() {
@@ -204,8 +207,8 @@ Vue.component("n-form-date", {
 				else {
 					date = date.toISOString().substring(0, 10);
 				}
-				return date;
 			}
+			return date;
 		},
 		// not used?
 		updateValue: function(value) {
@@ -299,7 +302,7 @@ Vue.component("n-form-date", {
 		},
 		value: function(newValue) {
 			if (newValue instanceof Date || typeof(newValue) == "number") {
-				this.date = this.formatValue(this.value);
+				this.date = this.formatValue(newValue);
 			}
 			else {
 				this.date = newValue;
