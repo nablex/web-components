@@ -84,13 +84,14 @@ Vue.component("n-form-richtext", {
 		},
 		paste: function(event) {
 			for (var i = 0; i < event.clipboardData.items.length; i++) {
-				if (event.clipboardData.items[i].type.toLowerCase() == "text/html") {
+				console.log("pasted", event.clipboardData.items[i].type);
+				if (event.clipboardData.items[i].type.toLowerCase().match(/text\/.*/)) {
 					event.clipboardData.items[i].getAsString(function(content) {
-						console.log("pre-strip", content);
-						document.execCommand("insertHTML", null, nabu.utils.elements.clean(
+						var cleaned = nabu.utils.elements.clean(
 							content,
 							["p", "strong", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "strong", "em", "b", "i", "u", "ul", "ol", "li", "br", "span", "div"],
-							["head", "script", "style", "meta"]));
+							["head", "script", "style", "meta"]);
+						document.execCommand("insertHTML", null, cleaned);
 					});
 					break;
 				}
