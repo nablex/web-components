@@ -64,7 +64,12 @@ Vue.component("n-form-checkbox", {
 		};
 	},
 	created: function() {
-		this.calculatedValue = this.invertIfNecessary(this.value instanceof Array ? this.value.indexOf(this.item) >= 0 : this.value);
+		if (this.value === "false") {
+			this.calculatedValue = false;
+		}
+		else {
+			this.calculatedValue = this.invertIfNecessary(this.value instanceof Array ? this.value.indexOf(this.item) >= 0 : this.value);
+		}
 	},
 	computed: {
 		definition: function() {

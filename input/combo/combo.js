@@ -213,6 +213,7 @@ Vue.component("n-input-combo", {
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {
+			this.updatingContent = true;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
