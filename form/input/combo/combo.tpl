@@ -25,6 +25,7 @@
 			:extracter="extracter"
 			:name="name"
 			:autocomplete="autocomplete"
+			:autoselect-single="autoselectSingle"
 			ref="combo">
 		
 			<div class="n-form-combo-bottom" slot="bottom">

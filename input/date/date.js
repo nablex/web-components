@@ -21,6 +21,18 @@ Vue.component("n-input-date", {
 		allow: {
 			type: Function,
 			required: false
+		},
+		includeHours: {
+			type: Boolean,
+			required: false
+		},
+		includeMinutes: {
+			type: Boolean,
+			required: false
+		},
+		includeSeconds: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-input-date",
@@ -29,7 +41,11 @@ Vue.component("n-input-date", {
 			date: null,
 			day: null,
 			month: null,
-			year: null
+			year: null,
+			hours: null,
+			minutes: null,
+			seconds: null,
+			updating: false
 		};
 	},
 	created: function() {
@@ -43,9 +59,25 @@ Vue.component("n-input-date", {
 			this.date = this.parse(this.value);
 		}
 	},
+	watch: {
+		date: function(newValue) {
+			if (newValue) {
+				this.hours = newValue.getHours();
+				this.minutes = newValue.getMinutes();
+				this.seconds = newValue.getSeconds();
+			}
+		}
+	},
 	methods: {
 		incrementMonth: function(amount) {
-			return new Date(this.date.getFullYear(), this.date.getMonth() + amount, this.date.getDate());
+			return new Date(
+				this.date.getFullYear(), 
+				this.date.getMonth() + amount, 
+				this.date.getDate(),
+				this.includeHours ? (this.hours ? parseInt(this.hours) : 0) : 0,
+				this.includeMinutes ? (this.minutes ? parseInt(this.minutes) : 0) : 0,
+				this.includeSeconds ? (this.seconds ? parseInt(this.seconds) : 0) : 0
+			);
 		},
 		canIncrementMonth: function(amount) {
 			if (amount < 0) {
@@ -62,14 +94,15 @@ Vue.component("n-input-date", {
 			else if (this.parser) {
 				return this.parser(date);
 			}
-			// defaults to "yyyy-MM-dd" format
+			// defaults to "yyyy-MM-dd HH:mm:ss" format
 			return new Date(
 				parseInt(date.substring(0, 4)), 
-				parseInt(date.substring(5, 7)), 
+				// 0-based
+				parseInt(date.substring(5, 7)) - 1,
 				parseInt(date.substring(8, 10)), 
-				0, // hours,
-				0, // minutes
-				0, // seconds
+				this.includeHours && date.length >= 13 ? parseInt(date.substring(11,13)) : 0, // hours,
+				this.includeMinutes && date.length >= 16 ? parseInt(date.substring(14,16)) : 0, // minutes
+				this.includeSeconds && date.length >= 19 ? parseInt(date.substring(17,19)) : 0, // seconds
 				0 // milliseconds
 			); 
 		},
@@ -85,6 +118,18 @@ Vue.component("n-input-date", {
 			result += (month < 10 ? "0" : "") + month + "-";
 			var day = date.getDate();
 			result += (day < 10 ? "0" : "") + day;
+			if (this.includeHours) {
+				result += " ";
+				result += (this.hours < 10 ? "0" : "") + (this.hours ? parseInt(this.hours) : 0);
+			}
+			if (this.includeMinutes) {
+				result += ":";
+				result += (this.minutes < 10 ? "0" : "") + (this.minutes ? parseInt(this.minutes) : 0);
+			}
+			if (this.includeSeconds) {
+				result += ":";
+				result += (this.seconds < 10 ? "0" : "") + (this.seconds ? parseInt(this.seconds) : 0);
+			}
 			return result;
 		},
 		isToday: function(date) {
@@ -98,6 +143,21 @@ Vue.component("n-input-date", {
 			return this.allow && this.allow(date);
 		},
 		select: function(date) {
+			if (date) {
+				date = new Date(
+					date.getFullYear(),
+					date.getMonth(),
+					date.getDate(),
+					this.includeHours ? (this.hours ? parseInt(this.hours) : 0) : 0,
+					this.includeMinutes ? this.minutes : 0,
+					this.includeSeconds ? this.seconds : 0,
+					0
+				);
+				// you may overflow or underflow (e.g. hours -1), update to make sure it is correct
+				this.hours = date.getHours();
+				this.minutes = date.getMinutes();
+				this.seconds = date.getSeconds();
+			}
 			this.date = date;
 			this.$emit("input", this.format(date));
 		}

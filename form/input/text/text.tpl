@@ -5,6 +5,7 @@
 			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 		</slot>
 		<input 
+			@keyup="handleKeyup"
 			@input="updateValue($event.target.value)" 
 			:placeholder="placeholder" 
 			:type="type" 

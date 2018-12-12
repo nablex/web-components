@@ -13,7 +13,7 @@
 		<n-form-section>
 			<n-form-text v-focus v-model="page" type="number" pattern="^[0-9]+" label="%{Go To Page}"/>
 		</n-form-section>
-		<footer class="actions">
+		<footer class="actions global-actions">
 			<a href="javascript:void(0)" @click="$reject()">%{Cancel}</a>
 			<button class="info" :disabled="!page" @click="$resolve(page)">%{Ok}</button>
 		</footer>

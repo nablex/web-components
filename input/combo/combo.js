@@ -56,6 +56,10 @@ Vue.component("n-input-combo", {
 		autocomplete: {
 			type: String,
 			default: "off"
+    },
+		autoselectSingle: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-input-combo",
@@ -98,7 +102,7 @@ Vue.component("n-input-combo", {
 	},
 	methods: {
 		synchronizeValue: function(initial) {
-			if (this.value) {
+			if (this.value != null) {
 				if (this.extracter) {
 					// only look for a match if we haven't found one already
 					// normally in the initial state, a match should be found but once we start filtering it might disappear
@@ -122,12 +126,14 @@ Vue.component("n-input-combo", {
 			// only update the content if this is the initial setting
 			// afterwards people just type and it remains
 			if (initial) {
-				this.content = this.actualValue ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
 			}
 		},
 		clear: function() {
 			this.content = null;
-			this.filterItems(this.content, this.label);
+			if (this.filter) {
+				this.filterItems(this.content, this.label);
+			}
 		},
 		filterItems: function(content, label, match, initial) {
 			var result = this.filter(content, label);
@@ -137,6 +143,9 @@ Vue.component("n-input-combo", {
 				this.synchronizeValue(initial);
 				if (match) {
 					this.checkForMatch(content);
+				}
+				if (this.value == null && this.autoselectSingle && result.length == 1) {
+					this.updateValue(result[0]);
 				}
 			}
 			else if (result.then) {
@@ -152,13 +161,15 @@ Vue.component("n-input-combo", {
 							}
 						}
 					}
-					// if results from promise are not empty
-					if (results) {
+					if (results && results.length) {
 						nabu.utils.arrays.merge(self.values, results);
-						self.synchronizeValue(initial);
-						if (match) {
-							self.checkForMatch(content);
-						}
+					}
+					self.synchronizeValue(initial);
+					if (match) {
+						self.checkForMatch(content);
+					}
+					if (this.value == null && this.autoselectSingle && results != null && results.length == 1) {
+						this.updateValue(results[0]);
 					}
 				});
 			}
@@ -196,16 +207,17 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(match || !value ? null : value, self.label, true);
+						self.filterItems(match || !value ? null : value, self.label, !match);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(match || !value ? null : value, this.label, true);
+					this.filterItems(match || !value ? null : value, this.label, !match);
 				}
 			 }
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {
+			this.updatingContent = true;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
@@ -240,20 +252,20 @@ Vue.component("n-input-combo", {
 				newValue.then(function(items) {
 					self.values.splice(0, self.values.length);
 					nabu.utils.arrays.merge(self.values, items);
-					self.synchronizeValue();
+					self.synchronizeValue(true);
 				});
 			}
 			else {
 				this.values.splice(0, this.values.length);
 				if (newValue) {
 					nabu.utils.arrays.merge(this.values, newValue);
-					this.synchronizeValue();
+					this.synchronizeValue(true);
 				}
 			}
 		},
 		value: function(newValue, oldValue) {
 			if (!this.updatingContent) {
-				this.synchronizeValue();
+				this.synchronizeValue(true);
 			}
 			else {
 				this.updatingContent = false;
