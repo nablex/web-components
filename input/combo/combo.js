@@ -98,7 +98,7 @@ Vue.component("n-input-combo", {
 	},
 	methods: {
 		synchronizeValue: function(initial) {
-			if (this.value) {
+			if (this.value != null) {
 				if (this.extracter) {
 					// only look for a match if we haven't found one already
 					// normally in the initial state, a match should be found but once we start filtering it might disappear
@@ -122,7 +122,7 @@ Vue.component("n-input-combo", {
 			// only update the content if this is the initial setting
 			// afterwards people just type and it remains
 			if (initial) {
-				this.content = this.actualValue ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
 			}
 		},
 		clear: function() {
