@@ -144,6 +144,9 @@ Vue.component("n-input-date", {
 		},
 		select: function(date) {
 			if (date) {
+				if (this.allow && !this.isAvailable(date)) {
+					return false;
+				}
 				date = new Date(
 					date.getFullYear(),
 					date.getMonth(),
