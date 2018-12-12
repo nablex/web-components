@@ -53,6 +53,10 @@ Vue.component("n-input-combo", {
 			type: String,
 			required: false
 		},
+		autocomplete: {
+			type: String,
+			default: "off"
+    },
 		autoselectSingle: {
 			type: Boolean,
 			required: false

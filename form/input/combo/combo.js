@@ -73,6 +73,10 @@ Vue.component("n-form-combo", {
 			type: String,
 			required: false
 		},
+		autocomplete: {
+			type: String,
+      required: false
+    },
 		autoselectSingle: {
 			type: Boolean,
 			required: false

@@ -24,6 +24,7 @@
 			:initial-label="initialLabel"
 			:extracter="extracter"
 			:name="name"
+			:autocomplete="autocomplete"
 			:autoselect-single="autoselectSingle"
 			ref="combo">
 		
