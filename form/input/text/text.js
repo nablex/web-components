@@ -137,6 +137,9 @@ Vue.component("n-form-text", {
 				this.$refs.input.select();
 			}
 		},
+		handleKeyup: function($event) {
+			this.$emit('keyup', $event);
+		},
 		validate: function(soft) {
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
