@@ -1,140 +1,44 @@
-$n-form-date-hero-color: $primary-color !default;
-$n-form-date-hero-contrast: $primary-contrast !default;
-
-$n-form-date-color: $beta-color !default;
-$n-form-date-contrast: $beta-contrast !default;
-$n-form-date-border: $beta-border !default;
-
 $n-form-line-height: 3rem !default;
 
-.n-input-date {
-	.fa:before {
-		display: inline-block;
-		margin-top: 1rem;
-	}
-	.n-input-date-legend {
-	    background: $n-form-date-color;
-	    border-top: $n-form-date-border;
-	    display: flex;
-	    height: 100%;
-	    justify-content: space-evenly;
-	    span {
-		    margin: 0.25rem;
-	    }
-	    .n-input-date-available {
-	    	color: $n-form-date-contrast;
-	    }
-	    .n-input-date-selected {
-	    	color: $n-form-date-color;
-	    }
-	}
-	table {
-		border: $n-form-date-border solid 1px;
-		border-style: none solid solid none;
-	}
-	.time {
-		padding: 0;
-		display: flex;
-		.n-form-component {
-			margin: 0 !important;
-			input {
-				width: 100% !important;
-			}
-		}
-	}
-	caption {
-		height: $n-form-line-height;
+.n-form-date {
+	position: relative;
+
+	input {
 		line-height: $n-form-line-height;
-		position: relative;
-		background-color: $n-form-date-hero-color;
-		color: $n-form-date-hero-contrast;
+		height: $n-form-line-height;
+	}	
+	.n-form-text {
+		display: inline-block;
+	}
+	.n-input-date {
+		z-index: 1000;
+		position: absolute;
+		// top: 100%;
+		// max-width: 25rem;
+		border: $border;
+		border-style: none solid none solid;
+		> * {
+			width: 100%;
+		}
+	}
+	.n-form-date-icon {
+		transition: all 250ms ease-in-out;
+		cursor: pointer;
+		background-color: $primary-color;
+		color: $primary-contrast;
+		line-height: 2.7rem;
+		width: $n-form-line-height;
+		height: $n-form-line-height;
+		text-align: center;
+		display: inline-block;
 		
-		.month {
-			font-weight: 700;
-			font-size: 1.2rem;
+		&:before {
+			font-size: 1.35rem;
 		}
-		a {
-			font-size: 1.625rem;
-			height: $n-form-line-height;
-			width: $n-form-line-height;
-			position: absolute;
-			background-color: inherit;
-			color: inherit;
-			
-			&.n-input-date-previous-year {
-				left: 0;
-			}
-			&.n-input-date-previous {
-				left: $n-form-line-height;
-			}
-			&.n-input-date-next-year {
-				right: 0;
-			}
-			&.n-input-date-next {
-				right: $n-form-line-height;
-			}
-			&:hover {
-				background-color: darken($n-form-date-hero-color, 10%);
-				text-decoration: none;
-			}
-		}
-	}
-	td {
-		background-color: $n-form-date-color;
-		a {
-			color: $n-form-date-contrast;
-		}
-		text-align: center;
-		padding: 0.7rem;
-		&:hover {
-			background-color: darken($n-form-date-color, 20%);
-		}
-	}
-	th {
-		padding: 0.7rem 1rem;
-		background-color: $n-form-date-contrast;
-		color: $n-form-date-color;
-		border: $beta-border solid 1px;
-		border-style: none none solid none;
-		text-align: center;
-	}
-	
-	td, span{
-		&.n-input-date-today {
-			background-color: $n-form-date-hero-contrast;
-			a:before {
-				color: $n-form-date-hero-color;
-			}
-			&:hover {
-				background-color: darken($n-form-date-color, 20%);
-			}			
-		}
-		&.n-input-date-available {
-			background-color: $n-form-date-color;
-			a {
-				color: $n-form-date-contrast;
-			}
-			&:hover {
-				background-color: darken($n-form-date-color, 20%);
-			}			
-		}
-		&.n-input-date-not-available {
-			background-color: $n-form-date-color;
-			a.n-input-date-label {
-				color: lighten($n-form-date-contrast, 80%);
-			}
-			&:hover {
-				background-color: $n-form-date-color;
-			}			
-		}		
-		&.n-input-date-selected {
-			background-color: $n-form-date-contrast;
-			a {
-				color: $n-form-date-color;
-			}
-			&:hover {
-				background-color: darken($n-form-date-color, 20%);
-			}			
+		
+		&.n-form-date-icon-show {
+			background-color: $danger-color;
+			color: $danger-contrast;
 		}
 	}
 }
