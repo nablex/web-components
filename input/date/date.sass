@@ -12,6 +12,22 @@ $n-form-line-height: 3rem !default;
 		display: inline-block;
 		margin-top: 1rem;
 	}
+	.n-input-date-legend {
+	    background: $n-form-date-color;
+	    border-top: $n-form-date-border;
+	    display: flex;
+	    height: 100%;
+	    justify-content: space-evenly;
+	    span {
+		    margin: 0.25rem;
+	    }
+	    .n-input-date-available {
+	    	color: $n-form-date-contrast;
+	    }
+	    .n-input-date-selected {
+	    	color: $n-form-date-color;
+	    }
+	}
 	table {
 		border: $n-form-date-border solid 1px;
 		border-style: none solid solid none;
@@ -65,7 +81,9 @@ $n-form-line-height: 3rem !default;
 	}
 	td {
 		background-color: $n-form-date-color;
-		color: $n-form-date-contrast;
+		a {
+			color: $n-form-date-contrast;
+		}
 		text-align: center;
 		padding: 0.7rem;
 		&:hover {
@@ -83,28 +101,40 @@ $n-form-line-height: 3rem !default;
 	
 	td, span{
 		&.n-input-date-today {
-			background-color: $warning-color;
-			a {
-				color: $warning-contrast;
+			background-color: $n-form-date-hero-contrast;
+			a:before {
+				color: $n-form-date-hero-color;
 			}
-		}
-		&.n-input-date-selected {
-			background-color: $success-color;
-			a {
-				color: $success-contrast;
-			}
+			&:hover {
+				background-color: darken($n-form-date-color, 20%);
+			}			
 		}
 		&.n-input-date-available {
-			background-color: $info-color;
+			background-color: $n-form-date-color;
 			a {
-				color: $info-contrast;
+				color: $n-form-date-contrast;
 			}
+			&:hover {
+				background-color: darken($n-form-date-color, 20%);
+			}			
 		}
 		&.n-input-date-not-available {
-			background-color: none;
+			background-color: $n-form-date-color;
 			a.n-input-date-label {
-				color: lighten($n-form-date-contrast, 60%);
-			}		
+				color: lighten($n-form-date-contrast, 80%);
+			}
+			&:hover {
+				background-color: $n-form-date-color;
+			}			
 		}		
+		&.n-input-date-selected {
+			background-color: $n-form-date-contrast;
+			a {
+				color: $n-form-date-color;
+			}
+			&:hover {
+				background-color: darken($n-form-date-color, 20%);
+			}			
+		}
 	}
 }
