@@ -91,10 +91,14 @@ Vue.component("n-input-date", {
 			if (!date) {
 				return null;
 			}
+			if (this.allow && !this.allow(date)) {
+				return null;
+			}
 			else if (this.parser) {
 				return this.parser(date);
 			}
 			// defaults to "yyyy-MM-dd HH:mm:ss" format
+			
 			return new Date(
 				parseInt(date.substring(0, 4)), 
 				// 0-based
@@ -107,6 +111,9 @@ Vue.component("n-input-date", {
 			); 
 		},
 		format: function(date) {
+			if (this.allow && !this.allow(date)) {
+				return null;
+			}
 			if (!date) {
 				return null;
 			}
@@ -130,6 +137,7 @@ Vue.component("n-input-date", {
 				result += ":";
 				result += (this.seconds < 10 ? "0" : "") + (this.seconds ? parseInt(this.seconds) : 0);
 			}
+			
 			return result;
 		},
 		isToday: function(date) {
