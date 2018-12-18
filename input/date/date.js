@@ -147,7 +147,7 @@ Vue.component("n-input-date", {
 			return this.value && this.format(date) == this.value;
 		},
 		isAvailable: function(date) {
-			return !this.allow || (this.allow && this.allow(date);
+			return !this.allow || (this.allow && this.allow(date));
 		},
 		select: function(date) {
 			if (date) {
