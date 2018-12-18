@@ -91,14 +91,13 @@ Vue.component("n-input-date", {
 			if (!date) {
 				return null;
 			}
-			if (this.allow && !this.allow(date)) {
+			if (!this.isAvailable(date)) {
 				return null;
 			}
 			else if (this.parser) {
 				return this.parser(date);
 			}
 			// defaults to "yyyy-MM-dd HH:mm:ss" format
-			
 			return new Date(
 				parseInt(date.substring(0, 4)), 
 				// 0-based
@@ -111,7 +110,7 @@ Vue.component("n-input-date", {
 			); 
 		},
 		format: function(date) {
-			if (this.allow && !this.allow(date)) {
+			if (!this.isAvailable(date)) {
 				return null;
 			}
 			if (!date) {
@@ -148,11 +147,11 @@ Vue.component("n-input-date", {
 			return this.value && this.format(date) == this.value;
 		},
 		isAvailable: function(date) {
-			return this.allow && this.allow(date);
+			return !this.allow || (this.allow && this.allow(date);
 		},
 		select: function(date) {
 			if (date) {
-				if (this.allow && !this.isAvailable(date)) {
+				if (!this.isAvailable(date)) {
 					return false;
 				}
 				date = new Date(
