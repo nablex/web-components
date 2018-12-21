@@ -4,6 +4,9 @@
 		<slot name="label" :label="label" :mandatory="mandatory">
 			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 		</slot>
+		<span class="suffix">
+			<slot name="suffix"></slot>
+		</span>
 		<input 
 			@keyup="handleKeyup"
 			@input="updateValue($event.target.value)" 
