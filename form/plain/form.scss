@@ -1,6 +1,15 @@
 $n-form-line-height: 3rem !default;
 
 .n-form-text {
+	position: relative;
+	.suffix {
+		color: lighten($beta-contrast, 20);
+		line-height: $n-form-line-height;
+		margin: 0 0.5rem;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
 	input {
 		height: $n-form-line-height;
 		line-height: $n-form-line-height;
