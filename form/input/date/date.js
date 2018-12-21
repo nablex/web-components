@@ -295,7 +295,7 @@ Vue.component("n-form-date", {
 			}
 			else {
 				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
-				if (!this.value || newValue.getTime() != this.value.getTime()) {
+				if (!this.value || !(this.value instanceof Date) || newValue.getTime() != this.value.getTime()) {
 					this.$emit("input", newValue);
 				}
 			}
