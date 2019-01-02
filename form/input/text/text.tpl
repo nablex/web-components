@@ -31,7 +31,7 @@
 				@focus="$emit('focus')"
 				ref="input"
 				:name="name"
-			/><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
+			/><div class="suffix"><slot name="suffix"></slot></div><slot name="after-input"><span class="n-form-empty"></span></slot><span class="n-form-input-required" v-if="mandatory"></span><span class="n-form-input-optional" v-if="!mandatory"></span>	
 		
 		<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>
 		<span class="n-input-result n-icon n-icon-times fa fa-times" v-if="valid != null && !valid && edit"></span>
