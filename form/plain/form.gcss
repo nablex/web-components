@@ -1,0 +1,112 @@
+.n-form {
+	&.layout1 {
+		.n-form-content {
+			display: flex;
+			flex-direction: column;
+		
+			.n-form-component {
+				display: flex;
+				justify-content: center;
+				.n-form-label, input, textarea, .n-component, .n-form-component-content {
+					flex-grow: 1;
+					flex-basis: 0;
+				}
+			
+				.n-form-label {
+					text-align: right;
+					padding: 0.7rem;
+				}
+			}
+		}
+	}
+	&.layout2 {
+		.n-form-content {
+			display: flex;
+			flex-direction: column;
+			.n-form-component {
+				margin: 0.5rem 0;
+				label {
+					display: block;
+					color: ${font/color/secondary};
+					padding: 0.4rem 0;
+				}
+			}
+		}
+		.n-form-component {
+			width: 100%;
+			&.n-form-text {
+				$input, textarea {
+					width: calc(100% - 2rem);
+					
+					&[type=date] {
+						width: calc(100% - 5rem);
+					}
+				}
+			}
+			&.n-form-text.n-form-date-input {
+				$input, textarea {
+					width: calc(100% - 5rem);
+				}
+			}
+		}
+	}
+	label.n-form-input-required:after {
+		content: '*';
+		color: ${levels/error/dark};
+		padding: 0 0.4rem;
+	}
+	$input, select, textarea {
+		padding: 0.3rem 0.7rem;
+		box-shadow: none;
+		border-radius: 0px;
+		background-color: ${background/color/primary};
+		border: ${border/apply()};
+	
+		&[disabled] {
+			color: ${font/color/disabled};
+			background-color: ${background/color/disabled};
+		}
+	}
+	.n-form-component {
+		display: inline-block;
+		.n-form-input {
+			display: flex;
+		}
+	}
+	
+	.n-form-required {
+		&:after {
+			content: '*';
+		}
+	}
+	
+	.n-form-invalid {
+		border-color: ${levels/error/dark};
+		color: ${levels/error/dark};
+		
+		$input, textarea {
+			border-color: ${levels/error/dark};
+			color: ${levels/error/dark};
+		}
+	}
+	
+	.n-form-valid {
+		border-color: ${levels/success/dark};
+		$input, textarea {
+			border-color: ${levels/success/dark};
+		}
+	}
+	
+	.n-form-hidden {
+		visibility: hidden;
+	}
+	
+	.n-form-component {
+		.n-input-result.n-icon-check {
+			color: ${levels/success/dark};
+		}
+		.n-input-result.n-icon-times {
+			color: ${levels/error/dark};
+		}
+	}
+}
