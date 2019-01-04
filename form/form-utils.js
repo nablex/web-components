@@ -77,11 +77,24 @@ nabu.utils.vue.form = {
 			var priorityB = typeof(b.priority) != "undefined" ? b.priority : 0;
 			return priorityA - priorityB;
 		});
-		if (mode == "single") {
+		var handled = false;
+		if (mode == "component") {
 			localMessages.push(messages[0]);
+			handled = true;
 		}
-		else if (mode == "all") {
-			nabu.utils.arrays.merge(localMessages, messages);
+		else if (component.mode != null) {
+			var amount = parseInt(component.mode);
+			if (amount == 0) {
+				amount = messages.length;
+			}
+			else {
+				amount = Math.min(amount, messages.length);
+			}
+			nabu.utils.arrays.merge(localMessages, messages.slice(0, amount));
+			handled = true;
+		}
+		if (handled == true) {
+			messages.forEach(function(x) { x.handled = true });
 		}
 		return localMessages;
 	},

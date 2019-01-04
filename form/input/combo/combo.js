@@ -45,7 +45,6 @@ Vue.component("n-form-combo", {
 			default: true
 		},
 		items: {
-			type: Array,
 			required: false
 		},
 		nillable: {
