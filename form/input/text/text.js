@@ -141,6 +141,7 @@ Vue.component("n-form-text", {
 			this.$emit('keyup', $event);
 		},
 		validate: function(soft) {
+			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
