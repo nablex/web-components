@@ -74,8 +74,8 @@ Vue.component("n-form-combo", {
 		},
 		autocomplete: {
 			type: String,
-      required: false
-    },
+			required: false
+		},
 		autoselectSingle: {
 			type: Boolean,
 			required: false
@@ -97,12 +97,21 @@ Vue.component("n-form-combo", {
 		}
 	},
 	methods: {
-		validate: function() {
+		validate: function(soft) {
+			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
 			}
-			this.valid = messages.length == 0;
+			var hardMessages = messages.filter(function(x) { return !x.soft });
+			// if we are doing a soft validation and all messages were soft, set valid to unknown
+			if (soft && hardMessages.length == 0 && messages.length > 0 && this.valid == null) {
+				this.valid = null;
+			}
+			else {
+				this.valid = messages.length == 0;
+				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
+			}
 			return messages;
 		},
 		updateValue: function(value, label) {
