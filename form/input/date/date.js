@@ -238,6 +238,15 @@ Vue.component("n-form-date", {
 					context: []
 				});
 			}
+			else if (value && !this.isAvailable(value)) {
+				messages.push({
+					severity: "error",
+					code: "allowed",
+					title: "%{validation:De datum is niet toegestaan}",
+					priority: 10,
+					context: []
+				});
+			}
 			return messages;
 		},
 		validate: function() {
