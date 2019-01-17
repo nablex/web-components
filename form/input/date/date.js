@@ -219,6 +219,9 @@ Vue.component("n-form-date", {
 				this.$emit("input", this.parser ? this.parser(value) : new Date(value));
 			}
 		},
+		isAvailable: function(date) {
+			return this.allow == null || this.allow(date);
+		},
 		dateValidate: function(value) {
 			var messages = [];
 			if (this.validator) {
@@ -242,8 +245,11 @@ Vue.component("n-form-date", {
 				messages.push({
 					severity: "error",
 					code: "allowed",
-					title: "%{validation:De datum is niet toegestaan}",
-					priority: 10,
+					title: "%{validation:This date is not allowed: {actual}}",
+					priority: 1,
+					variables: {
+						actual: value					
+					},
 					context: []
 				});
 			}
