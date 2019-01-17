@@ -23,7 +23,7 @@
 			</thead>
 			<tbody>
 				<tr v-for="week in weeks">
-					<td v-for="day in week" :class="{'n-input-date-today': day.value && isToday(day.value), 'n-input-date-selected': day.value && isSelected(day.value), 'n-input-date-available': day.value && isAvailable(day.value), 'n-input-date-not-available': day.value && !isAvailable(day.value)}">
+					<td v-for="day in week" :class="{'n-input-date-today': day.value != null && isToday(day.value), 'n-input-date-selected': day.value != null && isSelected(day.value), 'n-input-date-available': day.value != null && isAvailable(day.value), 'n-input-date-not-available': day.value != null && !isAvailable(day.value)}">
 						<a auto-close v-if="day.label" class="n-input-date-label" href="javascript:void(0)" @click="select(day.value)">{{ day.label }}</a>
 					</td>
 				</tr>
