@@ -173,9 +173,9 @@ Vue.component("n-form-text", {
 					});
 				}
 			}
-			if (this.validator) {
+			if (this.validator != null) {
 				var additional = this.validator(this.value);
-				if (additional && additional.length) {
+				if (additional != null && additional.length) {
 					for (var i = 0; i < additional.length; i++) {
 						additional[i].component = this;
 						if (typeof(additional[i].context) == "undefined") {
@@ -183,6 +183,9 @@ Vue.component("n-form-text", {
 						}
 						messages.push(additional[i]);
 					}
+				}
+				else if (additional != null && additional.then) {
+					messages.defer(additional);
 				}
 			}
 			var hardMessages = messages.filter(function(x) { return !x.soft });
