@@ -140,7 +140,7 @@ Vue.component("n-input-date", {
 			return this.value && this.format(date) == this.value;
 		},
 		isAvailable: function(date) {
-			return this.allow && this.allow(date);
+			return !this.allow || this.allow(date);
 		},
 		select: function(date) {
 			if (date) {
@@ -158,8 +158,10 @@ Vue.component("n-input-date", {
 				this.minutes = date.getMinutes();
 				this.seconds = date.getSeconds();
 			}
-			this.date = date;
-			this.$emit("input", this.format(date));
+			if (this.isAvailable(date)) {
+				this.date = date;
+				this.$emit("input", this.format(date));
+			}
 		}
 	},
 	computed: {
