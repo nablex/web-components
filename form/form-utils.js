@@ -99,7 +99,7 @@ nabu.utils.vue.form = {
 		return localMessages;
 	},
 	validateChildren: function(component, soft) {
-		var messages = [];
+		var messages = nabu.utils.schema.addAsyncValidation([]);
 		for (var i = 0; i < component.$children.length; i++) {
 			if (component.$children[i].validate) {
 				var childMessages = component.$children[i].validate(soft);
