@@ -137,10 +137,10 @@ Vue.component("n-input-date", {
 			return date.getFullYear() == today.getFullYear() && date.getMonth() == today.getMonth() && date.getDate() == today.getDate();
 		},
 		isSelected: function(date) {
-			return this.value && this.format(date) == this.value;
+			return this.value != null && this.format(date) == this.value;
 		},
 		isAvailable: function(date) {
-			return !this.allow || this.allow(date);
+			return this.allow == null || this.allow(date);
 		},
 		select: function(date) {
 			if (date) {
