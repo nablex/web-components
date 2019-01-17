@@ -227,7 +227,7 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
-			if (value && this.$refs.dateInput && isNaN(this.$refs.dateInput.parse(value).getTime())) {
+			if (value != null && this.$refs.dateInput && this.$refs.dateInput.parse(value) != null && isNaN(this.$refs.dateInput.parse(value).getTime())) {
 				messages.push({
 					severity: "error",
 					code: "type",
@@ -238,7 +238,7 @@ Vue.component("n-form-date", {
 					context: []
 				});
 			}
-			else if (value && !this.isAvailable(value)) {
+			else if (value != null && !this.isAvailable(value)) {
 				messages.push({
 					severity: "error",
 					code: "allowed",
