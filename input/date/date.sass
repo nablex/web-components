@@ -81,11 +81,12 @@ $n-form-line-height: 3rem !default;
 		text-align: center;
 	}
 	
+	
 	td, span{
 		&.n-input-date-today {
 			background-color: $warning-color;
 			a {
-				color: $warning-contrast;
+				color: #000;
 			}
 		}
 		&.n-input-date-selected {
@@ -94,17 +95,27 @@ $n-form-line-height: 3rem !default;
 				color: $success-contrast;
 			}
 		}
-		&.n-input-date-available {
-			background-color: $info-color;
-			a {
-				color: $info-contrast;
+	}
+	.table.allow {
+		td, span{
+			&.n-input-date-available {
+				background-color: $info-color;
+				a {
+					color: $info-contrast;
+				}
+				&.n-input-date-selected {
+					background-color: $success-color;
+					a {
+						color: $success-contrast;
+					}
+				}
 			}
-		}
-		&.n-input-date-not-available {
-			background-color: none;
-			a.n-input-date-label {
-				color: lighten($n-form-date-contrast, 60%);
-			}		
+			&.n-input-date-not-available {
+				background-color: none;
+				a.n-input-date-label {
+					color: lighten($n-form-date-contrast, 60%);
+				}		
+			}
 		}
 	}
 }
