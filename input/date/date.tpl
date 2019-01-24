@@ -1,6 +1,6 @@
 <template id="n-input-date">
 	<div class="n-input-date">
-		<table class="table" cellspacing="0" cellpadding="0">
+		<table class="table" :class="{'allow': allow}" cellspacing="0" cellpadding="0">
 			<caption>
 				<a href="javascript:void(0)" class="n-input-date-previous-year n-icon n-icon-chevron-circle-left fa fa-chevron-circle-left" @click="date = incrementMonth(-12)" :disabled="!canIncrementMonth(-12)"></a>
 				<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="date = incrementMonth(-1)" :disabled="!canIncrementMonth(-1)"></a>
