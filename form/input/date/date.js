@@ -231,6 +231,7 @@ Vue.component("n-form-date", {
 				messages.push({
 					severity: "error",
 					code: "type",
+					title: "%{validation:Please use dateformat:}" + " " + this.formatValue(new Date()),
 					values: {
 						actual: value,
 						expected: "date"
