@@ -227,6 +227,18 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
+			if (this.$refs.dateInput.parse(value) == null) {
+				messages.push({
+					severity: "error",
+					code: "allowed",
+					title: "%{validation:The value is required}",
+					priority: 1,
+					variables: {
+						actual: value					
+					},
+					context: []
+				});				
+			}
 			if (value != null && this.$refs.dateInput && this.$refs.dateInput.parse(value) != null && isNaN(this.$refs.dateInput.parse(value).getTime())) {
 				messages.push({
 					severity: "error",
