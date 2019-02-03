@@ -173,6 +173,14 @@ Vue.component("n-form-date", {
 		if (this.value instanceof Date || typeof(this.value) == "number") {
 			this.date = this.formatValue(this.value);
 		}
+		else if (typeof(this.value) == "string") {
+			var parsed = this.parser ? this.parser(this.value) : new Date(this.value);
+			this.date = this.formatValue(parsed);
+			// if it should not be stringified and we have a string, emit that
+			if (!this.stringified) {
+				this.$emit("input", parsed);
+			}
+		}
 		else {
 			this.date = this.value;
 		}
@@ -305,6 +313,7 @@ Vue.component("n-form-date", {
 			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
+					newValue = this.formatValue(this.parser ? this.parser(newValue) : new Date(newValue))
 					this.$emit("input", newValue);
 				}
 			}
