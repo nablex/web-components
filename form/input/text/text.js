@@ -192,6 +192,8 @@ Vue.component("n-form-text", {
 			// if we are doing a soft validation and all messages were soft, set valid to unknown
 			if (soft && hardMessages.length == 0 && messages.length > 0 && this.valid == null) {
 				this.valid = null;
+				// remove local messages
+				this.messages.splice(0);
 			}
 			else {
 				this.valid = messages.length == 0;
@@ -230,6 +232,8 @@ Vue.component("n-form-text", {
 		// reset validity if the value is updated
 		value: function(newValue) {
 			this.valid = null;
+			// remove local messages
+			this.messages.splice(0);
 		}
 	}
 });

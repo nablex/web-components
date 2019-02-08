@@ -239,10 +239,14 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
-			if (value != null && this.$refs.dateInput && this.$refs.dateInput.parse(value) != null && isNaN(this.$refs.dateInput.parse(value).getTime())) {
+			// it is "a" value but not a parseable value
+			if ((value != null && (parsed == null || !parsed.getTime))
+					// or it is not a valid date
+					|| (parsed != null && parsed.getTime && isNaN(parsed.getTime()))) {
 				messages.push({
 					severity: "error",
 					code: "type",
+					title: "%{validation:This is not a valid date: {actual}}",
 					values: {
 						actual: value,
 						expected: "date"
@@ -320,9 +324,17 @@ Vue.component("n-form-date", {
 			}
 			else {
 				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
-				if (!this.value || newValue.getTime() != this.value.getTime()) {
-					this.lastParsed = newValue;
-					this.$emit("input", newValue);
+				if (newValue && newValue.getTime) {
+					if (!this.value || newValue.getTime() != this.value.getTime()) {
+						this.lastParsed = newValue;
+						this.$emit("input", newValue);
+					}
+				}
+				// otherwise unset the value, at this point you are visually looking at something that is not a date
+				// if we don't emit null, the old date will be retained (but invisible) making it for a weird interaction
+				else {
+					this.lastParsed = null;
+					this.$emit("input", null);
 				}
 			}
 		},
