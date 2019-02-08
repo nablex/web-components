@@ -135,7 +135,8 @@ Vue.component("n-form-date", {
 			valid: null,
 			show: false,
 			date: null,
-			customizedSchema: null
+			customizedSchema: null,
+			lastParsed: null
 		}
 	},
 	computed: {
@@ -320,13 +321,24 @@ Vue.component("n-form-date", {
 			else {
 				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 				if (!this.value || newValue.getTime() != this.value.getTime()) {
+					this.lastParsed = newValue;
 					this.$emit("input", newValue);
 				}
 			}
 		},
 		value: function(newValue) {
 			if (newValue instanceof Date || typeof(newValue) == "number") {
-				this.date = this.formatValue(newValue);
+				var formatted = this.formatValue(newValue);
+				// if we have parsed something in the past and it has now come back but for some reason it differs from the date itself, we might have a timezone issue
+				if (this.lastParsed != null && this.lastParsed.getTime() == newValue.getTime() && formatted != this.date) {
+					console.warn("Prevented a date loop potentially caused by a timezone difference", this.lastParsed, formatted, this.date);
+				}
+				else {
+					this.date = formatted;
+				}
+				// unset the last parsed, we had a successful roundtrip
+				// someone might want to alter it externally
+				this.lastParsed = null;
 			}
 			else {
 				this.date = newValue;
