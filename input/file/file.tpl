@@ -3,7 +3,7 @@
 		<slot :browse="browse">
 			<div>%{file:<strong>Drag a file</strong><span> or </span><a :disabled="disabled" href="javascript:void(0)" @click="browse()">browse</a> ({{value.length}})}</div>
 		</slot> 
-		<input ref="input" type="file" @change="selectFiles($event)" :accept="types ? types : ['*']" :multiple="!amount || amount > 1" />
+		<input ref="input" type="file" @change="selectFiles($event)" :accept="types" :multiple="!amount || amount > 1" />
 		<slot name="after"></slot>
 	</div>
 </template>
