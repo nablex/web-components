@@ -27,7 +27,7 @@ nabu.utils.vue.form = {
 		if (required == null && component.name && component.$parent && component.$parent.definition) {
 			required = component.$parent.definition.required && component.$parent.definition.required.indexOf(component.name) >= 0;
 		}
-		if (required == null && component.definition.required) {
+		if (required == null && component.definition && component.definition.required) {
 			required = true;
 		}
 		if (required == null) {
