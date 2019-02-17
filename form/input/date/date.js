@@ -239,6 +239,8 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
+			var parsed = value == null ? null
+				: (this.parser ? this.parser(value) : new Date(value));
 			// it is "a" value but not a parseable value
 			if ((value != null && (parsed == null || !parsed.getTime))
 					// or it is not a valid date
@@ -254,7 +256,7 @@ Vue.component("n-form-date", {
 					context: []
 				});
 			}
-			else if (value != null && !this.isAvailable(value)) {
+			else if (parsed != null && parsed.getTime && !isNaN(parsed.getTime()) && !this.isAvailable(parsed)) {
 				messages.push({
 					severity: "error",
 					code: "allowed",
