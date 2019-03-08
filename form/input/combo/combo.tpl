@@ -31,10 +31,9 @@
 			<div class="n-form-combo-bottom" slot="bottom">
 				<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>
 				<span class="n-input-result n-icon n-icon-times fa fa-times" v-if="valid != null && !valid && edit"></span>
-				<n-messages :messages="messages" v-if="messages && messages.length"/>
 			</div>
 			
 		</n-input-combo>
-		<slot name="bottom"></slot>
+		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
 	</div>
 </template>

@@ -140,6 +140,14 @@
 					"radio.sass": {
 						"url": "form/input/radio/radio.sass"
 					}
+				},
+				"location": {
+					"location.tpl": {
+						"url": "form/input/location/location.tpl"
+					},
+					"location.js": {
+						"url": "form/input/location/location.js"
+					}
 				}
 			}, 
 			"plain": {
@@ -318,6 +326,11 @@
 				"tags.gcss": {
 					"url": "misc/tags/tags.gcss"
 				}
+			}
+		},
+		"services": {
+			"geo.js": {
+				"url": "services/geo.js"
 			}
 		}
 	}
