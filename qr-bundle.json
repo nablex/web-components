@@ -1,0 +1,26 @@
+{
+	"name": "web-components-qr", 
+	"resources": {
+		"form": {
+			"input": {
+				"qr": {
+					"jsqr.js": {
+						"url": "https://raw.githubusercontent.com/cozmo/jsQR/master/dist/jsQR.js"
+					},
+					"qr.scss": {
+						"url": "form/input/qr/qr.scss"
+					}, 
+					"qr.tpl": {
+						"url": "form/input/qr/qr.tpl"
+					}, 
+					"qr.js": {
+						"url": "form/input/qr/qr.js"
+					},
+					"qr-bootstrap.js": {
+						"url": "form/input/qr/bootstrap.js"
+					}
+				}
+			}
+		}
+	}
+}
