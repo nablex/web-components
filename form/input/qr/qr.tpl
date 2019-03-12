@@ -9,6 +9,7 @@
 		</div>
 		<n-form-text ref='text' v-model="code" :label="manualLabel" @input='checkEmpty' :required='required' :schema='schema'
 			:placeholder='placeholder'
+			:validator='validator'
 			:edit='edit'/>
 	</div>
 </template>

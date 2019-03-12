@@ -46,6 +46,10 @@ Vue.component("n-form-qr", {
 		manualLabel: {
 			type: String,
 			required: false
+		},
+		validator: {
+			type: Function,
+			required: false
 		}
 	},
 	data: function() {
