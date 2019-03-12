@@ -56,7 +56,8 @@ Vue.component("n-form-qr", {
 		return {
 			code: null,
 			failed: false,
-			scanning: false
+			scanning: false,
+			scanned: false
 		}
 	},
 	beforeDestroy: function() {
@@ -151,6 +152,7 @@ Vue.component("n-form-qr", {
 				requestAnimationFrame(this.tick.bind(this, context));
 			}
 			else {
+				this.scanned = true;
 				this.scanning = false;
 			}
 		},

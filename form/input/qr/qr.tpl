@@ -1,5 +1,5 @@
 <template id="n-form-qr">
-	<div class="n-form-qr n-form-component" :class="{'n-form-qr-scanned': code != null}">
+	<div class="n-form-qr n-form-component" :class="{'n-form-qr-scanned': scanned}">
 		<label v-if="label">{{label}}</label>
 		<div class="n-form-qr-container">
 			<div class="n-form-canvas-container">
