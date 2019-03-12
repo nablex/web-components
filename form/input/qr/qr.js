@@ -60,6 +60,11 @@ Vue.component("n-form-qr", {
 			scanned: false
 		}
 	},
+	created: function() {
+		if (this.value) {
+			this.code = this.value;
+		}
+	},
 	beforeDestroy: function() {
 		console.log("destroying video", this.stop);
 		if (this.stop) {
@@ -163,6 +168,13 @@ Vue.component("n-form-qr", {
 		},
 		validate: function(soft) {
 			this.$refs.text.validate(soft);
+		}
+	},
+	watch: {
+		code: function(newValue) {
+			if (this.value != newValue) {
+				this.$emit("input", newValue);
+			}
 		}
 	}
 });
