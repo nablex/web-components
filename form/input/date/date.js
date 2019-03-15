@@ -180,6 +180,7 @@ Vue.component("n-form-date", {
 			// if it should not be stringified and we have a string, emit that
 			if (!this.stringified) {
 				this.$emit("input", parsed);
+				this.$emit("label", this.value);
 			}
 		}
 		else {
@@ -226,6 +227,7 @@ Vue.component("n-form-date", {
 			}
 			else {
 				this.$emit("input", this.parser ? this.parser(value) : new Date(value));
+				this.$emit("label", value);
 			}
 		},
 		isAvailable: function(date) {
@@ -310,18 +312,21 @@ Vue.component("n-form-date", {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime() / 1000);
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.timestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime());
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
 					newValue = this.formatValue(this.parser ? this.parser(newValue) : new Date(newValue))
 					this.$emit("input", newValue);
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else {
@@ -330,6 +335,7 @@ Vue.component("n-form-date", {
 					if (!this.value || newValue.getTime() != this.value.getTime()) {
 						this.lastParsed = newValue;
 						this.$emit("input", newValue);
+						this.$emit("label", this.formatValue(newValue));
 					}
 				}
 				// otherwise unset the value, at this point you are visually looking at something that is not a date
@@ -337,6 +343,7 @@ Vue.component("n-form-date", {
 				else {
 					this.lastParsed = null;
 					this.$emit("input", null);
+					this.$emit("label", null);
 				}
 			}
 		},
