@@ -291,6 +291,7 @@ Vue.component("n-form-location", {
 					if (self.longitude) {
 						self.value[self.longitude] = place.geometry ? place.geometry.location.lng : null;
 					}
+					self.$emit("label", self.formatPlace(place));
 				});
 			}
 		},
