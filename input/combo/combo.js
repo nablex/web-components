@@ -24,6 +24,11 @@ Vue.component("n-input-combo", {
 			type: Function,
 			required: false
 		},
+		// used to resolve an extracted value into a valid item usually returned by filter
+		resolver: {
+			type: Function,
+			required: false
+		},
 		items: {
 			required: false
 		},
@@ -115,6 +120,27 @@ Vue.component("n-input-combo", {
 							}
 						}
 					}
+					// if we can't resolve it against the initial listing, use the resolver (if it exists)
+					if (this.resolver != null && (!this.actualValue || this.extracter(this.actualValue) != this.value)) {
+						var self = this;
+						var result = this.resolver(this.value);
+						if (result != null && result.then) {
+							result.then(function(actualValue) {
+								// you are likely using the same service for filter and resolve
+								// the filter should send back an array of items
+								if (actualValue instanceof Array) {
+									actualValue = actualValue[0];
+								}
+								self.actualValue = actualValue != null ? self.extracter(actualValue) : actualValue;
+								if (initial) {
+									self.content = self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null;
+								}
+							});
+						}
+						else if (result != null) {
+							self.actualValue = self.extracter(result);
+						}
+					}
 				}
 				else {
 					this.actualValue = this.value;
@@ -142,7 +168,9 @@ Vue.component("n-input-combo", {
 				nabu.utils.arrays.merge(this.values, result);
 				this.synchronizeValue(initial);
 				if (match) {
-					this.checkForMatch(content);
+					if (this.checkForMatch(content) != null) {
+						this.filterItems(null, label, false);
+					}
 				}
 				if (this.value == null && this.autoselectSingle && result.length == 1) {
 					this.updateValue(result[0]);
@@ -166,7 +194,9 @@ Vue.component("n-input-combo", {
 					}
 					self.synchronizeValue(initial);
 					if (match) {
-						self.checkForMatch(content);
+						if (self.checkForMatch(content) != null) {
+							self.filterItems(null, label, false);
+						}
 					}
 					if (this.value == null && this.autoselectSingle && results != null && results.length == 1) {
 						this.updateValue(results[0]);
@@ -186,12 +216,15 @@ Vue.component("n-input-combo", {
 			// only update the value if it matches a value in the dropdown list 
 			if (match != null || (!value && this.nillable)) {
 				this.updatingContent = true;
+				this.actualValue = value;
 				this.$emit("input", this.extracter && match ? this.extracter(match) : match, this.label);
+				this.$emit("label", this.formatter && match ? this.formatter(match) : match, this.label);
 			}
 			// if it is nillable and the current bound value has some value, reset it to null
 			else if (this.nillable && this.value) {
 				this.updatingContent = true;
 				this.$emit("input", null);
+				this.$emit("label", null);
 			}
 			return match;
 		},
@@ -218,7 +251,9 @@ Vue.component("n-input-combo", {
 		// you select something from the dropdown
 		updateValue: function(value) {
 			this.updatingContent = true;
+			this.actualValue = value;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
+			this.$emit("label", this.formatter && value ? this.formatter(value) : value, this.label);
 			this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
 			if (this.filter) {

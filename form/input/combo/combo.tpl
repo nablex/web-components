@@ -23,6 +23,8 @@
 			:disabled="disabled"
 			:initial-label="initialLabel"
 			:extracter="extracter"
+			:resolver="resolver"
+			v-bubble:label
 			:name="name"
 			:autocomplete="autocomplete"
 			:autoselect-single="autoselectSingle"

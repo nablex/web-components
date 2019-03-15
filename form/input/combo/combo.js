@@ -28,6 +28,11 @@ Vue.component("n-form-combo", {
 			type: Function,
 			required: false
 		},
+		// used to resolve an extracted value into a valid item usually returned by filter
+		resolver: {
+			type: Function,
+			required: false
+		},
 		required: {
 			type: Boolean,
 			required: false,
