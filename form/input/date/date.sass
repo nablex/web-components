@@ -11,12 +11,13 @@ $n-form-line-height: 3rem !default;
 		display: inline-block;
 	}
 	.n-input-date {
-		z-index: 1000;
+		border: $border;
+		border-style: none solid none solid;
 		position: absolute;
 		top: 100%;
 		max-width: 25rem;
-		border: $border;
-		border-style: none solid none solid;
+		width: 100%;
+		z-index: 1000;
 		> * {
 			width: 100%;
 		}
