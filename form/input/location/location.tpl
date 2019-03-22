@@ -3,6 +3,7 @@
 		<n-form-combo :filter="searchPlace"
 			:edit="edit"
 			:required="mandatory"
+			:placeholder='placeholder'
 			ref="combo"
 			:label="label"
 			:value="place"
