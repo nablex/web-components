@@ -90,7 +90,8 @@ Vue.component("n-form-combo", {
 	data: function() {
 		return {
 			valid: null,
-			messages: []
+			messages: [],
+			valueLabel: null
 		}
 	},
 	computed: {

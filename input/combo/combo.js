@@ -107,6 +107,7 @@ Vue.component("n-input-combo", {
 	},
 	methods: {
 		synchronizeValue: function(initial) {
+			var self = this;
 			if (this.value != null) {
 				if (this.extracter) {
 					// only look for a match if we haven't found one already
@@ -122,7 +123,6 @@ Vue.component("n-input-combo", {
 					}
 					// if we can't resolve it against the initial listing, use the resolver (if it exists)
 					if (this.resolver != null && (!this.actualValue || this.extracter(this.actualValue) != this.value)) {
-						var self = this;
 						var result = this.resolver(this.value);
 						if (result != null && result.then) {
 							result.then(function(actualValue) {
@@ -135,10 +135,12 @@ Vue.component("n-input-combo", {
 								if (initial) {
 									self.content = self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null;
 								}
+								self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 							});
 						}
 						else if (result != null) {
 							self.actualValue = self.extracter(result);
+							self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 						}
 					}
 				}
@@ -154,6 +156,7 @@ Vue.component("n-input-combo", {
 			if (initial) {
 				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
 			}
+			self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 		},
 		clear: function() {
 			this.content = null;

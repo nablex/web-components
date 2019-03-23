@@ -36,7 +36,7 @@
 		<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>
 		<span class="n-input-result n-icon n-icon-times fa fa-times" v-if="valid != null && !valid && edit"></span>
 		<slot v-if="!edit">
-			<span class="n-form-read">{{ type == 'password' ? '****' : value }}</span>
+			<span class="n-form-read">{{ type == 'password' ? '*******' : value }}</span>
 		</slot>
 		<slot name="bottom">
 			<n-messages :messages="messages" v-if="messages && messages.length"/>

@@ -5,6 +5,11 @@ Vue.component("n-sidebar", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		autocloseable: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	ready: function() {
@@ -21,6 +26,11 @@ Vue.component("n-sidebar", {
 				}
 			}
 			this.$emit('close');
+		},
+		autoClose: function() {
+			if (this.autocloseable) {
+				this.close();
+			}
 		}
 	}
 });

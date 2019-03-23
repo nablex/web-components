@@ -249,7 +249,7 @@ Vue.component("n-form-location", {
 			this.$refs.combo.valid = null;
 			var self = this;
 			if (value && value.place_id) {
-				this.$services.geo.geocode({placeId: value.place_id}).then(function(place) {
+				var handler = function(place) {
 					if (place instanceof Array) {
 						place = place[0];
 					}
@@ -292,6 +292,11 @@ Vue.component("n-form-location", {
 						self.value[self.longitude] = place.geometry ? place.geometry.location.lng : null;
 					}
 					self.$emit("label", self.formatPlace(place));
+				};
+				this.$services.geo.geocode({placeId: value.place_id}).then(handler, function() {
+					if (value.description) {
+						self.$services.geo.geocode({address: value.description }).then(handler);
+					}
 				});
 			}
 		},
