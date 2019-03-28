@@ -111,8 +111,10 @@ Vue.component("n-form-combo", {
 			}
 			var hardMessages = messages.filter(function(x) { return !x.soft });
 			// if we are doing a soft validation and all messages were soft, set valid to unknown
-			if (soft && hardMessages.length == 0 && messages.length > 0 && this.valid == null) {
+			if (soft && hardMessages.length == 0 && (messages.length > 0 || this.value == null) && (this.valid == null || this.value == null)) {
 				this.valid = null;
+				// remove local messages
+				this.messages.splice(0);
 			}
 			else {
 				this.valid = messages.length == 0;

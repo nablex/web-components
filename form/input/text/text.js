@@ -141,20 +141,23 @@ Vue.component("n-form-text", {
 			this.$emit('keyup', $event);
 		},
 		validate: function(soft) {
+			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
+			//var valueToValidate = this.value;
+			var valueToValidate = this.$refs.input.value;
 			this.messages.splice(0, this.messages.length);
-			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
+			var messages = nabu.utils.schema.json.validate(this.definition, valueToValidate, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
 			}
-			if (this.unique && this.$group) {
+			if (valueToValidate != null && this.unique && this.$group) {
 				var count = 0;
 				for (var i = 0; i < this.$group.length; i++) {
 					// only count visible items
 					if (this.$group[i].$el && this.$document.body.contains(this.$group[i].$el)) {
-						if (this.$group[i].value == this.value) {
+						if (this.$group[i].value == valueToValidate) {
 							count++;
 						}
-						else if (!this.caseSensitive && this.$group[i].value && this.value && this.$group[i].value.toLowerCase() == this.value.toLowerCase()) {
+						else if (!this.caseSensitive && this.$group[i].value && valueToValidate && this.$group[i].value.toLowerCase() == valueToValidate.toLowerCase()) {
 							count++;
 						}
 					}
@@ -168,13 +171,13 @@ Vue.component("n-form-text", {
 						values: {
 							expected: 1,
 							actual: count,
-							value: this.value
+							value: valueToValidate
 						}
 					});
 				}
 			}
 			if (this.validator != null) {
-				var additional = this.validator(this.value);
+				var additional = this.validator(valueToValidate);
 				if (additional != null && additional.length) {
 					for (var i = 0; i < additional.length; i++) {
 						additional[i].component = this;
@@ -190,7 +193,7 @@ Vue.component("n-form-text", {
 			}
 			var hardMessages = messages.filter(function(x) { return !x.soft });
 			// if we are doing a soft validation and all messages were soft, set valid to unknown
-			if (soft && hardMessages.length == 0 && messages.length > 0 && this.valid == null) {
+			if (soft && hardMessages.length == 0 && (messages.length > 0 || !valueToValidate) && this.valid == null) {
 				this.valid = null;
 				// remove local messages
 				this.messages.splice(0);
