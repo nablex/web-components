@@ -285,11 +285,11 @@ Vue.component("n-form-location", {
 					if (self.formatted) {
 						self.value[self.formatted] = place.formatted_address;
 					}
-					if (self.latitude) {
-						self.value[self.latitude] = place.geometry ? place.geometry.location.lat : null;
+					if (self.latitude && place.geometry) {
+						self.value[self.latitude] = place.geometry.location.lat instanceof Function ? place.geometry.location.lat() : place.geometry.location.lat;
 					}
-					if (self.longitude) {
-						self.value[self.longitude] = place.geometry ? place.geometry.location.lng : null;
+					if (self.longitude && place.geometry) {
+						self.value[self.longitude] = place.geometry.location.lng instanceof Function ? place.geometry.location.lng() : place.geometry.location.lng;
 					}
 					self.$emit("label", self.formatPlace(place));
 				};

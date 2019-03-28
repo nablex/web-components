@@ -110,6 +110,10 @@ nabu.utils.vue.form = {
 				}
 				nabu.utils.arrays.merge(messages, childMessages);
 			}
+			// recurse over non-form components, they might be structural and secretly contain other form elements
+			else {
+				nabu.utils.vue.form.validateChildren(component.$children[i], soft);
+			}
 		}
 		return messages;
 	}
