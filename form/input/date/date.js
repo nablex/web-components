@@ -307,6 +307,7 @@ Vue.component("n-form-date", {
 			if (!newValue) {
 				if (this.value) {
 					this.$emit("input", null);
+					this.$emit("label", null);
 				}
 			}
 			else if (this.secondsTimestamp) {
