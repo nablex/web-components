@@ -293,7 +293,7 @@ Vue.component("n-form-address", {
 		},
 		updateCountry: function(country) {
 			this.updateCity(null);
-			this.value[this.countryField] = this.formatAutocomplete('country', country);
+			Vue.set(this.value, this.countryField, this.formatAutocomplete('country', country));
 			
 			var self = this;
 			// likely disabled!
@@ -314,7 +314,7 @@ Vue.component("n-form-address", {
 		},
 		updateCity: function(city) {
 			this.updatePostCode(null);
-			this.value[this.city] = this.formatAutocomplete('city', city);
+			Vue.set(this.value, this.city, this.formatAutocomplete('city', city));
 			var self = this;
 			Vue.nextTick(function() {
 				if (city) {
@@ -330,7 +330,7 @@ Vue.component("n-form-address", {
 		},
 		updatePostCode: function(postCode) {
 			this.updateStreet(null);
-			this.value[this.postCode] = this.formatAutocomplete('postCode', postCode);
+			Vue.set(this.value, this.postCode, this.formatAutocomplete('postCode', postCode));
 			var self = this;
 			Vue.nextTick(function() {
 				if (postCode) {
@@ -343,7 +343,7 @@ Vue.component("n-form-address", {
 		},
 		updateStreet: function(street) {
 			this.updateStreetNumber(null);
-			this.value[this.street] = this.formatAutocomplete('street', street);
+			Vue.set(this.value, this.street, this.formatAutocomplete('street', street));
 			var self = this;
 			Vue.nextTick(function() {
 				if (street) {
@@ -355,7 +355,7 @@ Vue.component("n-form-address", {
 			this.checkFullAddress();
 		},
 		updateStreetNumber: function(streetNumber) {
-			this.value[this.streetNumber] = this.formatAutocomplete('streetNumber', streetNumber);
+			Vue.set(this.value, this.streetNumber, this.formatAutocomplete('streetNumber', streetNumber));
 			this.checkFullAddress();
 		},
 		searchField: function(field, newValue) {
