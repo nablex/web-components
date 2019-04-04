@@ -16,7 +16,7 @@ nabu.utils.vue.form = {
 		// bind in the additional keys
 		var keys = ["minLength", "maxLength", "pattern", "patternComment", "maxItems", "minItems", "maximum", "minimum", "exclusiveMaximum", "exclusiveMinimum", "enum"];
 		for (var i = 0; i < keys.length; i++) {
-			if (typeof(component[keys[i]]) != "undefined") {
+			if (component[keys[i]] != null) {
 				schema[keys[i]] = component[keys[i]];
 			}
 		}

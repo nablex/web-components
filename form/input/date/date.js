@@ -33,6 +33,10 @@ Vue.component("n-form-date", {
 			type: String,
 			required: false
 		},
+		patternComment: {
+			type: String,
+			required: false
+		},
 		minLength: {
 			type: Number,
 			required: false

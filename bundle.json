@@ -148,6 +148,14 @@
 					"location.js": {
 						"url": "form/input/location/location.js"
 					}
+				},
+				"address": {
+					"address.tpl": {
+						"url": "form/input/address/address.tpl"
+					},
+					"address.js": {
+						"url": "form/input/address/address.js"
+					}
 				}
 			}, 
 			"plain": {
