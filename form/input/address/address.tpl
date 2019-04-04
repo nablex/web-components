@@ -2,9 +2,9 @@
 	<div class="n-form-address n-form-component">
 	
 		<div class="n-form-address-form" v-if="edit">
-			<n-form-combo :filter="searchField.bind($self, 'country')" v-if="country" 
+			<n-form-combo :filter="searchField.bind($self, 'country')" v-if="countryField" 
 				:label="countryLabel"
-				:value="value[country]"
+				:value="value[countryField]"
 				@input="updateCountry"
 				:timeout="300"
 				:schema="schemaResolver ? schemaResolver(country) : null"
@@ -14,7 +14,7 @@
 				ref="country"/>
 			
 			<n-form-combo :filter="searchField.bind($self, 'city')" v-if="city" 
-				:disabled="country && !value[country]"
+				:disabled="countryField && !value[countryField]"
 				:label="cityLabel"
 				:value="value[city]"
 				@input="updateCity"
@@ -26,7 +26,7 @@
 				ref="city"/>
 			
 			<n-form-combo :filter="searchField.bind($self, 'postCode')" v-if="postCode" 
-				:disabled="(country && !value[country]) || (city && !value[city])"
+				:disabled="(countryField && !value[countryField]) || (city && !value[city])"
 				:label="postCodeLabel"
 				:value="value[postCode]"
 				@input="updatePostCode"
@@ -44,7 +44,7 @@
 				class="postCode"/>
 			
 			<n-form-combo :filter="searchField.bind($self, 'street')" v-if="street"
-				:disabled="(country && !value[country]) || (city && !value[city]) || (postCode && !value[postCode])" 
+				:disabled="(countryField && !value[countryField]) || (city && !value[city]) || (postCode && !value[postCode])" 
 				:label="streetLabel"
 				:value="value[street]"
 				@input="updateStreet"
@@ -56,7 +56,7 @@
 				ref="street"/>
 			
 			<n-form-combo :filter="searchField.bind($self, 'streetNumber')" v-if="streetNumber && false"
-				:disabled="(country && !value[country]) || (city && !value[city]) || (postCode && !value[postCode]) || (street && !value[street])"  
+				:disabled="(countryField && !value[countryField]) || (city && !value[city]) || (postCode && !value[postCode]) || (street && !value[street])"  
 				:label="streetNumberLabel"
 				:value="value[streetNumber]"
 				@input="updateStreetNumber"
@@ -68,7 +68,7 @@
 				ref="streetNumber"/>
 				
 			<n-form-text v-else
-				:disabled="(country && !value[country]) || (city && !value[city]) || (postCode && !value[postCode]) || (street && !value[street])"  
+				:disabled="(countryField && !value[countryField]) || (city && !value[city]) || (postCode && !value[postCode]) || (street && !value[street])"  
 				:label="streetNumberLabel"
 				:value="value[streetNumber]"
 				@input="updateStreetNumber"

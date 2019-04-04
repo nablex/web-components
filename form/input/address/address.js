@@ -170,7 +170,8 @@ Vue.component("n-form-address", {
 			timer: null,
 			place: null,
 			sessionToken: null,
-			resolvedType: null
+			resolvedType: null,
+			ready: false
 		};
 	},
 	computed: {
@@ -184,17 +185,10 @@ Vue.component("n-form-address", {
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
 		},
+		countryField: function() {
+			return this.country ? this.country : (this.countryCode ? '$country' : null);
+		},
 		formattedAddress: function() {
-			return "formatted!";
-		}
-	},
-	created: function() {
-		this.sessionToken = this.$services.geo.newSessionToken();
-		
-		// try to resolve an initial place
-		var self = this;
-		var geocoded = null;
-		if (((this.country && this.value[this.country]) || (this.countryCode && this.value[this.countryCode])) && this.city && this.value[this.city]) {
 			var address = "";
 			if (this.country && this.value[this.country]) {
 				address += this.value[this.country];
@@ -212,24 +206,31 @@ Vue.component("n-form-address", {
 				}
 				address = street + ", " + address;
 			}
-			geocoded = this.$services.geo.geocode({
-				address: address
-			});
+			return address;
 		}
-		else if (this.latitude && this.longitude && this.value[this.longitude] && this.value[this.latitude]) {
-			geocoded = this.$services.geo.geocode({
-				location: new google.maps.LatLng({ lat: parseFloat(this.value[this.latitude]), lng: parseFloat(this.value[this.longitude]) })
-			});
+	},
+	created: function() {
+		this.sessionToken = this.$services.geo.newSessionToken();
+		
+		// we need the full country name, even if you can't store it
+		if (!this.country && this.countryCode) {
+			// if you already have a value, we need to resolve it
+			if (this.value[this.countryCode]) {
+				var self = this;
+				this.$services.geo.geocode({
+					address: this.formattedAddress
+				}).then(function(place) {
+					if (place instanceof Array) {
+						place = place[0];
+					}
+					Vue.set(self.value, self.countryField, self.getPart(place, ["country"]));
+				});
+			}
 		}
-		if (geocoded != null) {
-			geocoded.then(function(place) {
-				if (place instanceof Array) {
-					place = place[0];
-				}
-				place.description = place.formatted_address;
-				self.place = place;
-			});
-		}
+	},
+	ready: function() {
+		// we can prefeed data, we don't want to trigger autocompletes on that
+		this.ready = true;
 	},
 	methods: {
 		getPart: function(place, parts, short) {
@@ -245,40 +246,54 @@ Vue.component("n-form-address", {
 			return result ? (short ? result.short_name : result.long_name) : result;
 		},
 		validate: function(soft) {
-			this.$refs.combo.messages.splice(0);
-			var messages = nabu.utils.schema.json.validate(this.definition, this.resolvedType, this.mandatory);
-			// only validate if we have resolved something, otherwise the required boolean will pick it up
-			if (this.resolvedType) {
-				if (!this.allowVague && this.resolvedType != "street_address") {
-					messages.push({
-						code: "vague",
-						title: "%{validation:The address is not specific enough}",
-						component: this,
-						context: [],
-						severity: "error",
-						values: {
-							expected: "street_address",
-							actual: this.resolvedType
+			var messages = nabu.utils.vue.form.validateChildren(this, soft);
+			if (this.validator) {
+				var additional = this.validator(this.value);
+				if (additional && additional.length) {
+					for (var i = 0; i < additional.length; i++) {
+						additional[i].component = this;
+						if (typeof(additional[i].context) == "undefined") {
+							additional[i].context = [];
 						}
-					});
+						messages.push(additional[i]);
+					}
 				}
-			}
-			var hardMessages = messages.filter(function(x) { return !x.soft });
-			// if we are doing a soft validation and all messages were soft, set valid to unknown
-			if (soft && hardMessages.length == 0 && messages.length > 0 && this.$refs.combo.valid == null) {
-				this.$refs.combo.valid = null;
-				// remove local messages
-				this.messages.splice(0);
-			}
-			else {
-				this.$refs.combo.valid = messages.length == 0;
-				nabu.utils.arrays.merge(this.$refs.combo.messages, nabu.utils.vue.form.localMessages(this, messages));
 			}
 			return messages;
 		},
+		checkFullAddress: function() {
+			// if we are interested in lat & long, we need to further resolve the address
+			// this is only useful if we have a complete address
+			var self = this;
+			if (this.latitude || this.longitude || this.countryCode) {
+				if ((self.country == null || self.value[self.country])
+						&& (self.city == null || self.value[self.city])
+						&& (self.postCode == null || self.value[self.postCode])
+						&& (self.street == null || self.value[self.street])
+						&& (self.streetNumber == null || self.value[self.streetNumber])) {
+					this.$services.geo.geocode({
+						address: this.formattedAddress
+					}).then(function(place) {
+						if (place instanceof Array) {
+							place = place[0];
+						}
+						if (self.latitude && place.geometry) {
+							self.value[self.latitude] = place.geometry.location.lat instanceof Function ? place.geometry.location.lat() : place.geometry.location.lat;
+						}
+						if (self.longitude && place.geometry) {
+							self.value[self.longitude] = place.geometry.location.lng instanceof Function ? place.geometry.location.lng() : place.geometry.location.lng;
+						}
+						if (self.countryCode) {
+							self.value[self.countryCode] = self.getPart(place, ["country"], true);
+						}
+						console.log("VALUE", JSON.stringify(self.value, null, 2));
+					});
+				}
+			}
+		},
 		updateCountry: function(country) {
 			this.updateCity(null);
-			this.value[this.country] = this.formatAutocomplete('country', country);
+			this.value[this.countryField] = this.formatAutocomplete('country', country);
 			
 			var self = this;
 			// likely disabled!
@@ -295,6 +310,7 @@ Vue.component("n-form-address", {
 					}
 				}
 			});
+			this.checkFullAddress();
 		},
 		updateCity: function(city) {
 			this.updatePostCode(null);
@@ -310,6 +326,7 @@ Vue.component("n-form-address", {
 					}
 				}
 			});
+			this.checkFullAddress();
 		},
 		updatePostCode: function(postCode) {
 			this.updateStreet(null);
@@ -322,6 +339,7 @@ Vue.component("n-form-address", {
 					}
 				}
 			});
+			this.checkFullAddress();
 		},
 		updateStreet: function(street) {
 			this.updateStreetNumber(null);
@@ -334,72 +352,18 @@ Vue.component("n-form-address", {
 					}
 				}
 			});
+			this.checkFullAddress();
 		},
 		updateStreetNumber: function(streetNumber) {
 			this.value[this.streetNumber] = this.formatAutocomplete('streetNumber', streetNumber);
-		},
-		update: function(value) {
-			if (this.$refs.combo) {
-				this.$refs.combo.messages.splice(0);
-				this.$refs.combo.valid = null;
-			}
-			var self = this;
-			if (value && value.place_id) {
-				var handler = function(place) {
-					if (place instanceof Array) {
-						place = place[0];
-					}
-					self.place = place;
-					self.resolvedType = place.types[0];
-					if (self.country) {
-						self.value[self.country] = self.getPart(place, ["country"]);
-					}
-					if (self.countryCode) {
-						self.value[self.countryCode] = self.getPart(place, ["country"], true);
-					}
-					if (self.province) {
-						self.value[self.province] = self.getPart(place, ["administrative_area_level_2"]);
-					}
-					if (self.region) {
-						self.value[self.region] = self.getPart(place, ["administrative_area_level_1"]);
-					}
-					if (self.city) {
-						self.value[self.city] = self.getPart(place, ["sublocality", "locality"]);
-					}
-					if (self.postCode) {
-						self.value[self.postCode] = self.getPart(place, ["postal_code"]);
-					}
-					if (self.street) {
-						self.value[self.street] = self.getPart(place, ["route"]);
-						if (self.streetIncludeNumber) {
-							var number = self.getPart(place, "street_number");
-							if (number != null && self.value[self.street] != null) {
-								self.value[self.street] += " " + number;
-							}
-						}
-					}
-					if (self.streetNumber) {
-						self.value[self.streetNumber] = self.getPart(place, ["street_number"]);
-					}
-					if (self.formatted) {
-						self.value[self.formatted] = place.formatted_address;
-					}
-					if (self.latitude && place.geometry) {
-						self.value[self.latitude] = place.geometry.location.lat instanceof Function ? place.geometry.location.lat() : place.geometry.location.lat;
-					}
-					if (self.longitude && place.geometry) {
-						self.value[self.longitude] = place.geometry.location.lng instanceof Function ? place.geometry.location.lng() : place.geometry.location.lng;
-					}
-					self.$emit("label", self.formatPlace(place));
-				};
-				this.$services.geo.geocode({placeId: value.place_id}).then(handler, function() {
-					if (value.description) {
-						self.$services.geo.geocode({address: value.description }).then(handler);
-					}
-				});
-			}
+			this.checkFullAddress();
 		},
 		searchField: function(field, newValue) {
+			// don't do searches for initial data, it is presumed correct from previous entry
+			// if necessary, we can make this toggleable
+			if (!this.ready) {
+				return newValue ? [newValue] : [];
+			}
 			var promise = this.$services.q.defer();
 			var address = "";
 			var types = []
@@ -419,8 +383,8 @@ Vue.component("n-form-address", {
 				types.push("address");
 			}
 			// if we have a country field, that should always be filled in
-			if (this.country) {
-				address = field == "country" ? newValue : this.value[this.country];
+			if (this.countryField) {
+				address = field == "country" ? newValue : this.value[this.countryField];
 			}
 			if (field != "country") {
 				if (this.city && (field == "city" || this.value[this.city])) {
@@ -518,19 +482,19 @@ Vue.component("n-form-address", {
 					return true;
 				}
 				else if (field == "city") {
-					return self.country == null || term != self.value[self.country];
+					return self.country == null || term != self.value[self.countryField];
 				}
 				else if (field == "postCode") {
-					return (self.country == null || term != self.value[self.country])
+					return (self.country == null || term != self.value[self.countryField])
 						&& (self.city == null || term != self.value[self.city]);
 				}
 				else if (field == "street") {
-					return (self.country == null || term != self.value[self.country])
+					return (self.country == null || term != self.value[self.countryField])
 						&& (self.city == null || term != self.value[self.city])
 						&& (self.postCode == null || term != self.value[self.postCode]);
 				}
 				else if (field == "streetNumber") {
-					return (self.country == null || term != self.value[self.country])
+					return (self.country == null || term != self.value[self.countryField])
 						&& (self.city == null || term != self.value[self.city])
 						&& (self.postCode == null || term != self.value[self.postCode])
 						&& (self.street == null || term != self.value[self.street]);
