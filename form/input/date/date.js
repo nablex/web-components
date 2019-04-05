@@ -295,7 +295,7 @@ Vue.component("n-form-date", {
 			}
 			if (!this.includeHours) {
 				// if we don't have hours, we want to use UTC
-				value += " 00:00:00Z"
+				value += "T00:00:00Z"
 			}
 			else if (!this.includeMinutes) {
 				value += ":00:00"

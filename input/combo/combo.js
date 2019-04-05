@@ -232,6 +232,8 @@ Vue.component("n-input-combo", {
 			return match;
 		},
 		updateContent: function(value) {
+			// explicitly set it, the v-model does not always seem to work in combination with the input event?
+			this.content = value;
 			var match = this.checkForMatch(value);
 
 			// try to finetune the results

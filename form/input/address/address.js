@@ -190,8 +190,8 @@ Vue.component("n-form-address", {
 		},
 		formattedAddress: function() {
 			var address = "";
-			if (this.country && this.value[this.country]) {
-				address += this.value[this.country];
+			if (this.countryField && this.value[this.countryField]) {
+				address += this.value[this.countryField];
 			}
 			else if (this.countryCode && this.value[this.countryCode]) {
 				address += this.value[this.countryCode];
