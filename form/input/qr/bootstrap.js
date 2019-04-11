@@ -1,11 +1,14 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
 	if (application && nabu && nabu.page) {
 		Vue.component("page-form-input-qr-configure", {
 			template: "<n-form-section>"
 				+ "	<n-form-switch v-model='field.allowManualEntry' label='Allow manual entry' />"
 				+ "	<n-form-text type='number' v-model='field.canvasWidth' label='Width (in pixels)' />"
 				+ "	<n-form-text type='number' v-model='field.canvasHeight' label='Height (in pixels)' />"
+				+ "	<n-form-text v-model='field.icon' label='Icon' />"
+				+ "	<n-form-text v-model='field.buttonLabel' label='Buton Label' />"
 				+ "	<n-form-text v-model='field.manualLabel' label='Manual Label' />"
+				+ "	<n-form-text v-model='field.manualPlaceholder' label='Manual Placeholder' />"
 				+ "</n-form-section>",
 			props: {
 				cell: {
@@ -26,16 +29,19 @@ window.addEventListener("load", function() {
 
 		Vue.component("page-form-input-qr", {
 			template: "<n-form-qr :allow-manual='field.allowManualEntry' ref='form'"
-					+ "		:schema='schema'"
-					+ "		@input=\"function(newValue) { $emit('input', newValue) }\""
-					+ "		:label='label'"
-					+ "		:value='value'"
-					+ "		:name='field.name'"
-					+ "		:timeout='timeout'"
-					+ "		:width='field.canvasWidth'"
-					+ "		:height='field.canvasHeight'"
-					+ "		:manual-label='$services.page.translate($services.page.interpret(field.manualLabel, $self))'"
-					+ "		:disabled='disabled'/>",
+				+ "		:schema='schema'"
+				+ "		@input=\"function(newValue) { $emit('input', newValue) }\""
+				+ "		:label='label'"
+				+ "		:value='value'"
+				+ "		:name='field.name'"
+				+ "		:timeout='timeout'"
+				+ "		:width='field.canvasWidth'"
+				+ "		:height='field.canvasHeight'"
+				+ "		:button-label='$services.page.translate($services.page.interpret(field.buttonLabel, $self))'"
+				+ "		:manual-label='$services.page.translate($services.page.interpret(field.manualLabel, $self))'"
+				+ "		:manual-placeholder='$services.page.translate($services.page.interpret(field.manualPlaceholder, $self))'"
+				+ "		:icon='field.icon'"
+				+ "		:disabled='disabled'/>",
 			props: {
 				cell: {
 					type: Object,
@@ -69,20 +75,20 @@ window.addEventListener("load", function() {
 				}
 			},
 			computed: {
-				textType: function() {
+				textType: function () {
 					return this.field.textType ? this.field.textType : 'text';
 				}
 			},
 			methods: {
-				validate: function(soft) {
+				validate: function (soft) {
 					return this.$refs.form.validate(soft);
 				}
 			}
 		});
-		application.bootstrap(function($services) {
-			nabu.page.provide("page-form-input", { 
-				component: "page-form-input-qr", 
-				configure: "page-form-input-qr-configure", 
+		application.bootstrap(function ($services) {
+			nabu.page.provide("page-form-input", {
+				component: "page-form-input-qr",
+				configure: "page-form-input-qr-configure",
 				name: "qr",
 				namespace: "nabu.page"
 			});

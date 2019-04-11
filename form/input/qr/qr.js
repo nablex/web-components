@@ -43,7 +43,19 @@ Vue.component("n-form-qr", {
 			required: false,
 			default: 480
 		},
+		buttonLabel: {
+			type: String,
+			required: false
+		},
 		manualLabel: {
+			type: String,
+			required: false
+		},
+		manualPlaceholder: {
+			type: String,
+			required: false
+		},
+		icon: {
 			type: String,
 			required: false
 		},
@@ -52,7 +64,7 @@ Vue.component("n-form-qr", {
 			required: false
 		}
 	},
-	data: function() {
+	data: function () {
 		return {
 			code: null,
 			failed: false,
@@ -60,54 +72,53 @@ Vue.component("n-form-qr", {
 			scanned: false
 		}
 	},
-	created: function() {
+	created: function () {
 		if (this.value) {
 			this.code = this.value;
 		}
 	},
-	beforeDestroy: function() {
-		console.log("destroying video", this.stop);
+	beforeDestroy: function () {
 		if (this.stop) {
 			this.stop();
 		}
 	},
 	computed: {
-		definition: function() {
+		definition: function () {
 			var definition = nabu.utils.vue.form.definition(this);
 			if (this.type == "number") {
 				definition.type = "number";
 			}
 			return definition;
 		},
-		mandatory: function() {
+		mandatory: function () {
 			return nabu.utils.vue.form.mandatory(this);
 		}
 	},
 	methods: {
-		scan: function() {
+		scan: function () {
 			this.video = document.createElement("video");
 			var video = this.video;
 			var canvas = this.$refs.canvas;
 			var context = canvas.getContext("2d");
 			this.context = context;
 			var self = this;
-			// Use facingMode: environment to attemt to get the front camera on phones
-			navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+			// Use facingMode: environment to attempt to get the front camera on phones
+			navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
 				self.scanning = true;
 				video.srcObject = stream;
 				video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
 				video.play();
 				requestAnimationFrame(self.tick.bind(self, context));
-				self.stop = function() {
-					stream.getTracks().forEach(function(track) {
+				self.stop = function () {
+					stream.getTracks().forEach(function (track) {
 						track.stop();
 					});
 				}
-			}, function() {
+			}, function () {
 				self.failed = true;
 			});
 		},
-		rescan: function() {
+		rescan: function () {
 			this.code = null;
 			if (this.video) {
 				this.scanning = true;
@@ -117,7 +128,7 @@ Vue.component("n-form-qr", {
 				this.scan();
 			}
 		},
-		drawLine: function(context, begin, end, color) {
+		drawLine: function (context, begin, end, color) {
 			context.beginPath();
 			context.moveTo(begin.x, begin.y);
 			context.lineTo(end.x, end.y);
@@ -125,7 +136,7 @@ Vue.component("n-form-qr", {
 			context.strokeStyle = color;
 			context.stroke();
 		},
-		tick: function(context) {
+		tick: function (context) {
 			var video = this.video;
 			var canvas = this.$refs.canvas;
 			var overlay = this.$refs.overlay;
@@ -141,7 +152,7 @@ Vue.component("n-form-qr", {
 
 				context.drawImage(video, 0, 0, canvas.width, canvas.height);
 				var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-				
+
 				var code = jsQR(imageData.data, imageData.width, imageData.height, {
 					inversionAttempts: "dontInvert",
 				});
@@ -161,17 +172,17 @@ Vue.component("n-form-qr", {
 				this.scanning = false;
 			}
 		},
-		checkEmpty: function(newValue) {
+		checkEmpty: function (newValue) {
 			if (!newValue) {
 				this.rescan();
 			}
 		},
-		validate: function(soft) {
+		validate: function (soft) {
 			this.$refs.text.validate(soft);
 		}
 	},
 	watch: {
-		code: function(newValue) {
+		code: function (newValue) {
 			if (this.value != newValue) {
 				this.$emit("input", newValue);
 			}
