@@ -15,7 +15,7 @@
 		
 			<input @focus="showValues = true" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
 				:name="name"
-				v-model="content"
+				:value="formatter ? formatter(content) : content"
 				:disabled="disabled">
 		
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValues = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
