@@ -24,6 +24,11 @@ Vue.component("n-input-combo", {
 			type: Function,
 			required: false
 		},
+		// used to resolve an extracted value into a valid item usually returned by filter
+		resolver: {
+			type: Function,
+			required: false
+		},
 		items: {
 			required: false
 		},
@@ -102,6 +107,7 @@ Vue.component("n-input-combo", {
 	},
 	methods: {
 		synchronizeValue: function(initial) {
+			var self = this;
 			if (this.value != null) {
 				if (this.extracter) {
 					// only look for a match if we haven't found one already
@@ -115,6 +121,28 @@ Vue.component("n-input-combo", {
 							}
 						}
 					}
+					// if we can't resolve it against the initial listing, use the resolver (if it exists)
+					if (this.resolver != null && (!this.actualValue || this.extracter(this.actualValue) != this.value)) {
+						var result = this.resolver(this.value);
+						if (result != null && result.then) {
+							result.then(function(actualValue) {
+								// you are likely using the same service for filter and resolve
+								// the filter should send back an array of items
+								if (actualValue instanceof Array) {
+									actualValue = actualValue[0];
+								}
+								self.actualValue = actualValue != null ? self.extracter(actualValue) : actualValue;
+								if (initial) {
+									self.content = self.actualValue;
+								}
+								self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
+							});
+						}
+						else if (result != null) {
+							self.actualValue = self.extracter(result);
+							self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
+						}
+					}
 				}
 				else {
 					this.actualValue = this.value;
@@ -126,8 +154,9 @@ Vue.component("n-input-combo", {
 			// only update the content if this is the initial setting
 			// afterwards people just type and it remains
 			if (initial) {
-				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+				this.content = this.actualValue;
 			}
+			self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 		},
 		clear: function() {
 			this.content = null;
@@ -142,7 +171,9 @@ Vue.component("n-input-combo", {
 				nabu.utils.arrays.merge(this.values, result);
 				this.synchronizeValue(initial);
 				if (match) {
-					this.checkForMatch(content);
+					if (this.checkForMatch(content) != null) {
+						this.filterItems(null, label, false);
+					}
 				}
 				if (this.value == null && this.autoselectSingle && result.length == 1) {
 					this.updateValue(result[0]);
@@ -166,7 +197,9 @@ Vue.component("n-input-combo", {
 					}
 					self.synchronizeValue(initial);
 					if (match) {
-						self.checkForMatch(content);
+						if (self.checkForMatch(content) != null) {
+							self.filterItems(null, label, false);
+						}
 					}
 					if (this.value == null && this.autoselectSingle && results != null && results.length == 1) {
 						this.updateValue(results[0]);
@@ -186,16 +219,21 @@ Vue.component("n-input-combo", {
 			// only update the value if it matches a value in the dropdown list 
 			if (match != null || (!value && this.nillable)) {
 				this.updatingContent = true;
+				this.actualValue = value;
 				this.$emit("input", this.extracter && match ? this.extracter(match) : match, this.label);
+				this.$emit("label", this.formatter && match ? this.formatter(match) : match, this.label);
 			}
 			// if it is nillable and the current bound value has some value, reset it to null
 			else if (this.nillable && this.value) {
 				this.updatingContent = true;
 				this.$emit("input", null);
+				this.$emit("label", null);
 			}
 			return match;
 		},
 		updateContent: function(value) {
+			// explicitly set it, the v-model does not always seem to work in combination with the input event?
+			this.content = value;
 			var match = this.checkForMatch(value);
 
 			// try to finetune the results
@@ -218,8 +256,10 @@ Vue.component("n-input-combo", {
 		// you select something from the dropdown
 		updateValue: function(value) {
 			this.updatingContent = true;
+			this.actualValue = value;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
-			this.content = value != null && this.formatter ? this.formatter(value) : value;
+			this.$emit("label", this.formatter && value ? this.formatter(value) : value, this.label);
+			this.content = value;
 			// reset the results to match everything once you have selected something
 			if (this.filter) {
 				if (this.timer) {
