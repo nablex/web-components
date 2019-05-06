@@ -5,10 +5,11 @@
 			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 		</slot>
 		<slot v-if="!edit">
-			<span class="n-form-read">{{ formatter && value ? formatter(value) : value }}</span>
+			<span class="n-form-read">{{ valueLabel ? valueLabel : (formatter && value ? formatter(value) : value) }}</span>
 		</slot>
 
-		<n-input-combo v-if="edit" 
+		<n-input-combo v-show="edit" 
+			@label="function(newValue) { valueLabel = newValue }"
 			:value="value" 
 			:labels="labels" 
 			:filter="filter" 
@@ -23,6 +24,8 @@
 			:disabled="disabled"
 			:initial-label="initialLabel"
 			:extracter="extracter"
+			:resolver="resolver"
+			v-bubble:label
 			:name="name"
 			:autocomplete="autocomplete"
 			:autoselect-single="autoselectSingle"
@@ -31,10 +34,9 @@
 			<div class="n-form-combo-bottom" slot="bottom">
 				<span class="n-input-result n-icon n-icon-check fa fa-check" v-if="valid != null && valid && edit"></span>
 				<span class="n-input-result n-icon n-icon-times fa fa-times" v-if="valid != null && !valid && edit"></span>
-				<n-messages :messages="messages" v-if="messages && messages.length"/>
 			</div>
 			
 		</n-input-combo>
-		<slot name="bottom"></slot>
+		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
 	</div>
 </template>

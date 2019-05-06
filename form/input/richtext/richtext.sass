@@ -7,10 +7,11 @@
 			flex-basis: 0;
 			flex-grow: 1;
 			&[contenteditable=true] {
-				min-width: 30rem;
-				min-height: 20rem;
+				width: 100%;
+				min-width: 10rem;
+				min-height: 5rem;
 				border: $border;
-				background-color: $beta-color;
+				//background-color: $beta-color;
 			}
 		}
 		span {
@@ -20,13 +21,36 @@
 	}
 	
 	.n-form-richtext-menu {
-		text-align: center;
+		position: relative;
+		white-space: nowrap;
+		.n-form-richtext-menu-content {
+			display: none;
+		}
+		.open-menu {
+			width: 2rem;
+			height: 2rem;
+			line-height: 2rem;
+			z-index: 10;
+			//position: absolute;
+			top: 0;
+			right: 0;
+		}
+		&:hover {
+			.n-form-richtext-menu-content {
+				z-index: 20;
+				display: block;
+				position: absolute;
+				top: 50%;
+			}
+		}
+		.n-form-richtext-menu-container {
+			position: relative;
+			display: inline-block;
+		}
 		> button {
 			position: relative;
 		}
 		.n-form-richtext-choices {
-			z-index: 10;
-			background-color: $beta-color;
 			position: absolute;
 			top: 100%;
 			white-space: nowrap;
@@ -40,16 +64,25 @@
 			background-color: $light-color;
 			color: $light-contrast;
 			margin: 0 0.2rem;
-			height: 3rem;
-			width: 3rem;
+			height: 2rem;
+			width: 2rem;
 			border: $beta-border solid 1px;
 			border-style: solid solid none solid;
 			padding: 0;
 			
 			.n-form-richtext-button-description {
 				font-size: 0.55rem;
-				display: block;
+				display: none;
 				margin-top: 0.2rem;
+			}
+		}
+		.n-form-richtext-choices {
+			button, input {
+				height: 3rem;
+				width: 3rem;
+			}
+			.n-form-richtext-button-description {
+				display: block;
 			}
 		}
 		input {

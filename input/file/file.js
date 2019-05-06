@@ -34,11 +34,12 @@ Vue.component("n-input-file", {
 		selectFiles: function(event) {
 			var result = this.addFiles(event.target.files || event.dataTransfer.files);
 			event.preventDefault();
+			event.stopPropagation();
 			return result;
 		},
 		addFiles: function(fileList) {
 			var notAllowed = [];
-			var changed = false;
+			var changed = this.makeRoomFor(fileList.length);
 			for (var i = 0; i < fileList.length; i++) {
 				if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(fileList.item(i).type)) {
 					changed = true;
@@ -53,11 +54,22 @@ Vue.component("n-input-file", {
 			}
 			return notAllowed;
 		},
+		// if we add more files then allowed, drop the oldest ones
+		makeRoomFor: function(amount) {
+			if (this.amount != null && this.amount > 0) {
+				var tooMany = (this.value.length + amount) - this.amount;
+				if (tooMany > 0) {
+					this.value.splice(0, tooMany);
+					return true;
+				}
+			}
+			return false;
+		},
 		pasteFiles: function(event) {
 			var files = event.clipboardData ? event.clipboardData.items : null;
 			var notAllowed = [];
 			if (files) {
-				var changed = false;
+				var changed = this.makeRoomFor(files.length);
 				for (var i = 0; i < files.length; i++) {
 					if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(files[i].type)) {
 						var blob = files[i].getAsFile();

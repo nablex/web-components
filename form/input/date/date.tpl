@@ -5,6 +5,7 @@
 		<n-form-text class="n-form-date-input" 
 			@focus="showPopup" 
 			:pattern="pattern ? pattern : dynamicPattern" 
+			:pattern-comment="patternComment"
 			v-model="date" 
 			:placeholder="placeholder"
 			:label="label"

@@ -47,6 +47,7 @@ Vue.component("n-form-richtext", {
 			valid: null,
 			showBlock: false,
 			showJustify: false,
+			showDecoration: false,
 			color: "#000000"
 		};
 	},
@@ -83,7 +84,8 @@ Vue.component("n-form-richtext", {
 		link: function() {
 			var link = prompt("Link");
 			if (link) {
-				document.execCommand("createLink", false, link);
+				//document.execCommand("createLink", false, link);
+				document.execCommand("insertHTML", false, "<a target='_blank' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
 			}
 		},
 		paste: function(event) {

@@ -34,16 +34,21 @@ $n-form-line-height: 3rem !default;
 		color: $n-form-date-hero-contrast;
 		
 		.month {
+			display: inline-block;
 			font-weight: 700;
 			font-size: 1.2rem;
+			max-height: 3rem;
+			overflow: hidden;
+			width: calc(100% - 14rem);
 		}
 		a {
-			font-size: 1.625rem;
-			height: $n-form-line-height;
-			width: $n-form-line-height;
-			position: absolute;
 			background-color: inherit;
 			color: inherit;
+			display: inline-block;
+			font-size: 1.625rem;
+			height: $n-form-line-height;
+			vertical-align: top;
+			width: $n-form-line-height;
 			
 			&.n-input-date-previous-year {
 				left: 0;
@@ -92,12 +97,6 @@ $n-form-line-height: 3rem !default;
 			background-color: $success-color;
 			a {
 				color: $success-contrast;
-			}
-		}
-		&.n-input-date-available {
-			background-color: $info-color;
-			a {
-				color: $info-contrast;
 			}
 		}
 		&.n-input-date-not-available {

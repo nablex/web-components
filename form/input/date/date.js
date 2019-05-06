@@ -33,6 +33,10 @@ Vue.component("n-form-date", {
 			type: String,
 			required: false
 		},
+		patternComment: {
+			type: String,
+			required: false
+		},
 		minLength: {
 			type: Number,
 			required: false
@@ -135,7 +139,8 @@ Vue.component("n-form-date", {
 			valid: null,
 			show: false,
 			date: null,
-			customizedSchema: null
+			customizedSchema: null,
+			lastParsed: null
 		}
 	},
 	computed: {
@@ -172,6 +177,15 @@ Vue.component("n-form-date", {
 		}
 		if (this.value instanceof Date || typeof(this.value) == "number") {
 			this.date = this.formatValue(this.value);
+		}
+		else if (typeof(this.value) == "string") {
+			var parsed = this.parser ? this.parser(this.value) : new Date(this.value);
+			this.date = this.formatValue(parsed);
+			// if it should not be stringified and we have a string, emit that
+			if (!this.stringified) {
+				this.$emit("input", parsed);
+				this.$emit("label", this.value);
+			}
 		}
 		else {
 			this.date = this.value;
@@ -217,7 +231,11 @@ Vue.component("n-form-date", {
 			}
 			else {
 				this.$emit("input", this.parser ? this.parser(value) : new Date(value));
+				this.$emit("label", value);
 			}
+		},
+		isAvailable: function(date) {
+			return this.allow == null || this.allow(date);
 		},
 		dateValidate: function(value) {
 			var messages = [];
@@ -227,10 +245,16 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
-			if (value != null && this.$refs.dateInput && this.$refs.dateInput.parse(value) != null && isNaN(this.$refs.dateInput.parse(value).getTime())) {
+			var parsed = value == null ? null
+				: (this.parser ? this.parser(value) : new Date(value));
+			// it is "a" value but not a parseable value
+			if ((value != null && (parsed == null || !parsed.getTime))
+					// or it is not a valid date
+					|| (parsed != null && parsed.getTime && isNaN(parsed.getTime()))) {
 				messages.push({
 					severity: "error",
 					code: "type",
+					title: "%{validation:This is not a valid date: {actual}}",
 					values: {
 						actual: value,
 						expected: "date"
@@ -238,12 +262,15 @@ Vue.component("n-form-date", {
 					context: []
 				});
 			}
-			else if (value != null && !this.isAvailable(value)) {
+			else if (parsed != null && parsed.getTime && !isNaN(parsed.getTime()) && !this.isAvailable(parsed)) {
 				messages.push({
 					severity: "error",
 					code: "allowed",
-					title: "%{validation:De datum is niet toegestaan}",
-					priority: 10,
+					title: "%{validation:This date is not allowed: {actual}}",
+					priority: 1,
+					variables: {
+						actual: value					
+					},
 					context: []
 				});
 			}
@@ -267,7 +294,8 @@ Vue.component("n-form-date", {
 				return this.parser(value);
 			}
 			if (!this.includeHours) {
-				value += " 00:00:00"
+				// if we don't have hours, we want to use UTC
+				value += "T00:00:00Z"
 			}
 			else if (!this.includeMinutes) {
 				value += ":00:00"
@@ -283,35 +311,61 @@ Vue.component("n-form-date", {
 			if (!newValue) {
 				if (this.value) {
 					this.$emit("input", null);
+					this.$emit("label", null);
 				}
 			}
 			else if (this.secondsTimestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime() / 1000);
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.timestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime());
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
+					newValue = this.formatValue(this.parser ? this.parser(newValue) : new Date(newValue))
 					this.$emit("input", newValue);
+					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else {
 				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
-				if (!this.value || newValue.getTime() != this.value.getTime()) {
-					this.$emit("input", newValue);
+				if (newValue && newValue.getTime) {
+					if (!this.value || newValue.getTime() != this.value.getTime()) {
+						this.lastParsed = newValue;
+						this.$emit("input", newValue);
+						this.$emit("label", this.formatValue(newValue));
+					}
+				}
+				// otherwise unset the value, at this point you are visually looking at something that is not a date
+				// if we don't emit null, the old date will be retained (but invisible) making it for a weird interaction
+				else {
+					this.lastParsed = null;
+					this.$emit("input", null);
+					this.$emit("label", null);
 				}
 			}
 		},
 		value: function(newValue) {
 			if (newValue instanceof Date || typeof(newValue) == "number") {
-				this.date = this.formatValue(newValue);
+				var formatted = this.formatValue(newValue);
+				// if we have parsed something in the past and it has now come back but for some reason it differs from the date itself, we might have a timezone issue
+				if (this.lastParsed != null && this.lastParsed.getTime() == newValue.getTime() && formatted != this.date) {
+					console.warn("Prevented a date loop potentially caused by a timezone difference", this.lastParsed, formatted, this.date);
+				}
+				else {
+					this.date = formatted;
+				}
+				// unset the last parsed, we had a successful roundtrip
+				// someone might want to alter it externally
+				this.lastParsed = null;
 			}
 			else {
 				this.date = newValue;

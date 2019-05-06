@@ -16,7 +16,7 @@ nabu.utils.vue.form = {
 		// bind in the additional keys
 		var keys = ["minLength", "maxLength", "pattern", "patternComment", "maxItems", "minItems", "maximum", "minimum", "exclusiveMaximum", "exclusiveMinimum", "enum"];
 		for (var i = 0; i < keys.length; i++) {
-			if (typeof(component[keys[i]]) != "undefined") {
+			if (component[keys[i]] != null) {
 				schema[keys[i]] = component[keys[i]];
 			}
 		}
@@ -27,7 +27,7 @@ nabu.utils.vue.form = {
 		if (required == null && component.name && component.$parent && component.$parent.definition) {
 			required = component.$parent.definition.required && component.$parent.definition.required.indexOf(component.name) >= 0;
 		}
-		if (required == null && component.definition.required) {
+		if (required == null && component.definition && component.definition.required) {
 			required = true;
 		}
 		if (required == null) {
@@ -109,6 +109,10 @@ nabu.utils.vue.form = {
 					}
 				}
 				nabu.utils.arrays.merge(messages, childMessages);
+			}
+			// recurse over non-form components, they might be structural and secretly contain other form elements
+			else {
+				nabu.utils.arrays.merge(messages, nabu.utils.vue.form.validateChildren(component.$children[i], soft));
 			}
 		}
 		return messages;
