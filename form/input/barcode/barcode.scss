@@ -1,0 +1,34 @@
+.n-form-qr {
+	.n-form-barcode-container {
+		text-align: center;
+		.n-form-canvas-container {
+			position: relative;
+			display: inline-block;
+		}
+		.overlay {
+			border: dashed 1px #ccc;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+	&.n-form-barcode-scanned {
+		.overlay {
+			border: none;
+			background-color: rgba(55,55,55,0.6);
+			.n-form-barcode-retry {
+				background-color: rgba(200,200,200,0.8);
+			}
+		}		
+	}
+	.n-form-barcode-retry {
+		padding: 1rem;
+		.fa {
+			margin-right: 0.7rem;
+		}
+	}
+}
