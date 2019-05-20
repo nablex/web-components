@@ -65,6 +65,11 @@ Vue.component("n-input-combo", {
 		autoselectSingle: {
 			type: Boolean,
 			required: false
+		},
+		caseInsensitive: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-input-combo",
@@ -164,6 +169,9 @@ Vue.component("n-input-combo", {
 				this.filterItems(this.content, this.label);
 			}
 		},
+		refilter: function() {
+			this.filterItems(this.content, this.label);
+		},
 		filterItems: function(content, label, match, initial) {
 			var result = this.filter(content, label);
 			this.values.splice(0, this.values.length);
@@ -211,7 +219,7 @@ Vue.component("n-input-combo", {
 			var match = null;
 			for (var i = 0; i < this.values.length; i++) {
 				var formatted = this.values[i] != null && this.formatter ? this.formatter(this.values[i]) : this.values[i];
-				if (formatted == value) {
+				if (formatted == value || (this.caseInsensitive && formatted.toLowerCase && value && value.toLowerCase && formatted.toLowerCase() == value.toLowerCase())) {
 					match = this.values[i];
 					break;
 				}
@@ -235,6 +243,11 @@ Vue.component("n-input-combo", {
 			// explicitly set it, the v-model does not always seem to work in combination with the input event?
 			this.content = value;
 			var match = this.checkForMatch(value);
+			
+			// hide dropdown if you have a match by typing
+			if (match) {
+				this.showValues = false;
+			}
 
 			// try to finetune the results
 			if (this.filter) {

@@ -60,6 +60,17 @@
 					"date.js": {
 						"url": "form/input/date/date.js"
 					}
+				},
+				"date-picker": {
+					"date-picker.scss": {
+						"url": "form/input/date-picker/date-picker.scss"
+					}, 
+					"date-picker.tpl": {
+						"url": "form/input/date-picker/date-picker.tpl"
+					}, 
+					"date-picker.js": {
+						"url": "form/input/date-picker/date-picker.js"
+					}
 				}, 
 				"combo": {
 					"combo.sass": {

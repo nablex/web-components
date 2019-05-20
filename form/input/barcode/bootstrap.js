@@ -4,7 +4,6 @@ window.addEventListener("load", function() {
 	if (application && nabu && nabu.page) {
 		Vue.component("page-form-input-barcode-configure", {
 			template: "<n-form-section>"
-				+ "	<n-form-switch v-model='field.allowManualEntry' label='Allow manual entry' />"
 				+ "	<n-form-text type='number' v-model='field.canvasWidth' label='Width (in pixels)' />"
 				+ "	<n-form-text type='number' v-model='field.canvasHeight' label='Height (in pixels)' />"
 				+ "	<div class='list' v-if='field.decoders'>"
@@ -16,7 +15,7 @@ window.addEventListener("load", function() {
 				+ "	<button @click=\"field.decoders ? field.decoers.push(null) : $window.Vue.set(field, 'decoders', [null])\">Add Barcode Type</button>"
 				+ "	<n-form-text v-model='field.icon' label='Icon' />"
 				+ "	<n-form-text v-model='field.buttonLabel' label='Buton Label' />"
-				+ "	<n-form-switch v-model='field.manualEntry' label='Manual Entry' />"
+				+ "	<n-form-switch v-model='field.manualEntry' label='Allow manual entry' />"
 				+ "	<n-form-text v-if='field.manualEntry' v-model='field.manualLabel' label='Manual Label' />"
 				+ "	<n-page-mapper v-model='field.bindings' :from='availableParameters' :to='[\"validator\"]'/>"
 				+ "</n-form-section>",
@@ -48,7 +47,7 @@ window.addEventListener("load", function() {
 		});
 
 		Vue.component("page-form-input-barcode", {
-			template: "<n-form-barcode :allow-manual='field.allowManualEntry' ref='form'"
+			template: "<n-form-barcode :manual-entry='field.manualEntry' ref='form'"
 				+ "	:schema='schema'"
 				+ "	@input=\"function(newValue) { $emit('input', newValue) }\""
 				+ "	:label='label'"

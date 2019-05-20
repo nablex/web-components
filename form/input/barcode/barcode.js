@@ -87,9 +87,7 @@ Vue.component("n-form-barcode", {
 		}
 	},
 	beforeDestroy: function() {
-		if (this.stop) {
-			this.stop();
-		}
+		this.stop();
 	},
 	computed: {
 		definition: function() {
@@ -103,18 +101,17 @@ Vue.component("n-form-barcode", {
 			return nabu.utils.vue.form.mandatory(this);
 		}
 	},
-	beforeDestroy: function() {
-		this.stop();
-	},
 	methods: {
 		stop: function() {
 			if (this.stopper) {
 				this.stopper();
 				this.stopper = null;
+				this.scanning = false;
 			}
 		},
 		scan: function() {
 			this.stop();
+			this.scanning = true;
 			var self = this;
 			var canvas = this.$refs.canvas;
 			var context = canvas.getContext("2d");
@@ -142,7 +139,7 @@ Vue.component("n-form-barcode", {
 			}, function(err) {
 				if (err) {
 					console.log(err);
-					return
+					return;
 				}
 				var onProcessed = function(result) {
 					// clear the image (though probably not necessary because of next step)
@@ -182,10 +179,11 @@ Vue.component("n-form-barcode", {
 				// draw the result
 				Quagga.onProcessed(onProcessed);
 				self.stopper = function(result) {
-					self.code = result ? result.codeResult : null;
+					self.code = result && result.codeResult ? result.codeResult.code : null;
 					Quagga.stop();
 					Quagga.offDetected(self.stopper);
 					Quagga.offProcessed(onProcessed);
+					self.scanning = false;
 				};
 				// once a result has been detected, stop scanning
 				Quagga.onDetected(self.stopper);
@@ -210,5 +208,3 @@ Vue.component("n-form-barcode", {
 		}
 	}
 });
-
-
