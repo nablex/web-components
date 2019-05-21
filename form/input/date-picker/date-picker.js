@@ -109,6 +109,11 @@ Vue.component("n-form-date-picker", {
 		description: {
 			type: String,
 			required: false
+		},
+		filterValues: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	data: function() {
@@ -214,7 +219,7 @@ Vue.component("n-form-date-picker", {
 			// at some point we might want to add labels (e.g. month formatting)
 			if (field == "year") {
 				for (var i = from.getFullYear(); i <= to.getFullYear(); i++) {
-					if (value == null || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+					if (value == null || !this.filterValues || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 						options.push(i);
 					}
 				}
@@ -232,7 +237,7 @@ Vue.component("n-form-date-picker", {
 							continue;
 						}
 					}
-					if (value == null || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+					if (value == null || !this.filterValues || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 						options.push(i);
 					}
 				}
@@ -253,7 +258,7 @@ Vue.component("n-form-date-picker", {
 							continue;
 						}
 					}
-					if (value == null || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+					if (value == null || !this.filterValues || this.formatField(field, i).toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 						options.push(i);
 					}
 				}
