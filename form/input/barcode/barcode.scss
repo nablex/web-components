@@ -1,7 +1,18 @@
 .n-form-barcode {
+	// injected by quagga? its dimensions are uncontrollable?
+	.drawingBuffer {
+		display: none;
+	}
 	.n-form-barcode-container {
 		text-align: center;
 		.n-form-canvas-container {
+			position: relative;
+			video {
+				position: absolute;
+			}
+			.barcode-canvas {
+				position: relative;
+			}
 			.overlay {
 				align-items: center;
 				border: dashed 1px #ccc;

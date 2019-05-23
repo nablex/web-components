@@ -26,6 +26,21 @@ Vue.component("n-form-date-picker", {
 			type: String,
 			required: false
 		},
+		placeholderYear: {
+			type: String,
+			required: false,
+			default: "%{date:Year}"
+		},
+		placeholderMonth: {
+			type: String,
+			required: false,
+			default: "%{date:Month}"
+		},
+		placeholderDay: {
+			type: String,
+			required: false,
+			default: "%{date:Day}"
+		},
 		schema: {
 			type: Object,
 			required: false
@@ -146,6 +161,13 @@ Vue.component("n-form-date-picker", {
 		},
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
+		},
+		formattedDate: function() {
+			var format = this.format;
+			if (!format) {
+				format = "dd MMMM yyyy"
+			}
+			return this.value == null ? null : this.$services.formatter.date(this.value, format);
 		}
 	},
 	methods: {
@@ -182,6 +204,18 @@ Vue.component("n-form-date-picker", {
 				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
 			}
 			return messages;
+		},
+		getPlaceholder: function(field) {
+			if (field == "year") {
+				return this.placeholderYear;
+			}
+			else if (field == "month") {
+				return this.placeholderMonth;
+			}
+			else if (field == "day") {
+				return this.placeholderDay;
+			}
+			return null;
 		},
 		editable: function(field) {
 			return field == "year"
@@ -275,9 +309,6 @@ Vue.component("n-form-date-picker", {
 			else if (field == "month") {
 				return nabu.utils.dates.months()[value - 1];
 			}
-			else if (field == "day") {
-				return parseInt(value) < 10 ? "0" + value : "" + value;
-			}
 			return "" + value;
 		},
 		updateField: function(field, value) {
@@ -323,13 +354,19 @@ Vue.component("n-form-date-picker", {
 			}
 			// we want to avoid timezone issues
 			var string = null;
-			if (this.result.year != null) {
-				string = this.result.year;
+			var hasAllFields = true;
+			for (var i = 0; i < this.fields.length; i++) {
+				if (this.result[this.fields[i]] == null) {
+					hasAllFields = false;
+					break;
+				}
+			}
+			if (hasAllFields) {
+				string = this.result.year == null ? new Date().getFullYear() : this.result.year;
 				string += "-" + (this.result.month == null ? "01" : (this.result.month < 10 ? "0" : "") + this.result.month);
 				string += "-" + (this.result.day == null ? "01" : (this.result.day < 10 ? "0" : "") + this.result.day);
 				string +="T00:00:00Z";
 			}
-			console.log("emitting", string);
 			this.$emit("input", string == null ? null : new Date(string));
 		}
 	}
