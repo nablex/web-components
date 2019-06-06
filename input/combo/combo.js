@@ -117,6 +117,11 @@ Vue.component("n-input-combo", {
 			this.synchronizeValue(true);
 		}
 	},
+	computed: {
+		formatted: function() {
+			return this.formatter ? this.formatter(this.actualValue) : this.actualValue;
+		}
+	},
 	methods: {
 		synchronizeValue: function(initial) {
 			var self = this;
@@ -173,6 +178,7 @@ Vue.component("n-input-combo", {
 			if (this.keyValue && this.values.indexOf(this.keyValue) < 0) {
 				this.keyValue = null;
 			}
+			
 			if (this.keyValue == null) {
 				this.setKeyValue();
 			}
@@ -188,7 +194,7 @@ Vue.component("n-input-combo", {
 			}
 		},
 		validateTab: function($event) {
-			if (this.keyValue != null) {
+			if (this.keyValue != null && $event.shiftKey == false && this.showValues) {
 				var value = this.keyValue;
 				this.keyValue = null;
 				this.updateValue(value);
@@ -199,7 +205,7 @@ Vue.component("n-input-combo", {
 			this.showValues = false;
 			this.keyValue = null;
 		},
-		moveUp: function() {
+		moveUp: function($event) {
 			this.showValues = true;
 			if (this.keyValue == null) {
 				var index = this.value ? this.values.indexOf(this.value) : -1;
@@ -220,8 +226,10 @@ Vue.component("n-input-combo", {
 				}
 				this.scrollTo("pondering");
 			}
+			$event.preventDefault();
+			$event.stopPropagation();
 		},
-		moveDown: function() {
+		moveDown: function($event) {
 			this.showValues = true;
 			if (this.keyValue == null) {
 				var index = this.value ? this.values.indexOf(this.value) : -1;
@@ -247,10 +255,14 @@ Vue.component("n-input-combo", {
 				}
 				this.scrollTo("pondering");
 			}
+			$event.preventDefault();
+			$event.stopPropagation();
 		},
 		scrollTo: function(clazz) {
 			var target = this.$el.querySelector("." + clazz);
-			target.parentNode.scrollTop = target.offsetTop - (target.parentNode.offsetHeight / 2);
+			if (target) {
+				target.parentNode.scrollTop = target.offsetTop - (target.parentNode.offsetHeight / 2);
+			}
 		},
 		clear: function() {
 			this.content = null;
@@ -347,6 +359,7 @@ Vue.component("n-input-combo", {
 			// hide dropdown if you have a match by typing
 			if (match) {
 				this.showValues = false;
+				this.keyValue = null;
 			}
 
 			// try to finetune the results
@@ -371,7 +384,7 @@ Vue.component("n-input-combo", {
 			var self = this;
 			setTimeout(function() {
 				self.showValues = false;
-			}, 100);
+			}, 500);
 		},
 		// you select something from the dropdown
 		updateValue: function(value) {
@@ -457,6 +470,11 @@ Vue.component("n-input-combo", {
 			}
 			else {
 				this.keyValue = null;
+			}
+		},
+		formatted: function(newValue) {
+			if (newValue) {
+				this.content = newValue;
 			}
 		}
 	}

@@ -17,9 +17,8 @@
 				@keypress.enter="validateEnter"
 				@keydown.tab="validateTab"
 				@keyup.esc="doEscape"
-				@keyup.up="moveUp"
-				@keyup.down="moveDown"
-				@blur="hideSlowly"
+				@keydown.up="moveUp"
+				@keydown.down="moveDown"
 				:name="name"
 				:value="content"
 				:disabled="disabled">
