@@ -1,7 +1,7 @@
 <template id="n-form-richtext">
-	<div class="n-form-richtext n-form-component">
-		<div class="n-form-richtext-menu" v-if="edit" v-auto-close="function() { showBlock = false; showJustify = false; showDecoration = false; }">
-			<div class="n-form-richtext-menu-container">
+	<div class="n-form-richtext n-form-component" v-auto-close="function() { focused = false }">
+		<div class="n-form-richtext-menu" v-if="edit && focused" v-auto-close="function() { showBlock = false; showJustify = false; showDecoration = false; }">
+			<div class="n-form-richtext-menu-container" @click="focused = true" v-auto-close.block="function() { showBlock = false }">
 				<button @click="showBlock = !showBlock">
 					<span class="n-icon fa n-icon-th-large fa-th-large"></span>
 					<span class="n-form-richtext-button-description">%{text:Block}</span>
@@ -10,34 +10,40 @@
 					<button @click="wrap('p')">
 						<span class="n-icon fa n-icon-paragraph fa-paragraph"></span>
 						<span class="n-form-richtext-button-description">%{text:Block}</span>
-					</button>
-					<button @click="wrap('h1')">
+					</button
+					><button @click="wrap('h1')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H1}</span>
-					</button>
-					<button @click="wrap('h2')">
+					</button
+					><button @click="wrap('h2')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H2}</span>
-					</button>
-					<button @click="wrap('h3')">
+					</button
+					><button @click="wrap('h3')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H3}</span>
-					</button>
-					<button @click="wrap('h4')">
+					</button
+					><button @click="wrap('h4')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H4}</span>
-					</button>
-					<button @click="wrap('h5')">
+					</button
+					><button @click="wrap('h5')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H5}</span>
-					</button>
-					<button @click="wrap('h6')">
+					</button
+					><button @click="wrap('h6')">
 						<span class="n-icon fa n-icon-header fa-heading"></span>
 						<span class="n-form-richtext-button-description">%{text:H6}</span>
+					</button><button @click="insertTable">
+						<span class="n-icon fa n-icon-table fa-table"></span>
+						<span class="n-form-richtext-button-description">%{text:Table}</span>
+					</button><button @click="link">
+						<span class="n-icon fa n-icon-link fa-link"></span>
+						<span class="n-form-richtext-button-description">%{text:Link}</span>
 					</button>
 				</div>
 			</div>
-			<div class="n-form-richtext-menu-container">
+			<div class="n-form-richtext-menu-container"  v-auto-close.block="function() { showJustify = false }">
 				<button @click="showJustify = !showJustify">
 					<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
 					<span class="n-form-richtext-button-description">%{text:Justify}</span>
@@ -46,16 +52,16 @@
 					<button @click="justify('justifyCenter')">
 						<span class="n-icon fa n-icon-align-center fa-align-center"></span>
 						<span class="n-form-richtext-button-description">%{text:Center}</span>
-					</button>
-					<button @click="justify('justifyLeft')">
+					</button
+					><button @click="justify('justifyLeft')">
 						<span class="n-icon fa n-icon-align-left fa-align-left"></span>
 						<span class="n-form-richtext-button-description">%{text:Left}</span>
-					</button>
-					<button @click="justify('justifyRight')">
+					</button
+					><button @click="justify('justifyRight')">
 						<span class="n-icon fa n-icon-align-right fa-align-right"></span>
 						<span class="n-form-richtext-button-description">%{text:Right}</span>
-					</button>
-					<button @click="justify('justifyFull')">
+					</button
+					><button @click="justify('justifyFull')">
 						<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
 						<span class="n-form-richtext-button-description">%{text:Full}</span>
 					</button><button @click="list">
@@ -70,7 +76,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="n-form-richtext-menu-container">
+			<div class="n-form-richtext-menu-container"  v-auto-close.block="function() { showDecoration = false }">
 				<button @click="showDecoration = !showDecoration">
 					<span class="n-icon fa n-icon-font fa-font"></span>
 					<span class="n-form-richtext-button-description">%{text:Decoration}</span>
@@ -93,16 +99,9 @@
 						<span class="n-form-richtext-button-description">%{text:Paint}</span>
 					</button>
 				</div>
-			</div>
-			<button @click="insertTable">
-				<span class="n-icon fa n-icon-table fa-table"></span>
-				<span class="n-form-richtext-button-description">%{text:Table}</span>
-			</button><button @click="link">
-				<span class="n-icon fa n-icon-link fa-link"></span>
-				<span class="n-form-richtext-button-description">%{text:Link}</span>
-			</button></div>
+			</div></div>
 		<div class="n-form-richtext-editor">
-			<div @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
+			<div @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
 			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
 		</div>
 	</div>

@@ -1,5 +1,6 @@
 .n-form-richtext {
 	margin: 1rem;
+	position: relative;
 
 	.n-form-richtext-editor {
 		display: flex;
@@ -21,7 +22,10 @@
 	}
 	
 	.n-form-richtext-menu {
-		position: relative;
+		z-index: 11;
+		position: absolute;
+		right: 0;
+		top: 100%;
 		white-space: nowrap;
 		.n-form-richtext-menu-content {
 			display: none;
@@ -52,34 +56,39 @@
 		}
 		.n-form-richtext-choices {
 			position: absolute;
-			top: 100%;
+			bottom: 100%;
+			right: 0;
 			white-space: nowrap;
 			text-align: left;
 			button {
 				border-style: solid;
 				display: inline-block;
 			}
+			.fa {
+				&:before {
+					font-size: 0.6rem;
+				}
+			 }
 		}
 		button, input {
 			background-color: $light-color;
 			color: $light-contrast;
-			margin: 0 0.2rem;
+			//margin: 0 0.2rem;
 			height: 2rem;
 			width: 2rem;
 			border: $beta-border solid 1px;
-			border-style: solid solid none solid;
 			padding: 0;
 			
 			.n-form-richtext-button-description {
-				font-size: 0.55rem;
+				font-size: 0.5rem;
 				display: none;
 				margin-top: 0.2rem;
 			}
 		}
 		.n-form-richtext-choices {
 			button, input {
-				height: 3rem;
-				width: 3rem;
+				height: 2rem;
+				width: 2.3rem;
 			}
 			.n-form-richtext-button-description {
 				display: block;
