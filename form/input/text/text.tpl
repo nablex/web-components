@@ -22,6 +22,7 @@
 			:name="name"
 			/><textarea
 				@input="updateValue($event.target.value)" 
+				:rows="rows"
 				:placeholder="placeholder" 
 				:disabled="disabled" 
 				:value="value" 
