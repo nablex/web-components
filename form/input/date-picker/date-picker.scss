@@ -1,0 +1,14 @@
+.n-form-date-picker {
+	.n-form-date-picker-form {
+		display: flex;
+		.n-form-combo { 
+			flex-grow: 1;
+			+ .n-form-combo {
+				margin-left: 0.3rem;
+			}
+		}
+		.n-form-combo-bottom {
+			display: none;
+		}
+	}
+}

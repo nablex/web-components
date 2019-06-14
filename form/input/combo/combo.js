@@ -84,6 +84,11 @@ Vue.component("n-form-combo", {
 		autoselectSingle: {
 			type: Boolean,
 			required: false
+		},
+		caseInsensitive: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-combo",
@@ -103,6 +108,9 @@ Vue.component("n-form-combo", {
 		}
 	},
 	methods: {
+		refilter: function() {
+			this.$refs.combo.refilter();
+		},
 		validate: function(soft) {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);

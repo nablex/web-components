@@ -130,6 +130,9 @@ Vue.component("n-form-date", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		default: {
+			required: false
 		}
 	},
 	template: "#n-form-date",
@@ -164,6 +167,9 @@ Vue.component("n-form-date", {
 		}
 	},
 	created: function() {
+		if (!this.value && this.default) {
+			this.$emit("input", this.default);
+		}
 		if (this.schema) {
 			// we are expecting timestamp, but this won't validate correctly because we are working with strings
 			if (this.schema.type == "integer") {

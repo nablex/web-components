@@ -66,6 +66,9 @@ $n-form-line-height: 3rem !default;
 			&.active {
 				background-color: #e5e5e5;
 			}
+			&.pondering {
+				background-color: #eaeaea;
+			}
 		}
 		
 		
@@ -83,6 +86,10 @@ $n-form-line-height: 3rem !default;
 			&.active {
 				background-color: $secondary-color;
 				color: $secondary-contrast;
+			}
+			&.pondering {
+				background-color: lighten($secondary-color, 5%);
+				color: lighten($secondary-contrast, 5%);
 			}
 			span {
 				white-space: nowrap;

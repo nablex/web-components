@@ -43,12 +43,25 @@ Vue.component("n-form-qr", {
 			required: false,
 			default: 480
 		},
+		buttonLabel: {
+			type: String,
+			required: false
+		},
 		manualLabel: {
+			type: String,
+			required: false
+		},
+		icon: {
 			type: String,
 			required: false
 		},
 		validator: {
 			type: Function,
+			required: false
+		},
+		// whether or not manual entry is allowed
+		manualEntry: {
+			type: Boolean,
 			required: false
 		}
 	},
@@ -66,7 +79,6 @@ Vue.component("n-form-qr", {
 		}
 	},
 	beforeDestroy: function() {
-		console.log("destroying video", this.stop);
 		if (this.stop) {
 			this.stop();
 		}
@@ -91,7 +103,7 @@ Vue.component("n-form-qr", {
 			var context = canvas.getContext("2d");
 			this.context = context;
 			var self = this;
-			// Use facingMode: environment to attemt to get the front camera on phones
+			// Use facingMode: environment to attempt to get the front camera on phones
 			navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
 				self.scanning = true;
 				video.srcObject = stream;
@@ -167,7 +179,7 @@ Vue.component("n-form-qr", {
 			}
 		},
 		validate: function(soft) {
-			this.$refs.text.validate(soft);
+			return this.$refs.text.validate(soft);
 		}
 	},
 	watch: {

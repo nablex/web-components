@@ -108,6 +108,11 @@ Vue.component("n-form-text", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		autoScale: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -119,6 +124,17 @@ Vue.component("n-form-text", {
 		};
 	},
 	computed: {
+		rows: function() {
+			if (this.autoScale) {
+				if (!this.value) {
+					return 1;
+				}
+				else {
+					return this.value.length - this.value.replace(/\n/g, "").length + 1;
+				}
+			}
+			return null;
+		},
 		definition: function() {
 			var definition = nabu.utils.vue.form.definition(this);
 			if (this.type == "number") {

@@ -14,6 +14,11 @@
 		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false }">
 		
 			<input @focus="showValues = true" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+				@keypress.enter="validateEnter"
+				@keydown.tab="validateTab"
+				@keyup.esc="doEscape"
+				@keydown.up="moveUp"
+				@keydown.down="moveDown"
 				:name="name"
 				:value="content"
 				:disabled="disabled">
@@ -21,7 +26,7 @@
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValues = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && values && values.length">
-				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': potential == value }" @click="updateValue(potential)" :auto-close="autoclose">
+				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': extracter ? extracter(potential) == value : potential == value, 'pondering': potential == keyValue }" @click="updateValue(potential)" :auto-close="autoclose">
 					<slot name="value" :value="potential"><span>{{ formatter ? formatter(potential) : potential }}</span></slot>
 				</li>
 			</ul>

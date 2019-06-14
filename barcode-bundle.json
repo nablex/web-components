@@ -1,0 +1,26 @@
+{
+	"name": "web-components-barcode", 
+	"resources": {
+		"form": {
+			"input": {
+				"barcode": {
+					"quagga.js": {
+						"url": "https://raw.githubusercontent.com/serratus/quaggaJS/master/dist/quagga.js"
+					},
+					"barcode.scss": {
+						"url": "form/input/barcode/barcode.scss"
+					}, 
+					"barcode.tpl": {
+						"url": "form/input/barcode/barcode.tpl"
+					}, 
+					"barcode.js": {
+						"url": "form/input/barcode/barcode.js"
+					},
+					"barcode-bootstrap.js": {
+						"url": "form/input/barcode/bootstrap.js"
+					}
+				}
+			}
+		}
+	}
+}

@@ -9,6 +9,7 @@
 		</slot>
 
 		<n-input-combo v-show="edit" 
+			:case-insensitive="caseInsensitive"
 			@label="function(newValue) { valueLabel = newValue }"
 			:value="value" 
 			:labels="labels" 

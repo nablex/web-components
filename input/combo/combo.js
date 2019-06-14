@@ -65,6 +65,16 @@ Vue.component("n-input-combo", {
 		autoselectSingle: {
 			type: Boolean,
 			required: false
+		},
+		caseInsensitive: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		allowTypeMatch: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-input-combo",
@@ -77,7 +87,9 @@ Vue.component("n-input-combo", {
 			content: null,
 			timer: null,
 			updatingContent: false,
-			actualValue: null
+			actualValue: null,
+			// the value selected with the keys
+			keyValue: null
 		}
 	},
 	created: function() {
@@ -103,6 +115,11 @@ Vue.component("n-input-combo", {
 		// do a synchronization if we do not have an extracter, we are not dependend on values being loaded then
 		if (!this.extracter) {
 			this.synchronizeValue(true);
+		}
+	},
+	computed: {
+		formatted: function() {
+			return this.formatter ? this.formatter(this.actualValue) : this.actualValue;
 		}
 	},
 	methods: {
@@ -157,11 +174,114 @@ Vue.component("n-input-combo", {
 				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
 			}
 			self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
+			
+			if (this.keyValue && this.values.indexOf(this.keyValue) < 0) {
+				this.keyValue = null;
+			}
+			
+			if (this.keyValue == null) {
+				this.setKeyValue();
+			}
+		},
+		validateEnter: function($event) {
+			if (this.keyValue != null) {
+				$event.preventDefault();
+				$event.stopPropagation();
+				var value = this.keyValue;
+				this.keyValue = null;
+				this.updateValue(value);
+				this.showValues = false;
+			}
+		},
+		validateTab: function($event) {
+			if (this.keyValue != null && $event.shiftKey == false && this.showValues) {
+				var value = this.keyValue;
+				this.keyValue = null;
+				this.updateValue(value);
+			}
+			this.showValues = false;
+		},
+		doEscape: function() {
+			this.showValues = false;
+			this.keyValue = null;
+		},
+		moveUp: function($event) {
+			this.showValues = true;
+			if (this.keyValue == null) {
+				var index = this.value ? this.values.indexOf(this.value) : -1;
+				if (index > 0) {
+					this.keyValue = this.values[index - 1];
+				}
+				else {
+					this.keyValue = this.values.length ? this.values[0] : null;
+				}
+			}
+			else {
+				var index = this.values.indexOf(this.keyValue);
+				if (index < 0) {
+					this.keyValue = this.values.length ? this.values[0] : null;
+				}
+				else if (index > 0) {
+					this.keyValue = this.values[index - 1];
+				}
+				this.scrollTo("pondering");
+			}
+			$event.preventDefault();
+			$event.stopPropagation();
+		},
+		moveDown: function($event) {
+			this.showValues = true;
+			if (this.keyValue == null) {
+				var index = this.value ? this.values.indexOf(this.value) : -1;
+				if (index >= 0) {
+					if (index < this.values.length - 1) {
+						this.keyValue = this.values[index + 1];
+					}
+					else {
+						this.keyValue = this.value;
+					}
+				}
+				else {
+					this.keyValue = this.values.length ? this.values[0] : null;
+				}
+			}
+			else {
+				var index = this.values.indexOf(this.keyValue);
+				if (index < 0) {
+					this.keyValue = this.values.length ? this.values[0] : null;
+				}
+				else if (index < this.values.length - 1) {
+					this.keyValue = this.values[index + 1];
+				}
+				this.scrollTo("pondering");
+			}
+			$event.preventDefault();
+			$event.stopPropagation();
+		},
+		scrollTo: function(clazz) {
+			var target = this.$el.querySelector("." + clazz);
+			if (target) {
+				target.parentNode.scrollTop = target.offsetTop - (target.parentNode.offsetHeight / 2);
+			}
 		},
 		clear: function() {
 			this.content = null;
 			if (this.filter) {
 				this.filterItems(this.content, this.label);
+			}
+		},
+		refilter: function() {
+			this.filterItems(this.content, this.label);
+		},
+		setKeyValue: function() {
+			var self = this;
+			if (self.keyValue == null) {
+				if (self.value && self.values.indexOf(self.value) >= 0) {
+					self.keyValue = self.value;
+				}
+				else if (self.values.length) {
+					self.keyValue = self.values[0];
+				}
 			}
 		},
 		filterItems: function(content, label, match, initial) {
@@ -211,7 +331,7 @@ Vue.component("n-input-combo", {
 			var match = null;
 			for (var i = 0; i < this.values.length; i++) {
 				var formatted = this.values[i] != null && this.formatter ? this.formatter(this.values[i]) : this.values[i];
-				if (formatted == value) {
+				if (formatted == value || (this.caseInsensitive && formatted.toLowerCase && value && value.toLowerCase && formatted.toLowerCase() == value.toLowerCase())) {
 					match = this.values[i];
 					break;
 				}
@@ -234,7 +354,13 @@ Vue.component("n-input-combo", {
 		updateContent: function(value) {
 			// explicitly set it, the v-model does not always seem to work in combination with the input event?
 			this.content = value;
-			var match = this.checkForMatch(value);
+			var match = this.allowTypeMatch ? this.checkForMatch(value) : null;
+			
+			// hide dropdown if you have a match by typing
+			if (match) {
+				this.showValues = false;
+				this.keyValue = null;
+			}
 
 			// try to finetune the results
 			if (this.filter) {
@@ -245,16 +371,24 @@ Vue.component("n-input-combo", {
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.filterItems(match || !value ? null : value, self.label, !match);
+						self.filterItems(match || !value ? null : value, self.label, !match && this.allowTypeMatch);
 					}, this.timeout);
 				}
 				else {
-					this.filterItems(match || !value ? null : value, this.label, !match);
+					this.filterItems(match || !value ? null : value, this.label, !match && this.allowTypeMatch);
 				}
 			 }
 		},
+		// if we hide immediately on blur, we don't register the click event anymore
+		hideSlowly: function() {
+			var self = this;
+			setTimeout(function() {
+				self.showValues = false;
+			}, 500);
+		},
 		// you select something from the dropdown
 		updateValue: function(value) {
+			this.keyValue = null;
 			this.updatingContent = true;
 			this.actualValue = value;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
@@ -323,6 +457,24 @@ Vue.component("n-input-combo", {
 			if (this.label && newValue.indexOf(this.label) < 0) {
 				this.label = newValue.length ? newValue[0] : null;
 				this.filterItems(this.content, this.label);
+			}
+		},
+		showValues: function(newValue) {
+			if (newValue) {
+				var self = this;
+				this.keyValue = null;
+				this.setKeyValue();
+				Vue.nextTick(function() {
+					self.scrollTo("active");
+				});
+			}
+			else {
+				this.keyValue = null;
+			}
+		},
+		formatted: function(newValue) {
+			if (newValue) {
+				this.content = newValue;
 			}
 		}
 	}
