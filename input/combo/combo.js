@@ -125,6 +125,7 @@ Vue.component("n-input-combo", {
 	methods: {
 		synchronizeValue: function(initial) {
 			var self = this;
+			var hadValue = this.actualValue != null;
 			if (this.value != null) {
 				if (this.extracter) {
 					// only look for a match if we haven't found one already
@@ -171,7 +172,10 @@ Vue.component("n-input-combo", {
 			// only update the content if this is the initial setting
 			// afterwards people just type and it remains
 			if (initial) {
-				this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+				// if we did not have a value before, we stranded mid-type, no need to wipe it
+				if (this.actualValue != null || hadValue) {
+					this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+				}
 			}
 			self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 			
@@ -438,11 +442,12 @@ Vue.component("n-input-combo", {
 			}
 		},
 		value: function(newValue, oldValue) {
-			if (!this.updatingContent) {
-				this.synchronizeValue(true);
+			if (this.updatingContent) {
+				this.synchronizeValue(false);
+				this.updatingContent = false;
 			}
 			else {
-				this.updatingContent = false;
+				this.synchronizeValue(true);
 			}
 		},
 		disabled: function(newValue, oldValue) {
@@ -479,3 +484,4 @@ Vue.component("n-input-combo", {
 		}
 	}
 });
+
