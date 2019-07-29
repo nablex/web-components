@@ -11,9 +11,10 @@
 				</li>
 			</ul>
 		</div>
-		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false }">
+		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false; focusOut() }">
 		
-			<input @focus="showValues = true" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+			<input @focus="focusOn" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+				@blur="stillFocused = false"
 				@keypress.enter="validateEnter"
 				@keydown.tab="validateTab"
 				@keyup.esc="doEscape"

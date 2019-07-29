@@ -414,6 +414,12 @@ Vue.component("n-form-address", {
 						return place.types.indexOf("locality") >= 0 || place.types.indexOf("city") >= 0 || place.types.indexOf("sublocality") >= 0;
 					}
 					else if (field == "postCode") {
+						// we assume it contains _some_ number at least
+						// otherwise you can get weird suggestions, for example we had country "frankrijk", city "nully", postcode suggestion "saint-cyr"
+						// this is because we have to take locality & sublocality into account, otherwise we can't resolve the 2100 postcode for deurne (belgie)
+						if (!self.formatAutocomplete("postCode", place).match(/.*[0-9]+.*/)) {
+							return false;
+						}
 						return place.types.indexOf("postal_code") >= 0 || place.types.indexOf("locality") >= 0 || place.types.indexOf("sublocality") >= 0;
 					}
 					else if (field == "streetNumber") {

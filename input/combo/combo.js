@@ -89,7 +89,8 @@ Vue.component("n-input-combo", {
 			updatingContent: false,
 			actualValue: null,
 			// the value selected with the keys
-			keyValue: null
+			keyValue: null,
+			stillFocused: false
 		}
 	},
 	created: function() {
@@ -123,6 +124,30 @@ Vue.component("n-input-combo", {
 		}
 	},
 	methods: {
+		focusOn: function($event) {
+			var self = this;
+			this.stillFocused = true;
+			// in the address component you have multiple combos after one another
+			// filling in a correct value in one, enables the next one and puts focus on it
+			// however, we can trigger that by clicking anywhere with the mouse (so not on this combo)
+			// it seems the focus event is triggered before the mouse event that triggers the auto close
+			// so the showvalues is briefly set to true by the on focus and immediately set to false by the auto close
+			// for this reason, we do the showvalues in a tiny timeout to circumvent this behavior
+			setTimeout(function() {
+				if (self.stillFocused) {
+					self.showValues = true;
+				}
+			}, 100);
+		},
+		focusOut: function($event) {
+			var self = this;
+			// if you didn't select one but you did start typing
+			if (self.value == null && self.keyValue != null && self.content != null && self.content.trim().length > 0) {
+				var keyValue = self.keyValue;
+				self.keyValue = null;
+				self.updateValue(keyValue);
+			}
+		},
 		synchronizeValue: function(initial) {
 			var self = this;
 			var hadValue = this.actualValue != null;
