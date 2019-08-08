@@ -11,7 +11,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="n-input-combo-input-container" v-auto-close="function() { showValues = false; focusOut() }">
+		<div class="n-input-combo-input-container" v-auto-close="function(inside) { showValues = false; if (!inside) { focusOut() } }">
 		
 			<input @focus="focusOn" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
 				@blur="stillFocused = false"
