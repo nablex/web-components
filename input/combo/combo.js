@@ -304,7 +304,7 @@ Vue.component("n-input-combo", {
 		},
 		setKeyValue: function() {
 			var self = this;
-			if (self.keyValue == null) {
+			if (self.showValues && self.keyValue == null) {
 				if (self.value && self.values.indexOf(self.value) >= 0) {
 					self.keyValue = self.value;
 				}
@@ -474,6 +474,8 @@ Vue.component("n-input-combo", {
 			else {
 				this.synchronizeValue(true);
 			}
+			this.keyValue = null;
+			this.setKeyValue();
 		},
 		disabled: function(newValue, oldValue) {
 			if (newValue == false && oldValue == true) {
