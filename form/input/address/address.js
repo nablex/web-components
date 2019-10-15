@@ -104,8 +104,7 @@ Vue.component("n-form-address", {
 		},
 		countryLabel: {
 			type: String,
-			required: false,
-			default: "%{Country}"
+			required: false
 		},
 		// political or locality
 		city: {
@@ -114,8 +113,7 @@ Vue.component("n-form-address", {
 		},
 		cityLabel: {
 			type: String,
-			required: false,
-			default: "%{City}"
+			required: false
 		},
 		// administrative_area_level_2
 		province: {
@@ -134,8 +132,7 @@ Vue.component("n-form-address", {
 		},
 		streetLabel: {
 			type: String,
-			required: false,
-			default: "%{Street}"
+			required: false
 		},
 		// street_number
 		streetNumber: {
@@ -145,8 +142,7 @@ Vue.component("n-form-address", {
 		// street_number
 		streetNumberLabel: {
 			type: String,
-			required: false,
-			default: "%{Street Number}"
+			required: false
 		},
 		postCode: {
 			type: String,
@@ -154,8 +150,7 @@ Vue.component("n-form-address", {
 		},
 		postCodeLabel: {
 			type: String,
-			required: false,
-			default: "%{Zip Code}"
+			required: false
 		},
 		formatted: {
 			type: String,
@@ -386,6 +381,9 @@ Vue.component("n-form-address", {
 			if (this.countryField) {
 				address = field == "country" ? newValue : this.value[this.countryField];
 			}
+			else if (this.countryRestriction) {
+				address = this.countryRestriction;
+			}
 			if (field != "country") {
 				if (this.city && (field == "city" || this.value[this.city])) {
 					var city = field == "city" ? newValue : this.value[this.city];
@@ -393,6 +391,9 @@ Vue.component("n-form-address", {
 						city = city + " " + (field == "postCode" ? newValue : this.value[this.postCode]);
 					}
 					address += ", " + city;
+				}
+				else if (!this.city && this.postCode && (field == "postCode" || this.value[this.postCode])) {
+					address += ", " + (field == "postCode" ? newValue : this.value[this.postCode]);
 				}
 				if (field != "city" && field != "postCode") {
 					if (this.street && (field == "street" || this.value[this.street])) {
@@ -512,3 +513,4 @@ Vue.component("n-form-address", {
 		}
 	}
 });
+
