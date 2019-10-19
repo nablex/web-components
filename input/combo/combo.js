@@ -314,7 +314,9 @@ Vue.component("n-input-combo", {
 			}
 		},
 		filterItems: function(content, label, match, initial) {
-			this.showValues = true;
+			if (this.stillFocused) {
+				this.showValues = true;
+			}
 			var result = this.filter(content, label);
 			this.values.splice(0, this.values.length);
 			if (result instanceof Array) {
