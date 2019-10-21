@@ -251,7 +251,7 @@ Vue.component("n-form-date", {
 					nabu.utils.arrays.merge(messages, childMessages);
 				}
 			}
-			var parsed = value == null ? null
+			var parsed = !value ? null
 				: (this.parser ? this.parser(value) : new Date(value));
 			// it is "a" value but not a parseable value
 			if ((value != null && (parsed == null || !parsed.getTime))
