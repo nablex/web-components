@@ -1,5 +1,9 @@
 <template id="n-form-radio">
-	<div class="n-form-components n-form-radios" :class="{ 'n-form-hidden': hide, 'n-form-disabled': disabled }" :optional="hide != null">
+	<div class="n-form-component n-form-radios" :class="{ 'n-form-hidden': hide, 'n-form-disabled': disabled }" :optional="hide != null">
+		
+		<slot name="radios-label" :label="label" :mandatory="mandatory">
+			<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
+		</slot>
 		<slot name="top"></slot>
 		<div v-for="item in items" class="n-form-component n-form-radio" :class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }">
 			<input ref="input" 

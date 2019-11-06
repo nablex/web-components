@@ -15,6 +15,10 @@ Vue.component("n-form-radio", {
 			// explicitly set default value to null, otherwise vue will make it false which we can't distinguish from "not set"
 			default: null
 		},
+		label: {
+			type: String,
+			required: false
+		},
 		name: {
 			type: String,
 			required: false
