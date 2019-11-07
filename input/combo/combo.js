@@ -174,7 +174,7 @@ Vue.component("n-input-combo", {
 								if (actualValue instanceof Array) {
 									actualValue = actualValue[0];
 								}
-								self.actualValue = actualValue != null ? self.extracter(actualValue) : actualValue;
+								self.actualValue = actualValue;
 								if (initial) {
 									self.content = self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null;
 								}
