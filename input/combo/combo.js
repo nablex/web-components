@@ -98,7 +98,12 @@ Vue.component("n-input-combo", {
 			this.label = this.initialLabel && this.labels.indexOf(this.initialLabel) >= 0 ? this.initialLabel : this.labels[0];
 		}
 		if (this.filter && !this.disabled) {
-			this.filterItems(this.content, this.label, null, true);
+			try {
+				this.filterItems(this.content, this.label, null, true);
+			}
+			catch (exception) {
+				console.warn("Could not perform initial filter", exception);
+			}
 		}
 		else if (this.items) {
 			if (this.items.then) {
@@ -113,8 +118,8 @@ Vue.component("n-input-combo", {
 				this.synchronizeValue(true);
 			}
 		}
-		// do a synchronization if we do not have an extracter, we are not dependend on values being loaded then
-		if (!this.extracter) {
+		// do a synchronization if we do not have an extracter, we are not dependend on values being loaded then, the resolver does make it possible
+		if (!this.extracter || this.resolver) {
 			this.synchronizeValue(true);
 		}
 	},

@@ -99,6 +99,11 @@ nabu.utils.vue.form = {
 		return localMessages;
 	},
 	validateChildren: function(component, soft) {
+		var wrap = function(promise) {
+			var newPromise = new nabu.utils.promise();
+			promise.then(newPromise, newPromise);
+			return newPromise;
+		};
 		var messages = nabu.utils.schema.addAsyncValidation([]);
 		for (var i = 0; i < component.$children.length; i++) {
 			if (component.$children[i].validate) {
@@ -109,10 +114,17 @@ nabu.utils.vue.form = {
 					}
 				}
 				nabu.utils.arrays.merge(messages, childMessages);
+				if (childMessages && childMessages.then) {
+					messages.defer(wrap(childMessages));
+				}
 			}
 			// recurse over non-form components, they might be structural and secretly contain other form elements
 			else {
-				nabu.utils.arrays.merge(messages, nabu.utils.vue.form.validateChildren(component.$children[i], soft));
+				var childMessages = nabu.utils.vue.form.validateChildren(component.$children[i], soft);
+				nabu.utils.arrays.merge(messages, childMessages);
+				if (childMessages && childMessages.then) {
+					messages.defer(wrap(childMessages));
+				}
 			}
 		}
 		return messages;

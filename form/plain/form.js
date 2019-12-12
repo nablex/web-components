@@ -8,6 +8,11 @@ Vue.component("n-form", {
 		mode: {
 			type: String,
 			required: false
+		},
+		// alternative code mappings for validations
+		codes: {
+			type: Object,
+			required: false
 		}
 	},
 	template: "#n-form",
@@ -21,7 +26,24 @@ Vue.component("n-form", {
 	},
 	methods: {
 		validate: function(soft) {
-			return nabu.utils.vue.form.validateChildren(this, soft);
+			var messages = nabu.utils.vue.form.validateChildren(this, soft);
+			var self = this;
+			var map = function(validations) {
+				if (self.codes) {
+					validations.forEach(function(x) {
+						if (x.code && self.codes[x.code]) {
+							Vue.set(x, "title", self.codes[x.code]);
+						}
+					});
+				}
+			}
+			map(messages);
+			if (messages.then) {
+				messages.then(function() {
+					map(messages);
+				})
+			}
+			return messages;
 		}
 	}
 });
