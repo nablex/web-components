@@ -166,7 +166,8 @@ Vue.component("n-form-address", {
 			place: null,
 			sessionToken: null,
 			resolvedType: null,
-			ready: false
+			ready: false,
+			postCodeFull: null
 		};
 	},
 	computed: {
@@ -194,6 +195,14 @@ Vue.component("n-form-address", {
 			if (this.city && this.value[this.city]) {
 				address = this.value[this.city] + ", " + address;
 			}
+			else if (!this.city && this.postCode && this.value[this.postCode]) {
+				if (this.postCodeFull) {
+					address = this.postCodeFull + (address ? ", " + address : "");
+				}
+				else {
+					address = this.value[this.postCode] + ", " + address;
+				}
+			}
 			if (this.street && this.value[this.street]) {
 				var street = this.value[this.street];
 				if (this.streetNumber && this.value[this.streetNumber]) {
@@ -201,7 +210,63 @@ Vue.component("n-form-address", {
 				}
 				address = street + ", " + address;
 			}
+			if (this.formatted) {
+				Vue.set(this.value, this.formatted, address);
+			}
 			return address;
+		},
+		anyRequired: function() {
+			if (this.schemaResolver) {
+				if (this.country) {
+					var result = this.schemaResolver(this.country);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.countryCode) {
+					var result = this.schemaResolver(this.countryCode);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.city) {
+					var result = this.schemaResolver(this.city);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.postCode) {
+					var result = this.schemaResolver(this.postCode);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.province) {
+					var result = this.schemaResolver(this.province);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.region) {
+					var result = this.schemaResolver(this.region);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.street) {
+					var result = this.schemaResolver(this.street);
+					if (result && result.required) {
+						return true;
+					}
+				}
+				if (this.streetNumber) {
+					var result = this.schemaResolver(this.streetNumber);
+					if (result && result.required) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 	},
 	created: function() {
@@ -260,7 +325,7 @@ Vue.component("n-form-address", {
 			// if we are interested in lat & long, we need to further resolve the address
 			// this is only useful if we have a complete address
 			var self = this;
-			if (this.latitude || this.longitude || this.countryCode) {
+			if (this.latitude || this.longitude || (this.countryCode && !this.value[this.countryCode])) {
 				if ((self.country == null || self.value[self.country])
 						&& (self.city == null || self.value[self.city])
 						&& (self.postCode == null || self.value[self.postCode])
@@ -281,14 +346,24 @@ Vue.component("n-form-address", {
 						if (self.countryCode) {
 							self.value[self.countryCode] = self.getPart(place, ["country"], true);
 						}
-						console.log("VALUE", JSON.stringify(self.value, null, 2));
 					});
 				}
 			}
 		},
-		updateCountry: function(country) {
-			this.updateCity(null);
+		updateCountry: function(country, ignoreEmit) {
+			this.updateCity(null, true);
 			Vue.set(this.value, this.countryField, this.formatAutocomplete('country', country));
+			
+			if (this.countryCode) {
+				Vue.set(this.value, this.countryCode, null);
+				if (this.countryRestriction) {
+					var parts = this.countryRestriction.split(/[\s]*,[\s]*/);
+					if (parts.length == 1 && parts[0].trim().length != 0) {
+						Vue.set(this.value, this.countryCode, parts[0].trim());
+					}
+				}
+			}
+			this.$emit("changed");
 			
 			var self = this;
 			// likely disabled!
@@ -307,9 +382,12 @@ Vue.component("n-form-address", {
 			});
 			this.checkFullAddress();
 		},
-		updateCity: function(city) {
-			this.updatePostCode(null);
+		updateCity: function(city, ignoreEmit) {
+			this.updatePostCode(null, true);
 			Vue.set(this.value, this.city, this.formatAutocomplete('city', city));
+			if (!ignoreEmit) {
+				this.$emit("changed");
+			}
 			var self = this;
 			Vue.nextTick(function() {
 				if (city) {
@@ -323,9 +401,12 @@ Vue.component("n-form-address", {
 			});
 			this.checkFullAddress();
 		},
-		updatePostCode: function(postCode) {
-			this.updateStreet(null);
+		updatePostCode: function(postCode, ignoreEmit) {
+			this.updateStreet(null, true);
 			Vue.set(this.value, this.postCode, this.formatAutocomplete('postCode', postCode));
+			if (!ignoreEmit) {
+				this.$emit("changed");
+			}
 			var self = this;
 			Vue.nextTick(function() {
 				if (postCode) {
@@ -336,9 +417,12 @@ Vue.component("n-form-address", {
 			});
 			this.checkFullAddress();
 		},
-		updateStreet: function(street) {
-			this.updateStreetNumber(null);
+		updateStreet: function(street, ignoreEmit) {
+			this.updateStreetNumber(null, true);
 			Vue.set(this.value, this.street, this.formatAutocomplete('street', street));
+			if (!ignoreEmit) {
+				this.$emit("changed");
+			}
 			var self = this;
 			Vue.nextTick(function() {
 				if (street) {
@@ -349,8 +433,11 @@ Vue.component("n-form-address", {
 			});
 			this.checkFullAddress();
 		},
-		updateStreetNumber: function(streetNumber) {
+		updateStreetNumber: function(streetNumber, ignoreEmit) {
 			Vue.set(this.value, this.streetNumber, this.formatAutocomplete('streetNumber', streetNumber));
+			if (!ignoreEmit) {
+				this.$emit("changed");
+			}
 			this.checkFullAddress();
 		},
 		searchField: function(field, newValue) {
@@ -474,16 +561,24 @@ Vue.component("n-form-address", {
 		formatPlace: function(place) {
 			return place.formatted_address ? place.formatted_address : place.description;
 		},
-		formatAutocomplete: function(field, place) {
+		formatAutocomplete: function(field, place, offset) {
+			if (!offset) {
+				offset = 0;
+			}
 			if (!place) {
 				return null;
 			}
 			else if (typeof(place) == "string") {
 				return place;
 			}
+			var appendCity = false;
+			if (field == "postCodeFull") {
+				appendCity = true;
+				field = "postCode";
+			}
 			var self = this;
 			// they tend to repeat terms in random order (perhaps depending on the type?)
-			return place.terms.filter(function(term) {
+			var result = place.terms.filter(function(term) {
 				var term = term.value;
 				if (field == "country") {
 					return true;
@@ -506,10 +601,19 @@ Vue.component("n-form-address", {
 						&& (self.postCode == null || term != self.value[self.postCode])
 						&& (self.street == null || term != self.value[self.street]);
 				}
-			})[0].value;
+			})[offset].value;
 			// the postcode might return "Deurne, 2100"
-			var parts = place.structured_formatting.main_text.split(",");
-			return parts[parts.length - 1];
+			//var parts = place.structured_formatting.main_text.split(",");
+			//var result = parts[parts.length - 1];
+			// if we have a postcode but no city visible, let's add the city by default (in the future via config)
+			if (appendCity && field == "postCode" && !this.city) {
+				var city = this.formatAutocomplete("city", place, 1);
+				if (city) {
+					result += ", " + city;
+					this.postCodeFull = result;
+				}
+			}
+			return result;
 		}
 	}
 });

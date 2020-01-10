@@ -142,5 +142,11 @@ Vue.component("n-form-combo", {
 		clear: function() {
 			this.$refs.combo.clear();
 		}
+	},
+	watch: {
+		value: function() {
+			this.messages.splice(0);
+			this.valid = null;
+		}
 	}
 });

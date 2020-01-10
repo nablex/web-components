@@ -113,15 +113,47 @@ Vue.component("n-form-text", {
 			type: Boolean,
 			required: false,
 			default: false
-		}
+		},
+		iconValid: {
+			type: String,
+			default: "n-icon n-icon-check fa fa-check"
+		},
+		iconInvalid: {
+			type: String,
+			default: "n-icon n-icon-times fa fa-times"
+		},
+		descriptionIcon: {
+			type: String,
+			required: false
+		},
+		description: {
+			type: String,
+			required: false
+		},
+		descriptionType: {
+			type: String,
+			default: "after"
+		},
+		suffix: {
+			type: String,
+			required: false
+		},
+		suffixIcon: {
+			type: String,
+			required: false
+		}	
 	},
 	template: "#n-form-text",
 	data: function() {
 		return {
 			messages: [],
 			valid: null,
-			timer: null
+			timer: null,
+			localValue: null
 		};
+	},
+	created: function() {
+		this.localValue = this.value;
 	},
 	computed: {
 		rows: function() {
@@ -158,8 +190,7 @@ Vue.component("n-form-text", {
 		},
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
-			//var valueToValidate = this.value;
-			var valueToValidate = this.$refs.input.value;
+			var valueToValidate = this.edit ? this.$refs.input.value : this.value;
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, valueToValidate, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
@@ -253,6 +284,8 @@ Vue.component("n-form-text", {
 			this.valid = null;
 			// remove local messages
 			this.messages.splice(0);
+			this.localValue = this.value;
 		}
 	}
 });
+

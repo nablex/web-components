@@ -8,12 +8,12 @@
 				@input="updateCountry"
 				:timeout="timeout"
 				:allow-type-match="false"
-				:schema="schemaResolver ? schemaResolver(country) : null"
+				:schema="schemaResolver ? schemaResolver(country ? country : countryCode) : null"
 				:name="country"
 				:formatter="formatAutocomplete.bind($self, 'country')"
 				class="country"
 				ref="country"/>
-			
+
 			<n-form-combo :filter="searchField.bind($self, 'city')" v-if="city" 
 				:disabled="countryField && !value[countryField]"
 				:label="cityLabel"
@@ -34,7 +34,7 @@
 				@input="updatePostCode"
 				:timeout="timeout"
 				:allow-type-match="false"
-				:formatter="formatAutocomplete.bind($self, 'postCode')"
+				:formatter="formatAutocomplete.bind($self, 'postCodeFull')"
 				:schema="schemaResolver ? schemaResolver(postCode) : null"
 				:name="postCode"
 				class="postCode"
@@ -86,9 +86,12 @@
 
 		</div>
 		<div v-else>
-			<label v-if="label">{{label}}</label>
+			<div class="n-form-label-wrapper">
+				<label v-if="label" class="n-form-label" :class="{'n-form-input-required': anyRequired, 'n-form-input-optional': !anyRequired}">{{label}}</label>
+			</div>
 			<span class="n-form-read">{{ formattedAddress }}</span>
 		</div>
 
 	</div>
 </template>
+

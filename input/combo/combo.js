@@ -319,7 +319,10 @@ Vue.component("n-input-combo", {
 			}
 		},
 		filterItems: function(content, label, match, initial) {
-			if (this.stillFocused) {
+			// if we trigger a filterItems with no content, we might be doing this right after we have selected a match
+			// in this case we might want to explicitly close the value dropdown
+			// which means, in such a case, the caller is responsible for explicitly showing the items if still relevant
+			if (this.stillFocused && content) {
 				this.showValues = true;
 			}
 			var result = this.filter(content, label);
