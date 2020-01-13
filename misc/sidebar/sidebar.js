@@ -10,17 +10,28 @@ Vue.component("n-sidebar", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		inline: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	ready: function() {
 		if (this.popout) {
 			this.parentNode = this.$el.parentNode;
 			this.$root.$el.appendChild(this.$el);
+			if (this.inline) {
+				document.body.setAttribute("has-sidebar", "true");
+			}
 		}
 	},
 	methods: {
 		close: function() {
 			if (this.popout) {
+				if (this.inline) {
+					document.body.removeAttribute("has-sidebar");
+				}
 				if (this.$el.parentNode != this.parentNode) {
 					this.parentNode.appendChild(this.$el);
 				}
