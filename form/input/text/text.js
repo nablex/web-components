@@ -130,6 +130,10 @@ Vue.component("n-form-text", {
 			type: String,
 			required: false
 		},
+		info: {
+			type: String,
+			required: false
+		},
 		descriptionType: {
 			type: String,
 			default: "after"

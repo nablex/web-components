@@ -1,11 +1,11 @@
 <template id="n-form-text">
 	<div class="n-form-component n-form-text" :class="[mandatory ? 'n-form-input-required' : 'n-form-input-optional', { 'n-form-hidden': hide },{ 'n-form-invalid': valid != null && !valid },{ 'n-form-valid': valid != null && valid }, type ? 'n-form-text-' + type : null ]" :optional="hide != null">
 		<slot name="top"></slot>
-		<div class="n-form-label-wrapper">
+		<div class="n-form-label-wrapper" v-if="label || info || (description && descriptionType == 'info')">
 			<slot name="label" :label="label" :mandatory="mandatory">
 				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 			</slot>
-			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info'">{{ description }}</n-info>
+			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info' || info"><span  v-html="info ? info : description"></span></n-info>
 		</div>
 		<div class="n-form-component-description n-form-component-description-before"  v-if="descriptionType == 'before' && (descriptionIcon || description)">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
