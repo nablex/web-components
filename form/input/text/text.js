@@ -145,7 +145,15 @@ Vue.component("n-form-text", {
 		suffixIcon: {
 			type: String,
 			required: false
-		}	
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		}
 	},
 	template: "#n-form-text",
 	data: function() {

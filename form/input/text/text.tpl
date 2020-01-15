@@ -7,9 +7,9 @@
 			</slot>
 			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info' || info"><span  v-html="info ? info : description"></span></n-info>
 		</div>
-		<div class="n-form-component-description n-form-component-description-before"  v-if="descriptionType == 'before' && (descriptionIcon || description)">
+		<div class="n-form-component-description n-form-component-description-before"  v-if="(descriptionType == 'before' || before) && (descriptionIcon || description)">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ description }}</span>
+			<span class="n-form-component-description-label">{{ before ? before : description }}</span>
 		</div>
 		<div class="n-form-input-wrapper">
 			<input 
@@ -57,9 +57,9 @@
 		</slot>
 		
 		
-		<div class="n-form-component-description n-form-component-description-after" v-if="descriptionType == 'after' && (descriptionIcon || description)">
+		<div class="n-form-component-description n-form-component-description-after" v-if="(descriptionType == 'after' || after) && (descriptionIcon || description)">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ description }}</span>
+			<span class="n-form-component-description-label">{{ after ? after : description }}</span>
 		</div>
 	</div>
 </template>

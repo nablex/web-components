@@ -131,7 +131,35 @@ Vue.component("n-form-date", {
 			required: false,
 			default: false
 		},
-		default: {
+		"default": {
+			required: false
+		},		
+		descriptionIcon: {
+			type: String,
+			required: false
+		},
+		description: {
+			type: String,
+			required: false
+		},
+		descriptionType: {
+			type: String,
+			default: "after"
+		},
+		disableTextInput: {
+			type: Boolean,
+			required: false
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
 			required: false
 		}
 	},

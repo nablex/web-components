@@ -17,9 +17,15 @@
 			:maxLength="maxLength"
 			type="text"
 			:hide="hide"
-			:disabled="disabled"
+			:disabled="disableTextInput || disabled"
 			:validator="dateValidate"
 			:unique="unique"
+			:info="info"
+			:before="before"
+			:after="after"
+			:description="description"
+			:descriptionIcon="descriptionIcon"
+			:descriptionType="descriptionType"
 			ref="text"
 			:timeout="timeout">
 			
