@@ -15,6 +15,11 @@ Vue.component("n-sidebar", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		position: {
+			type: String,
+			required: false,
+			default: "right"
 		}
 	},
 	ready: function() {
@@ -22,7 +27,7 @@ Vue.component("n-sidebar", {
 			this.parentNode = this.$el.parentNode;
 			this.$root.$el.appendChild(this.$el);
 			if (this.inline) {
-				document.body.setAttribute("has-sidebar", "true");
+				document.body.setAttribute("has-sidebar", this.position == "left" ? "left" : "right");
 			}
 		}
 	},

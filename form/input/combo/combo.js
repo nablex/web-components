@@ -89,6 +89,30 @@ Vue.component("n-form-combo", {
 			type: Boolean,
 			required: false,
 			default: false
+		},		
+		descriptionIcon: {
+			type: String,
+			required: false
+		},
+		description: {
+			type: String,
+			required: false
+		},
+		descriptionType: {
+			type: String,
+			default: "after"
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
@@ -150,3 +174,4 @@ Vue.component("n-form-combo", {
 		}
 	}
 });
+

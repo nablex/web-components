@@ -9,9 +9,9 @@
 		</div>		
 
 
-		<div class="n-form-component-description n-form-component-description-before"  v-if="descriptionType == 'before'">
+		<div class="n-form-component-description n-form-component-description-before"  v-if="before || descriptionType == 'before'">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ description }}</span>
+			<span class="n-form-component-description-label">{{ before ? before : description }}</span>
 		</div>
 		
 		<slot v-if="!edit">
@@ -53,9 +53,9 @@
 
 		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
 		
-		<div class="n-form-component-description n-form-component-description-after" v-if="descriptionType == 'after'">
+		<div class="n-form-component-description n-form-component-description-after" v-if="after || descriptionType == 'after'">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ description }}</span>
+			<span class="n-form-component-description-label">{{ after ? after : description }}</span>
 		</div>		
 		
 	</div>

@@ -1,4 +1,7 @@
-body[has-sidebar="true"] {
+body[has-sidebar="right"], body[has-sidebar="true"] {
+	margin-right: 500px;
+}
+body[has-sidebar="left"] {
 	margin-right: 500px;
 }
 .n-sidebar {
@@ -8,7 +11,12 @@ body[has-sidebar="true"] {
 	width: 500px;
 	max-width: 100vw;
 	top: 0;
-	right: 0;
+	&.left {
+		left: 0;
+	}
+	&:not(.left) {
+		right: 0;
+	}
 	background-color: $beta-color;
 	border: $beta-border solid 1px;
 	

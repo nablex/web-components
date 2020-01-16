@@ -54,7 +54,31 @@ Vue.component("n-form-radio", {
 		extracter: {
 			type: Function,
 			required: false
-		}
+		},
+		descriptionIcon: {
+			type: String,
+			required: false
+		},
+		description: {
+			type: String,
+			required: false
+		},
+		descriptionType: {
+			type: String,
+			default: "after"
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		}		
 	},
 	template: "#n-form-radio",
 	data: function() {
@@ -79,35 +103,43 @@ Vue.component("n-form-radio", {
 			return nabu.utils.vue.form.definition(this);
 		},
 		mandatory: function() {
+			console.log("computed mandatory:", nabu.utils.vue.form.mandatory(this));
 			return nabu.utils.vue.form.mandatory(this);
 		}
 	},
 	methods: {
-		validate: function() {
+		validate: function(soft) {
+			console.log("validate messages:", messages);
+			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
+			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
+			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
+			if (requiredMessage && this.$refs && this.$refs.combo && this.$refs.combo.content) {
+				requiredMessage.title = "%{validation:Please choose a value}";
+				requiredMessage.actual = this.$refs.combo.content;
+			}
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
 			}
-			if (this.validator) {
-				var additional = this.validator(this.value);
-				if (additional && additional.length) {
-					for (var i = 0; i < additional.length; i++) {
-						additional[i].component = this;
-						if (typeof(additional[i].context) == "undefined") {
-							additional[i].context = [];
-						}
-						messages.push(additional[i]);
-					}
-				}
+			var hardMessages = messages.filter(function(x) { return !x.soft });
+			// if we are doing a soft validation and all messages were soft, set valid to unknown
+			if (soft && hardMessages.length == 0 && (messages.length > 0 || this.value == null) && (this.valid == null || this.value == null)) {
+				this.valid = null;
+				// remove local messages
+				this.messages.splice(0);
 			}
-			this.valid = messages.length == 0;
+			else {
+				this.valid = messages.length == 0;
+				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
+			}
 			return messages;
-		}, 
+		},		
 		select: function(option) {
 			if (!this.disabled && this.edit) {
 				this.$emit("input", this.extracter ? this.extracter(option) : option);
 				// we don't know if it's valid at this point
 				this.valid = null;
+				this.messages.splice(0);
 			}
 		}
 	}

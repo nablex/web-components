@@ -28,18 +28,15 @@ Vue.component("n-form-date-picker", {
 		},
 		placeholderYear: {
 			type: String,
-			required: false,
-			default: "%{date:Year}"
+			required: false
 		},
 		placeholderMonth: {
 			type: String,
-			required: false,
-			default: "%{date:Month}"
+			required: false
 		},
 		placeholderDay: {
 			type: String,
-			required: false,
-			default: "%{date:Day}"
+			required: false
 		},
 		schema: {
 			type: Object,
@@ -129,7 +126,36 @@ Vue.component("n-form-date-picker", {
 			type: Boolean,
 			required: false,
 			default: false
-		}
+		},
+		descriptionIcon: {
+			type: String,
+			required: false
+		},
+		descriptionType: {
+			type: String,
+			default: "after"
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		suffix: {
+			type: String,
+			required: false
+		},
+		suffixIcon: {
+			type: String,
+			required: false
+		}		
+		
 	},
 	data: function() {
 		return {
@@ -367,7 +393,11 @@ Vue.component("n-form-date-picker", {
 				string += "-" + (this.result.day == null ? "01" : (this.result.day < 10 ? "0" : "") + this.result.day);
 				string +="T00:00:00Z";
 			}
-			this.$emit("input", string == null ? null : new Date(string));
+			// should also check if the value is the same but less critical
+			if (string != null || this.value != null) {
+				this.$emit("input", string == null ? null : new Date(string));
+			}
 		}
 	}
 });
+
