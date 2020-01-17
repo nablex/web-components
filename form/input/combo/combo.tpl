@@ -5,7 +5,7 @@
 				<slot name="label" :label="label" :mandatory="mandatory">
 					<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 				</slot>
-			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info'">{{ description }}</n-info>
+			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="info || descriptionType == 'info'"><span v-html="info ? info : description"></span></n-info>
 		</div>		
 
 
