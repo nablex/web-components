@@ -1,7 +1,7 @@
 <template id="n-form-combo">
 	<div class="n-form-combo n-form-component" :class="[mandatory ? 'n-form-input-required' : 'n-form-input-optional',{ 'n-form-invalid': valid != null && !valid },{ 'n-form-valid': valid != null && valid }]">
 		
-		<div class="n-form-label-wrapper">
+		<div class="n-form-label-wrapper" v-if="label || info || descriptionType == 'info'">
 				<slot name="label" :label="label" :mandatory="mandatory">
 					<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
 				</slot>
