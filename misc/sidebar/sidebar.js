@@ -22,17 +22,6 @@ Vue.component("n-sidebar", {
 			default: "right"
 		}
 	},
-	created: function() {
-		var position = this.position == "left" ? "left" : "right";
-		// by default we just want one open, or they would pop over each other
-		var existing = document.querySelector("#n-sidebar-" + position + "-instance");
-		if (existing && existing.__vue__ && existing.__vue__.close()) {
-			existing.__vue__.close();
-		}
-		else if (existing && existing.$$close) {
-			existing.$$close();
-		}
-	},
 	ready: function() {
 		if (this.popout) {
 			var position = this.position == "left" ? "left" : "right";
@@ -46,8 +35,20 @@ Vue.component("n-sidebar", {
 			}
 		}
 		this.$el.$$close = this.close;
+		this.closeOther();
 	},
 	methods: {
+		closeOther: function() {
+			var position = this.position == "left" ? "left" : "right";
+			// by default we just want one open, or they would pop over each other
+			var existing = document.querySelectorAll("#n-sidebar-" + position + "-instance");
+			var self = this;
+			existing.forEach(function(x) {
+				if (x != self.$el) {
+					x.$$close();
+				}
+			});
+		},
 		close: function() {
 			if (this.popout) {
 				if (this.inline) {
