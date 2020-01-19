@@ -23,6 +23,7 @@ Vue.component("n-sidebar", {
 		}
 	},
 	ready: function() {
+		this.closeOther();
 		if (this.popout) {
 			var position = this.position == "left" ? "left" : "right";
 			this.$el.setAttribute("id", "n-sidebar-" + position + "-instance");
@@ -35,7 +36,6 @@ Vue.component("n-sidebar", {
 			}
 		}
 		this.$el.$$close = this.close;
-		this.closeOther();
 	},
 	methods: {
 		closeOther: function() {
