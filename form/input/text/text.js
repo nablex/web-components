@@ -87,6 +87,10 @@ Vue.component("n-form-text", {
 			type: Number,
 			required: false
 		},
+		step: {
+			type: Number,
+			required: false
+		},
 		exclusiveMaximum: {
 			type: Number,
 			required: false
@@ -114,35 +118,11 @@ Vue.component("n-form-text", {
 			required: false,
 			default: false
 		},
-		iconValid: {
-			type: String,
-			default: "n-icon n-icon-check fa fa-check"
-		},
-		iconInvalid: {
-			type: String,
-			default: "n-icon n-icon-times fa fa-times"
-		},
-		descriptionIcon: {
-			type: String,
-			required: false
-		},
-		description: {
-			type: String,
-			required: false
-		},
 		info: {
 			type: String,
 			required: false
 		},
-		descriptionType: {
-			type: String,
-			default: "after"
-		},
 		suffix: {
-			type: String,
-			required: false
-		},
-		suffixIcon: {
 			type: String,
 			required: false
 		},
@@ -197,17 +177,18 @@ Vue.component("n-form-text", {
 				this.$refs.input.select();
 			}
 		},
-		handleKeyup: function($event) {
-			this.$emit('keyup', $event);
-		},
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
 			var valueToValidate = this.edit ? this.$refs.input.value : this.value;
-			this.messages.splice(0, this.messages.length);
+			// reset current messages
+			this.messages.splice(0);
+			// this performs all basic validation and enriches the messages array to support asynchronous
 			var messages = nabu.utils.schema.json.validate(this.definition, valueToValidate, this.mandatory);
+			// add context to the messages to we can link back to this component
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
 			}
+			// allow for unique validation
 			if (valueToValidate != null && this.unique && this.$group) {
 				var count = 0;
 				for (var i = 0; i < this.$group.length; i++) {
@@ -235,32 +216,21 @@ Vue.component("n-form-text", {
 					});
 				}
 			}
-			if (this.validator != null) {
-				var additional = this.validator(valueToValidate);
-				if (additional != null && additional.length) {
-					for (var i = 0; i < additional.length; i++) {
-						additional[i].component = this;
-						if (typeof(additional[i].context) == "undefined") {
-							additional[i].context = [];
-						}
-						messages.push(additional[i]);
-					}
+			// allow for custom validation
+			messages = nabu.utils.vue.form.validateCustom(messages, valueToValidate, this.validator, this);
+
+			var self = this;
+			messages.then(function(validations) {
+				var hardMessages = messages.filter(function(x) { return !x.soft });
+				// if we are doing a soft validation and all messages were soft, set valid to unknown
+				if (soft && hardMessages.length == 0 && (messages.length > 0 || !valueToValidate) && self.valid == null) {
+					self.valid = null;
 				}
-				else if (additional != null && additional.then) {
-					messages.defer(additional);
+				else {
+					self.valid = messages.length == 0;
+					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 				}
-			}
-			var hardMessages = messages.filter(function(x) { return !x.soft });
-			// if we are doing a soft validation and all messages were soft, set valid to unknown
-			if (soft && hardMessages.length == 0 && (messages.length > 0 || !valueToValidate) && this.valid == null) {
-				this.valid = null;
-				// remove local messages
-				this.messages.splice(0);
-			}
-			else {
-				this.valid = messages.length == 0;
-				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
-			}
+			});
 			return messages;
 		}, 
 		updateValue: function(value) {

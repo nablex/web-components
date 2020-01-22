@@ -128,5 +128,26 @@ nabu.utils.vue.form = {
 			}
 		}
 		return messages;
+	},
+	validateCustom: function(messages, valueToValidate, validator, context) {
+		// allow for custom validation
+		if (validator != null) {
+			var additional = validator(valueToValidate);
+			// we can send back asynchronous validations
+			if (additional != null && additional.then) {
+				messages.defer(additional);
+			}
+			// or an array of validations
+			else if (additional != null && additional.length) {
+				for (var i = 0; i < additional.length; i++) {
+					additional[i].component = context;
+					if (typeof(additional[i].context) == "undefined") {
+						additional[i].context = [];
+					}
+					messages.push(additional[i]);
+				}
+			}
+		}
+		return messages;
 	}
 }
