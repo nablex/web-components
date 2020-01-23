@@ -133,6 +133,10 @@ Vue.component("n-form-text", {
 		after: {
 			type: String,
 			required: false
+		},
+		allow: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-text",
@@ -171,6 +175,59 @@ Vue.component("n-form-text", {
 		}
 	},
 	methods: {
+		mergeContent: function(content) {
+			return this.$refs.input.value
+				? this.$refs.input.value.substring(0, this.$refs.input.selectionStart) + content + 
+					this.$refs.input.value.substring(this.$refs.input.selectionEnd)
+				: content;
+		},
+		pasteHandler: function($event) {
+			var clipboardData = clipboardData = $event.clipboardData || window.clipboardData;
+			var content = clipboardData.getData('Text');
+			if (this.allow) {
+				var response = this.allow(null, this.mergeContent(content));
+				// if you send back a string, it is assumed to be the complete string, not a rewrite of the new part
+				if (typeof(response) == "string") {
+					var current = this.$refs.input.selectionStart;
+					this.$refs.input.value = response;
+					this.$refs.input.selectionEnd = Math.min(current + 1, response.length);
+					//this.$refs.input.selectionStart = Math.min(current, response.length);
+					$event.preventDefault();
+					$event.stopPropagation();
+				}
+				// if we have any negative feedback, don't allow the paste
+				else if ((response instanceof Array && response.length > 0) || !response) {
+					$event.preventDefault();
+					$event.stopPropagation();
+				}
+			}
+		},
+		checkKey: function($event) {
+			if (this.allow && $event.key) {
+				var result = this.allow($event.key, this.mergeContent($event.key));
+				// you can send back an array of validation messages
+				// this can't be asynchronous because we need to block the event _now_
+				if (result instanceof Array) {
+					if (result.length > 0) {
+						$event.preventDefault();
+						return false;
+					}
+				}
+				// if we send back a string, we may have modified the end result
+				else if (typeof(result) == "string") {
+					var current = this.$refs.input.selectionStart;
+					this.$refs.input.value = result;
+					this.$refs.input.selectionEnd = Math.min(current + 1, result.length);
+					//this.$refs.input.selectionStart = Math.min(current, result.length);
+					$event.preventDefault();
+				}
+				else if (!result) {
+					$event.preventDefault();
+					return false;
+				}
+			}
+			return true;
+		},
 		focus: function($event) {
 			this.$emit('focus', $event);
 			if (this.autoSelect) {
@@ -270,4 +327,49 @@ Vue.component("n-form-text", {
 		}
 	}
 });
+
+HTMLTextAreaElement.prototype.insertAtCaret = function(text) {
+	text = text || '';
+	// IE
+	if (document.selection) {
+		this.focus();
+		var sel = document.selection.createRange();
+		sel.text = text;
+	}
+	else if (this.selectionStart || this.selectionStart === 0) {
+		// Others
+		var startPos = this.selectionStart;
+		var endPos = this.selectionEnd;
+		this.value = this.value.substring(0, startPos) + text
+			+ this.value.substring(endPos, this.value.length);
+		this.selectionStart = startPos + text.length;
+		this.selectionEnd = startPos + text.length;
+	}
+	else {
+		this.value += text;
+	}
+};
+
+HTMLInputElement.prototype.insertAtCaret = function(text) {
+	text = text || '';
+	// IE
+	if (document.selection) {
+		this.focus();
+		var sel = document.selection.createRange();
+		sel.text = text;
+	}
+	else if (this.selectionStart || this.selectionStart === 0) {
+		// Others
+		var startPos = this.selectionStart;
+		var endPos = this.selectionEnd;
+		this.value = this.value.substring(0, startPos) + text
+			+ this.value.substring(endPos, this.value.length);
+		this.selectionStart = startPos + text.length;
+		this.selectionEnd = startPos + text.length;
+	}
+	else {
+		this.value += text;
+	}
+};
+
 

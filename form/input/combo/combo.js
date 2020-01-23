@@ -113,6 +113,10 @@ Vue.component("n-form-combo", {
 		before: {
 			type: String,
 			required: false
+		},
+		validator: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
@@ -136,7 +140,7 @@ Vue.component("n-form-combo", {
 			this.$refs.combo.refilter();
 		},
 		validate: function(soft) {
-			this.messages.splice(0, this.messages.length);
+			this.messages.splice(0);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
 			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
@@ -147,17 +151,21 @@ Vue.component("n-form-combo", {
 			for (var i = 0; i < messages.length; i++) {
 				messages[i].component = this;
 			}
-			var hardMessages = messages.filter(function(x) { return !x.soft });
-			// if we are doing a soft validation and all messages were soft, set valid to unknown
-			if (soft && hardMessages.length == 0 && (messages.length > 0 || this.value == null) && (this.valid == null || this.value == null)) {
-				this.valid = null;
-				// remove local messages
-				this.messages.splice(0);
-			}
-			else {
-				this.valid = messages.length == 0;
-				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
-			}
+			// allow for custom validation
+			messages = nabu.utils.vue.form.validateCustom(messages, this.value, this.validator, this);
+			
+			var self = this;
+			messages.then(function(validations) {
+				var hardMessages = messages.filter(function(x) { return !x.soft });
+				// if we are doing a soft validation and all messages were soft, set valid to unknown
+				if (soft && hardMessages.length == 0 && (messages.length > 0 || self.value == null) && (self.valid == null || self.value == null)) {
+					self.valid = null;
+				}
+				else {
+					self.valid = messages.length == 0;
+					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
+				}
+			});
 			return messages;
 		},
 		updateValue: function(value, label) {

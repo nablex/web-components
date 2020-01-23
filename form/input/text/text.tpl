@@ -14,7 +14,9 @@
 			<input 
 				@blur="$emit('blur')"
 				@keyup="$emit('keyup')"
-				@input="updateValue($event.target.value)" 
+				@input="updateValue($event.target.value)"
+				@keypress="checkKey($event)"
+				@paste="pasteHandler"
 				:placeholder="placeholder" 
 				:type="type" 
 				:disabled="disabled" 
