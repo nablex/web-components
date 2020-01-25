@@ -137,6 +137,16 @@ Vue.component("n-form-text", {
 		allow: {
 			type: Function,
 			required: false
+		},
+		// if you want the value to be formatted before it is shown, set a formatter
+		formatter: {
+			type: Function,
+			required: false
+		},
+		// if you want the value to be parsed before it is emitted, set a parser
+		parser: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-text",
@@ -149,7 +159,7 @@ Vue.component("n-form-text", {
 		};
 	},
 	created: function() {
-		this.localValue = this.value;
+		this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 	},
 	computed: {
 		rows: function() {
@@ -191,9 +201,9 @@ Vue.component("n-form-text", {
 					var current = this.$refs.input.selectionStart;
 					this.$refs.input.value = response;
 					this.$refs.input.selectionEnd = Math.min(current + 1, response.length);
-					//this.$refs.input.selectionStart = Math.min(current, response.length);
 					$event.preventDefault();
 					$event.stopPropagation();
+					this.updateValue(response);
 				}
 				// if we have any negative feedback, don't allow the paste
 				else if ((response instanceof Array && response.length > 0) || !response) {
@@ -220,6 +230,7 @@ Vue.component("n-form-text", {
 					this.$refs.input.selectionEnd = Math.min(current + 1, result.length);
 					//this.$refs.input.selectionStart = Math.min(current, result.length);
 					$event.preventDefault();
+					this.updateValue(result);
 				}
 				else if (!result) {
 					$event.preventDefault();
@@ -237,6 +248,9 @@ Vue.component("n-form-text", {
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
 			var valueToValidate = this.edit ? this.$refs.input.value : this.value;
+			if (this.parser && valueToValidate != null) {
+				valueToValidate = this.parser(valueToValidate);
+			}
 			// reset current messages
 			this.messages.splice(0);
 			// this performs all basic validation and enriches the messages array to support asynchronous
@@ -303,16 +317,17 @@ Vue.component("n-form-text", {
 					clearTimeout(this.timer);
 					this.timer = null;
 				}
+				var valueToEmit = this.formatter && value != null ? this.formatter(value) : value;
 				// always emit the change event, it is not subject to timeout
-				this.$emit("change", value);
+				this.$emit("change", valueToEmit);
 				if (this.timeout) {
 					var self = this;
 					this.timer = setTimeout(function() {
-						self.$emit("input", value);
+						self.$emit("input", valueToEmit);
 					}, this.timeout);
 				}
 				else {
-					this.$emit("input", value);
+					this.$emit("input", valueToEmit);
 				}
 			}
 		}
@@ -323,7 +338,7 @@ Vue.component("n-form-text", {
 			this.valid = null;
 			// remove local messages
 			this.messages.splice(0);
-			this.localValue = this.value;
+			this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 		}
 	}
 });

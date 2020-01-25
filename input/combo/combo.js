@@ -125,7 +125,7 @@ Vue.component("n-input-combo", {
 	},
 	computed: {
 		formatted: function() {
-			return this.formatter ? this.formatter(this.actualValue) : this.actualValue;
+			return this.formatter && this.actualValue != null ? this.formatter(this.actualValue) : this.actualValue;
 		}
 	},
 	methods: {
