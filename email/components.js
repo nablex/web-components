@@ -14,12 +14,14 @@ Vue.component("e-root", {
 		link.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/foundation-emails/2.2.1/foundation-emails.css");
 		document.head.appendChild(link);*/
 		
-		//this.inlineCss();
-		// apparently still edge cases where the timeout is necessary otherwise not everything gets inline...
-		var self = this;
+		// if we run it synchronously, we might not get all the content? (helpdesk)
+		// but if we run it asynchronously, it also might not finish (wauters)
+		this.inlineCss();
+		/*var self = this;
 		setTimeout(function () {
 			self.inlineCss();
 		}, 100);
+		*/
 	},
 	methods: {
 		inlineCss: function() {
