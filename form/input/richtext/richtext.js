@@ -3,6 +3,10 @@ Vue.component("n-form-richtext", {
 		value: {
 			required: true
 		},
+		label: {
+			type: String,
+			required: false
+		},
 		edit: {
 			type: Boolean,
 			required: false,
@@ -35,8 +39,28 @@ Vue.component("n-form-richtext", {
 			type: Number,
 			required: false
 		},
+		timeout: {
+			type: Number,
+			required: false
+		},
 		cleanStyle: {
 			type: Boolean,
+			required: false
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		suffix: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
 			required: false
 		}
 	},
@@ -61,6 +85,24 @@ Vue.component("n-form-richtext", {
 		}
 	},
 	methods: {
+		update: function($event) {
+			var content = $event.target.innerHTML;
+			this.$emit("change", content);
+			if (this.timer != null) {
+				clearTimeout(this.timer);
+				this.timer = null;
+			}
+			if (this.timeout) {
+				var self = this;
+				var self = this;
+				this.timer = setTimeout(function() {
+					self.$emit("input", content);
+				}, this.timeout);
+			}
+			else {
+				this.$emit("input", content);
+			}
+		},
 		justify: function(direction) {
 			document.execCommand(direction, false, null)
 		},
@@ -92,7 +134,6 @@ Vue.component("n-form-richtext", {
 		paste: function(event) {
 			var self = this;
 			for (var i = 0; i < event.clipboardData.items.length; i++) {
-				console.log("pasted", event.clipboardData.items[i].type);
 				if (event.clipboardData.items[i].type.toLowerCase().match(/text\/.*/)) {
 					event.clipboardData.items[i].getAsString(function(content) {
 						var cleaned = nabu.utils.elements.clean(
@@ -130,7 +171,6 @@ Vue.component("n-form-richtext", {
 			return messages;
 		},
 		applyColor: function() {
-			console.log("coloring",  "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
 			document.execCommand("insertHTML", null, "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
 		}
 	}
@@ -141,3 +181,4 @@ Vue.directive("html-once", {
 		element.innerHTML = binding.value;
 	}
 });
+

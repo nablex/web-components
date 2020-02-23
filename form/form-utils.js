@@ -22,6 +22,30 @@ nabu.utils.vue.form = {
 		}
 		return schema;
 	},
+	rewriteCodes: function(messages, codes) {
+		if (codes instanceof Array) {
+			var result = {};
+			codes.forEach(function(x) {
+				if (x.code) {
+					result[x.code] = x;
+				}
+			});
+		}
+		if (messages && messages.length && codes) {
+			messages.forEach(function(x) {
+				if (codes[x.code]) {
+					if (typeof(codes[x.code]) == "string") {
+						x.title = codes[x.code];
+					}
+					else {
+						Object.keys(codes[x.code]).forEach(function(key) {
+							x[key] = codes[x.code][key];
+						});
+					}
+				}
+			});
+		}
+	},
 	mandatory: function(component) {
 		var required = component.required;
 		if (required == null && component.name && component.$parent && component.$parent.definition) {
@@ -151,3 +175,4 @@ nabu.utils.vue.form = {
 		return messages;
 	}
 }
+

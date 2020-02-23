@@ -1,5 +1,15 @@
 <template id="n-form-richtext">
 	<div class="n-form-richtext n-form-component" v-auto-close="function() { focused = false }">
+		<slot name="top"></slot>
+		<div class="n-form-label-wrapper" v-if="label || info">
+			<slot name="label" :label="label" :mandatory="mandatory">
+				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
+			</slot>
+			<n-info class="n-form-label-info" v-if="info"><span v-html="info"></span></n-info>
+		</div>
+		<slot name="before" :content="before">
+			<div class="n-form-component-before" v-if="before" v-html="before"></div>
+		</slot>
 		<div class="n-form-richtext-menu" v-if="edit && focused" v-auto-close="function() { showBlock = false; showJustify = false; showDecoration = false; }">
 			<div class="n-form-richtext-menu-container" @click="focused = true" v-auto-close.block="function() { showBlock = false }">
 				<button @click="showBlock = !showBlock">
@@ -101,8 +111,16 @@
 				</div>
 			</div></div>
 		<div class="n-form-richtext-editor">
-			<div @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="$emit('input', $event.target.innerHTML)" @blur="$emit('input', $event.target.innerHTML)" @input="$emit('input', $event.target.innerHTML)"></div>
+			<div @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
 			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
 		</div>
+		<slot name="messages" :messages="messages">
+			<n-messages :messages="messages" v-if="messages && messages.length"/>
+		</slot>
+		<slot name="after" :content="after">
+			<div class="n-form-component-after" v-if="after" v-html="after"></div>
+		</slot>
+		<slot name="bottom"></slot>
 	</div>
 </template>
+

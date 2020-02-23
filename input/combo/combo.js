@@ -196,6 +196,9 @@ Vue.component("n-input-combo", {
 					this.actualValue = this.value;
 				}
 			}
+			else if (!this.nillable && this.values.length > 0) {
+				this.updateValue(this.values[0]);
+			}
 			else {
 				this.actualValue = null;
 			}

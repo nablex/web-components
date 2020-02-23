@@ -122,6 +122,10 @@ Vue.component("n-form-text", {
 			type: String,
 			required: false
 		},
+		infoIcon: {
+			type: String,
+			required: false
+		},
 		suffix: {
 			type: String,
 			required: false
@@ -147,6 +151,19 @@ Vue.component("n-form-text", {
 		parser: {
 			type: Function,
 			required: false
+		},
+		// you can set alternative text values for specific validation codes
+		// send in for example {'required': 'This field is required'}
+		// we support complex overrides as well where you can set {'required': { title: 'this field is required'}}
+		// at this point the data will be merged
+		// you can also set an array of objects [{code: 'required', title: 'this field is required'}]
+		codes: {
+			required: false
+		},
+		showTooltip: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-form-text",
@@ -155,11 +172,18 @@ Vue.component("n-form-text", {
 			messages: [],
 			valid: null,
 			timer: null,
-			localValue: null
+			localValue: null,
+			offsetX: 0
 		};
 	},
 	created: function() {
+		// haakjes toevegoegd !!
 		this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+	},
+	ready: function() {
+		if (this.type == "range") {
+			this.calculateOffset(this.value);
+		}	
 	},
 	computed: {
 		rows: function() {
@@ -292,6 +316,7 @@ Vue.component("n-form-text", {
 
 			var self = this;
 			messages.then(function(validations) {
+				nabu.utils.vue.form.rewriteCodes(messages, self.codes);
 				var hardMessages = messages.filter(function(x) { return !x.soft });
 				// if we are doing a soft validation and all messages were soft, set valid to unknown
 				if (soft && hardMessages.length == 0 && (messages.length > 0 || !valueToValidate) && self.valid == null) {
@@ -304,6 +329,22 @@ Vue.component("n-form-text", {
 			});
 			return messages;
 		}, 
+		calculateOffset: function(value) {
+			if (!value) {
+				this.$refs.tooltip.style.display = "none";
+			}
+			else {
+				var parsed = parseFloat(value);
+				var range = this.$refs.input;
+				var ratio = (range.value - range.min) / (range.max - range.min);
+				// we need to add a bit of a correction the further we go from the left
+				// this correction is currently expressed as the thumbwidth for now (long story)
+				// in the future we will probably expose this as an input parameter
+				var thumbWidth = 40;
+				this.$refs.tooltip.style.display = "block";
+				this.$refs.tooltip.style.left = Math.floor((ratio * this.$refs.input.offsetWidth) - (thumbWidth * ratio)) + "px";
+			}
+		},
 		updateValue: function(value) {
 			if (this.trim && typeof(value) != "undefined" && value != null) {
 				value = value.trim();
@@ -316,6 +357,10 @@ Vue.component("n-form-text", {
 				if (this.timer) {
 					clearTimeout(this.timer);
 					this.timer = null;
+				}
+				// if we have a range, calculate the offset
+				if (this.type == "range") {
+					this.calculateOffset(value);
 				}
 				var valueToEmit = this.formatter && value != null ? this.formatter(value) : value;
 				// always emit the change event, it is not subject to timeout
@@ -339,6 +384,13 @@ Vue.component("n-form-text", {
 			// remove local messages
 			this.messages.splice(0);
 			this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+			// if we have a range, calculate the offset, if we do it without the timeout, it is always one value too late :(
+			if (this.type == "range") {
+				var self = this;
+				setTimeout(function() {
+					self.calculateOffset(self.value);
+				}, 1);
+			}
 		}
 	}
 });
@@ -386,5 +438,6 @@ HTMLInputElement.prototype.insertAtCaret = function(text) {
 		this.value += text;
 	}
 };
+
 
 

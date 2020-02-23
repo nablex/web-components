@@ -53,6 +53,26 @@ Vue.component("n-form-checkbox", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		infoIcon: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		},
+		labelBefore: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-form-checkbox",

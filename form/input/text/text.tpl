@@ -5,7 +5,7 @@
 			<slot name="label" :label="label" :mandatory="mandatory">
 				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
 			</slot>
-			<n-info class="n-form-label-info" v-if="info"><span v-html="info"></span></n-info>
+			<n-info class="n-form-label-info" :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info>
 		</div>
 		<slot name="before" :content="before">
 			<div class="n-form-component-before" v-if="before" v-html="before"></div>
@@ -45,7 +45,7 @@
 					:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 					ref="input"
 					:name="name"
-				/><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span>
+				/><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
 		</div>
 		<div class="n-form-read-only" v-else>
 			<slot><span class="n-form-read">{{ type == 'password' ? '*******' : value }}</span></slot>

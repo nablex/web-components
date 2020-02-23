@@ -14,9 +14,11 @@ Vue.component("e-root", {
 		link.setAttribute("href", "https://cdnjs.cloudflare.com/ajax/libs/foundation-emails/2.2.1/foundation-emails.css");
 		document.head.appendChild(link);*/
 		
-		// if we run it synchronously, we might not get all the content? (helpdesk)
-		// but if we run it asynchronously, it also might not finish (wauters)
-		this.inlineCss();
+		// the document.body is NOT up to date when the ready is run (presumably nexttick is called before dom update??)
+		// this means if we inline right now, we will be inlining stale content
+		//this.inlineCss();
+		// instead we inline with a tiny timeout
+		setTimeout(this.inlineCss,1);
 		/*var self = this;
 		setTimeout(function () {
 			self.inlineCss();
