@@ -281,7 +281,13 @@ Vue.component("n-form-text", {
 			var messages = nabu.utils.schema.json.validate(this.definition, valueToValidate, this.mandatory);
 			// add context to the messages to we can link back to this component
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				// components are vue-based entities that have recursive links to each other, the validation messages again etc
+				// we don't want to include them in the enumerable properties cause this would prevent them from ever being serialized
+				// we want to keep all state serializable and validations can become part of the state
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			// allow for unique validation
 			if (valueToValidate != null && this.unique && this.$group) {
@@ -298,9 +304,8 @@ Vue.component("n-form-text", {
 					}
 				}
 				if (count > 1) {
-					messages.push({
+					var message = {
 						code: "unique",
-						component: this,
 						context: [],
 						severity: "error",
 						values: {
@@ -308,7 +313,12 @@ Vue.component("n-form-text", {
 							actual: count,
 							value: valueToValidate
 						}
+					};
+					Object.defineProperty(message, 'component', {
+						value: this,
+						enumerable: false
 					});
+					messages.push(message);
 				}
 			}
 			// allow for custom validation

@@ -107,13 +107,19 @@ Vue.component("n-form-checkbox", {
 			// if the checkbox is set to mustCheck but the calculated value is null, false or undefined or anything but true, we imitate a null value to trigger the mandatory validation
 			var messages = nabu.utils.schema.json.validate(this.definition, this.mustCheck && !this.calculatedValue ? null : (this.calculatedValue == null ? false : this.calculatedValue), this.mandatory || this.mustCheck);
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			if (this.validator) {
 				var additional = this.validator(this.value);
 				if (additional && additional.length) {
 					for (var i = 0; i < additional.length; i++) {
-						additional[i].component = this;
+						Object.defineProperty(additional[i], 'component', {
+							value: this,
+							enumerable: false
+						});
 						if (typeof(additional[i].context) == "undefined") {
 							additional[i].context = [];
 						}

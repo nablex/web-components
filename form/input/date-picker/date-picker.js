@@ -201,13 +201,19 @@ Vue.component("n-form-date-picker", {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			if (this.validator != null) {
 				var additional = this.validator(this.value);
 				if (additional != null && additional.length) {
 					for (var i = 0; i < additional.length; i++) {
-						additional[i].component = this;
+						Object.defineProperty(additional[i], 'component', {
+							value: this,
+							enumerable: false
+						});
 						if (typeof(additional[i].context) == "undefined") {
 							additional[i].context = [];
 						}

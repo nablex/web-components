@@ -197,7 +197,11 @@ Vue.component("n-input-combo", {
 				}
 			}
 			else if (!this.nillable && this.values.length > 0) {
-				this.updateValue(this.values[0]);
+				// it could be that we have already emitted a newly selected value (that we selected here) but that is not reflected yet
+				// so check that we don't get stuck in a loop between updating, filterItems and synchronizeValue
+				if (!this.updatingContent || !this.actualValue) {
+					this.updateValue(this.values[0]);
+				}
 			}
 			else {
 				this.actualValue = null;

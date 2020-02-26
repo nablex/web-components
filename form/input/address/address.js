@@ -311,7 +311,10 @@ Vue.component("n-form-address", {
 				var additional = this.validator(this.value);
 				if (additional && additional.length) {
 					for (var i = 0; i < additional.length; i++) {
-						additional[i].component = this;
+						Object.defineProperty(additional[i], 'component', {
+							value: this,
+							enumerable: false
+						});
 						if (typeof(additional[i].context) == "undefined") {
 							additional[i].context = [];
 						}

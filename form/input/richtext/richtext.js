@@ -165,7 +165,10 @@ Vue.component("n-form-richtext", {
 		validate: function() {
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value ? this.value.replace(/<[^>]+>/, "") : this.value, this.mandatory);
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			this.valid = messages.length == 0;
 			return messages;

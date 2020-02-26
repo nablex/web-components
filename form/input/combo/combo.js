@@ -149,7 +149,10 @@ Vue.component("n-form-combo", {
 				requiredMessage.actual = this.$refs.combo.content;
 			}
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			// allow for custom validation
 			messages = nabu.utils.vue.form.validateCustom(messages, this.value, this.validator, this);

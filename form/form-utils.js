@@ -164,7 +164,10 @@ nabu.utils.vue.form = {
 			// or an array of validations
 			else if (additional != null && additional.length) {
 				for (var i = 0; i < additional.length; i++) {
-					additional[i].component = context;
+					Object.defineProperty(additional[i], 'component', {
+						value: context,
+						enumerable: false
+					});
 					if (typeof(additional[i].context) == "undefined") {
 						additional[i].context = [];
 					}

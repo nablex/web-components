@@ -109,7 +109,6 @@ Vue.component("n-form-radio", {
 	},
 	methods: {
 		validate: function(soft) {
-			console.log("validate messages:", messages);
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
@@ -119,7 +118,10 @@ Vue.component("n-form-radio", {
 				requiredMessage.actual = this.$refs.combo.content;
 			}
 			for (var i = 0; i < messages.length; i++) {
-				messages[i].component = this;
+				Object.defineProperty(messages[i], 'component', {
+					value: this,
+					enumerable: false
+				});
 			}
 			var hardMessages = messages.filter(function(x) { return !x.soft });
 			// if we are doing a soft validation and all messages were soft, set valid to unknown
