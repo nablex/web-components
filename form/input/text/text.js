@@ -343,7 +343,7 @@ Vue.component("n-form-text", {
 			if (!value) {
 				this.$refs.tooltip.style.display = "none";
 			}
-			else {
+			else if (this.$refs.input) {
 				var parsed = parseFloat(value);
 				var range = this.$refs.input;
 				var ratio = (range.value - range.min) / (range.max - range.min);

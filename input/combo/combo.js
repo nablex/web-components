@@ -102,7 +102,7 @@ Vue.component("n-input-combo", {
 				this.filterItems(this.content, this.label, null, true);
 			}
 			catch (exception) {
-				console.warn("Could not perform initial filter", exception);
+				console.error("Could not perform initial filter", exception);
 			}
 		}
 		else if (this.items) {

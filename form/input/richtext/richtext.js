@@ -62,6 +62,10 @@ Vue.component("n-form-richtext", {
 		after: {
 			type: String,
 			required: false
+		},
+		supportLinkType: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-form-richtext",
@@ -75,6 +79,9 @@ Vue.component("n-form-richtext", {
 			color: "#000000",
 			focused: false
 		};
+	},
+	created: function () {
+		console.log("created the richtext.js");
 	},
 	computed: {
 		definition: function() {
@@ -127,8 +134,17 @@ Vue.component("n-form-richtext", {
 		link: function() {
 			var link = prompt("Link");
 			if (link) {
-				//document.execCommand("createLink", false, link);
-				document.execCommand("insertHTML", false, "<a target='_blank' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
+				var type = null;
+				if (this.supportLinkType) {
+					type = prompt("Link Type (optional)");
+				}
+				if (type) {
+					document.execCommand("insertHTML", false, "<a target='_blank' type='" + type + "' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
+				}
+				else {
+					//document.execCommand("createLink", false, link);
+					document.execCommand("insertHTML", false, "<a target='_blank' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
+				}
 			}
 		},
 		paste: function(event) {
