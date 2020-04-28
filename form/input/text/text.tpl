@@ -12,7 +12,7 @@
 		</slot>
 		<div class="n-form-input-wrapper" v-if="edit">
 			<input 
-				@blur="$emit('blur')"
+				@blur="blur($event.target.value)"
 				@keyup="$emit('keyup')"
 				@input="updateValue($event.target.value)"
 				@keypress="checkKey($event)"
@@ -22,8 +22,8 @@
 				:disabled="disabled" 
 				v-model="localValue"
 				class="field"
-				:min="minimum"
-				:max="maximum"
+				:min="(exclusiveMinimum != null && type == 'range') ? exclusiveMinimum : minimum"
+				:max="(exclusiveMaximum != null && type == 'range') ? exclusiveMaximum : maximum"
 				:step="step"
 				v-if="type != 'area'" 
 				:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"

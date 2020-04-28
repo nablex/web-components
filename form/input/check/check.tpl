@@ -4,7 +4,7 @@
 		<slot name="before" :content="before">
 			<div class="n-form-component-before" v-if="before" v-html="before"></div>
 		</slot>
-		<label v-if="labelBefore && (label || info)" 
+		<label v-if="labelBefore" 
 			@click="toggleValue(); $event.stopPropagation()" 
 			class="n-form-label" 
 			:class="{ 'n-form-input-required': mandatory, 'n-form-optional': !mandatory }"><span v-html="label"></span><n-info :icon="infoIcon" class="n-form-label-info" v-if="info"><span v-html="info"></span></n-info></label
@@ -17,7 +17,7 @@
 			:name="name"
 			v-if="!hide" 
 			class="n-form-checkbox-input"
-		/><label v-if="!labelBefore && (label || info)" 
+		/><label v-if="!labelBefore" 
 			@click="toggleValue(); $event.stopPropagation()" 
 			class="n-form-label" 
 			:class="{ 'n-form-input-required': mandatory, 'n-form-optional': !mandatory }"><span v-html="label"></span><n-info :icon="infoIcon" class="n-form-label-info" v-if="info"><span v-html="info"></span></n-info></label>

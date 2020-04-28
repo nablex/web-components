@@ -147,6 +147,11 @@ Vue.component("n-form-text", {
 			type: Function,
 			required: false
 		},
+		// this function is used on blur
+		masker: {
+			type: Function,
+			required: false
+		},
 		// if you want the value to be parsed before it is emitted, set a parser
 		parser: {
 			type: Function,
@@ -173,17 +178,22 @@ Vue.component("n-form-text", {
 			valid: null,
 			timer: null,
 			localValue: null,
-			offsetX: 0
+			offsetX: 0,
+			originalValue: null
 		};
 	},
 	created: function() {
-		// haakjes toevegoegd !!
 		this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 	},
 	ready: function() {
 		if (this.type == "range") {
 			this.calculateOffset(this.value);
 		}	
+		if (this.masker) {
+			this.originalValue = this.value;
+			var maskedValue = this.value != null ? this.masker(this.value) : this.value;
+			this.value = maskedValue;
+		}
 	},
 	computed: {
 		rows: function() {
@@ -268,10 +278,24 @@ Vue.component("n-form-text", {
 			if (this.autoSelect) {
 				this.$refs.input.select();
 			}
+			if (this.masker) {
+				this.value = this.originalValue;
+			}
+		},
+		blur: function (value) {
+			this.originalValue = value;
+			var maskedValue = this.masker && value != null ? this.masker(value) : value;
+			this.value = maskedValue;
+			this.$emit('blur');
 		},
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
-			var valueToValidate = this.edit ? this.$refs.input.value : this.value;
+			if (this.masker) {
+				var valueToValidate = this.originalValue;
+			} else {
+				var valueToValidate = this.edit ? this.$refs.input.value : this.value;	
+			}
+			
 			if (this.parser && valueToValidate != null) {
 				valueToValidate = this.parser(valueToValidate);
 			}
@@ -370,6 +394,14 @@ Vue.component("n-form-text", {
 				}
 				// if we have a range, calculate the offset
 				if (this.type == "range") {
+					if (this.exclusiveMinimum != null && this.minimum != null && value < this.minimum) {
+						value = this.minimum;
+						this.localValue = value;
+					}
+					if (this.exclusiveMaximum != null && this.maximum != null && value > this.maximum) {
+						value = this.maximum;
+						this.localValue = value;
+					}					
 					this.calculateOffset(value);
 				}
 				var valueToEmit = this.formatter && value != null ? this.formatter(value) : value;
