@@ -22,6 +22,10 @@ Vue.component("n-form-date-picker", {
 			type: String,
 			required: false
 		},
+		hide: {
+			type: Boolean,
+			required: false
+		},
 		placeholder: {
 			type: String,
 			required: false

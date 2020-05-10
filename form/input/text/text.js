@@ -178,22 +178,19 @@ Vue.component("n-form-text", {
 			valid: null,
 			timer: null,
 			localValue: null,
-			offsetX: 0,
-			originalValue: null
+			offsetX: 0
 		};
 	},
 	created: function() {
 		this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+		if (this.masker) {
+			this.localValue = this.value != null ? this.masker(this.value) : this.value;
+		}
 	},
 	ready: function() {
 		if (this.type == "range") {
 			this.calculateOffset(this.value);
 		}	
-		if (this.masker) {
-			this.originalValue = this.value;
-			var maskedValue = this.value != null ? this.masker(this.value) : this.value;
-			this.value = maskedValue;
-		}
 	},
 	computed: {
 		rows: function() {
@@ -279,20 +276,19 @@ Vue.component("n-form-text", {
 				this.$refs.input.select();
 			}
 			if (this.masker) {
-				this.value = this.originalValue;
+				this.localValue = this.value != null ? this.masker(this.value) : this.value;
 			}
 		},
 		blur: function (value) {
-			this.originalValue = value;
-			var maskedValue = this.masker && value != null ? this.masker(value) : value;
-			this.value = maskedValue;
+			this.localValue = this.masker && value != null ? this.masker(value) : value;
 			this.$emit('blur');
 		},
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation
 			if (this.masker) {
-				var valueToValidate = this.originalValue;
-			} else {
+				var valueToValidate = this.value;
+			}
+			else {
 				var valueToValidate = this.edit ? this.$refs.input.value : this.value;	
 			}
 			
@@ -396,11 +392,11 @@ Vue.component("n-form-text", {
 				if (this.type == "range") {
 					if (this.exclusiveMinimum != null && this.minimum != null && value < this.minimum) {
 						value = this.minimum;
-						this.localValue = value;
+						this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 					}
 					if (this.exclusiveMaximum != null && this.maximum != null && value > this.maximum) {
 						value = this.maximum;
-						this.localValue = value;
+						this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 					}					
 					this.calculateOffset(value);
 				}
@@ -480,6 +476,4 @@ HTMLInputElement.prototype.insertAtCaret = function(text) {
 		this.value += text;
 	}
 };
-
-
 

@@ -391,6 +391,15 @@ Vue.component("n-form-date", {
 			}
 		},
 		value: function(newValue) {
+			// during roundtripping is is possible that the date got serialized
+			// for example the form engine will take a copy of the original dataset on persist
+			// and this copy will contain a serialized date because JSON does not have a dedicated date datatype
+			if (typeof(newValue) == "string" && newValue.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*/) && this.lastParsed) {
+				var parsed = new Date(newValue);
+				if (parsed.getTime() == this.lastParsed.getTime()) {
+					newValue = parsed;
+				}
+			}
 			if (newValue instanceof Date || typeof(newValue) == "number") {
 				var formatted = this.formatValue(newValue);
 				// if we have parsed something in the past and it has now come back but for some reason it differs from the date itself, we might have a timezone issue
