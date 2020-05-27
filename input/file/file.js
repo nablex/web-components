@@ -16,6 +16,28 @@ Vue.component("n-input-file", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		browseLabel: {
+			type: String,
+			required: false
+		},
+		dropLabel: {
+			type: String,
+			required: false
+		},
+		browseIcon: {
+			type: String,
+			required: false
+		},
+		visualiseSelectedFiles: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		deleteIcon: {
+			type: String,
+			required: false,
+			default: "fa fa-times"			
 		}
 	},
 	template: "#n-input-file",
@@ -91,6 +113,10 @@ Vue.component("n-input-file", {
 		},
 		browse: function() {
 			this.$refs.input.click();
+		},
+		removeFile: function (file) {
+			this.value.splice(this.value.indexOf(file),1);
+			this.$emit("change", this.value);
 		}
 	}
 });

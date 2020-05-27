@@ -13,13 +13,14 @@
 		</div>
 		<div class="n-input-combo-input-container" v-auto-close="function(inside) { showValues = false; if (!inside) { focusOut() } }">
 		
-			<input @focus="focusOn" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="this.label && this.label.placeholder ? this.label.placeholder : placeholder" 
+			<input @focus="focusOn" :autocomplete="autocomplete" @input="updateContent($event.target.value)" class="n-input-combo-input field" type="text" :placeholder="label && label.placeholder ? label.placeholder : placeholder" 
 				@blur="stillFocused = false"
 				@keypress.enter="validateEnter"
 				@keydown.tab="validateTab"
 				@keyup.esc="doEscape"
 				@keydown.up="moveUp"
 				@keydown.down="moveDown"
+				@keypress="validateKey"
 				:name="name"
 				:value="content"
 				:disabled="disabled">
@@ -35,3 +36,4 @@
 		<slot name="bottom"></slot>
 	</div>
 </template>
+

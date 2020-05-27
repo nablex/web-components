@@ -23,9 +23,6 @@
 			:info="info"
 			:before="before"
 			:after="after"
-			:description="description"
-			:descriptionIcon="descriptionIcon"
-			:descriptionType="descriptionType"
 			ref="text"
 			:timeout="timeout">
 			
@@ -41,6 +38,9 @@
 			:allow="allow"
 			v-show="show" 
 			v-model="date"
+			:years-dropdown="yearsDropdown"
+			:years-from="yearsFrom"
+			:years-to="yearsTo"
 			:includeHours="includeHours"
 			:includeMinutes="includeMinutes"
 			:includeSeconds="includeSeconds"

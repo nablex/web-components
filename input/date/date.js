@@ -22,6 +22,21 @@ Vue.component("n-input-date", {
 			type: Function,
 			required: false
 		},
+		yearsDropdown: {
+			type: Boolean,
+			required: false,
+			default: true
+		},
+		yearsFrom: {
+			type: Number,
+			required: false,
+			default: -5
+		},
+		yearsTo: {
+			type: Number,
+			required: false,
+			default: 5
+		},
 		includeHours: {
 			type: Boolean,
 			required: false
@@ -45,30 +60,45 @@ Vue.component("n-input-date", {
 			hours: null,
 			minutes: null,
 			seconds: null,
-			updating: false
+			updating: false,
+			internalChange: false
 		};
 	},
 	created: function() {
-		if (!this.value) {
-			this.date = new Date();
-		}
-		else if (this.value instanceof Date) {
-			this.date = this.value;
-		}
-		else {
-			this.date = this.parse(this.value);
-		}
+		this.setValue(this.value);
 	},
 	watch: {
 		date: function(newValue) {
 			if (newValue) {
+				this.day = newValue.getDay();
+				this.month = newValue.getMonth();
+				this.year = newValue.getFullYear();
 				this.hours = newValue.getHours();
 				this.minutes = newValue.getMinutes();
 				this.seconds = newValue.getSeconds();
 			}
+		},
+		value: function(newValue) {
+			if (this.internalChange) {
+				this.internalChange = false;
+			}
+			else {
+				this.setValue(newValue);
+			}
 		}
 	},
 	methods: {
+		setValue: function(newValue) {
+			if (!newValue) {
+				this.date = new Date();
+			}
+			else if (newValue instanceof Date) {
+				this.date = this.value;
+			}
+			else {
+				this.date = this.parse(newValue);
+			}
+		},
 		incrementMonth: function(amount) {
 			return new Date(
 				this.date.getFullYear(), 
@@ -80,7 +110,18 @@ Vue.component("n-input-date", {
 			);
 		},
 		canIncrementMonth: function(amount) {
-			if (amount < 0) {
+			if (this.yearsDropdown && this.years.length > 0) {
+				var minYear = Math.min.apply(Math, this.years);
+				var maxYear = Math.max.apply(Math, this.years);
+				var newDate = this.incrementMonth(amount);
+				var newDateYear = newDate.getFullYear();
+				
+				if ( newDateYear >= minYear && newDateYear <= maxYear ) {
+					return true;
+				}
+				return false;
+			}
+			else if (amount < 0) {
 				return !this.minimum ? true : this.incrementMonth(amount) >= this.minimum;
 			}
 			else {
@@ -153,14 +194,71 @@ Vue.component("n-input-date", {
 					this.includeSeconds ? this.seconds : 0,
 					0
 				);
-				// you may overflow or underflow (e.g. hours -1), update to make sure it is correct
-				this.hours = date.getHours();
-				this.minutes = date.getMinutes();
-				this.seconds = date.getSeconds();
 			}
 			if (this.isAvailable(date)) {
 				this.date = date;
+				this.internalChange = true;
 				this.$emit("input", this.format(date));
+			}
+		},
+		// TODO: refactor to reuse select()
+		selectYear: function(year) {
+			if (year) {
+				var date = new Date(
+					year,
+					this.date.getMonth(),
+					this.date.getDate(),
+					this.includeHours ? (this.hours ? parseInt(this.hours) : 0) : 0,
+					this.includeMinutes ? this.minutes : 0,
+					this.includeSeconds ? this.seconds : 0,
+					0
+				);
+				var isAvailable = this.isAvailable(date);
+				var counter = 1;
+				// find the nearest date in this year that is still allowed
+				while (!isAvailable) {
+					var tmp = new Date(
+						year,
+						this.date.getMonth(),
+						this.date.getDate() - counter++,
+						this.includeHours ? (this.hours ? parseInt(this.hours) : 0) : 0,
+						this.includeMinutes ? this.minutes : 0,
+						this.includeSeconds ? this.seconds : 0,
+						0
+					);
+					if (tmp.getFullYear() != year) {
+						break;
+					}
+					isAvailable = this.isAvailable(tmp);
+					if (isAvailable) {
+						date = tmp;
+					}
+				}
+				// if no dates in the past are allowed, check in the future?
+				counter = 1;
+				while (!isAvailable) {
+					var tmp = new Date(
+						year,
+						this.date.getMonth(),
+						this.date.getDate() + counter++,
+						this.includeHours ? (this.hours ? parseInt(this.hours) : 0) : 0,
+						this.includeMinutes ? this.minutes : 0,
+						this.includeSeconds ? this.seconds : 0,
+						0
+					);
+					if (tmp.getFullYear() != year) {
+						break;
+					}
+					isAvailable = this.isAvailable(tmp);
+					if (isAvailable) {
+						date = tmp;
+					}
+				}
+				if (isAvailable) {
+					this.date = date;
+					this.internalChange = true;
+					this.$emit("input", this.format(date));
+				}
 			}
 		}
 	},
@@ -226,6 +324,25 @@ Vue.component("n-input-date", {
 				}
 			}
 			return weeks;
+		},
+		years: function() {
+			var today = new Date();
+			var yearToday = Number(today.getFullYear());
+
+			var yearFrom = yearToday + Number(this.yearsFrom);
+			var yearTo = yearToday + Number(this.yearsTo);
+			var diff = Number(yearTo - yearFrom);
+			
+			var years = [];
+			if ( diff > 0 ) {
+				for (var i=0; i < diff -1 ; i++) {
+					years[i]=yearFrom + i+1;
+				}
+				years.unshift(yearFrom);
+				years.push(yearTo);
+			}
+			
+			return years;
 		}
 	}
 });

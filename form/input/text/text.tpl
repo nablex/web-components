@@ -12,6 +12,7 @@
 		</slot>
 		<div class="n-form-input-wrapper" v-if="edit">
 			<input 
+				@change="triggerChange"
 				@blur="blur($event.target.value)"
 				@keyup="$emit('keyup')"
 				@input="updateValue($event.target.value)"

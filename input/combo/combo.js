@@ -36,6 +36,10 @@ Vue.component("n-input-combo", {
 			type: Boolean,
 			default: true
 		},
+		allowTyping: {
+			type: Boolean,
+			default: true
+		},
 		timeout: {
 			type: Number,
 			required: false
@@ -223,6 +227,12 @@ Vue.component("n-input-combo", {
 			if (this.keyValue == null) {
 				this.setKeyValue();
 			}
+		},
+		validateKey: function($event) {
+			if (!this.allowTyping) {
+				$event.preventDefault();
+				$event.stopPropagation();
+			}	
 		},
 		validateEnter: function($event) {
 			if (this.keyValue != null) {
@@ -529,4 +539,5 @@ Vue.component("n-input-combo", {
 		}
 	}
 });
+
 

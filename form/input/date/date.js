@@ -106,6 +106,19 @@ Vue.component("n-form-date", {
 			type: Number,
 			required: false
 		},
+		yearsDropdown: {
+			type: Boolean,
+			required: false,
+			default: true
+		},
+		yearsFrom: {
+			type: Number,
+			required: false
+		},
+		yearsTo: {
+			type: Number,
+			required: false
+		},
 		includeHours: {
 			type: Boolean,
 			required: false,
@@ -134,18 +147,6 @@ Vue.component("n-form-date", {
 		"default": {
 			required: false
 		},		
-		descriptionIcon: {
-			type: String,
-			required: false
-		},
-		description: {
-			type: String,
-			required: false
-		},
-		descriptionType: {
-			type: String,
-			default: "after"
-		},
 		disableTextInput: {
 			type: Boolean,
 			required: false
@@ -375,7 +376,11 @@ Vue.component("n-form-date", {
 			else {
 				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
 				if (newValue && newValue.getTime) {
-					if (!this.value || newValue.getTime() != this.value.getTime()) {
+					var value = this.value;
+					if ( typeof(value) == "string" ) {
+						value = new Date(this.value);
+					}
+					if (!this.value || newValue.getTime() != value.getTime()) {
 						this.lastParsed = newValue;
 						this.$emit("input", newValue);
 						this.$emit("label", this.formatValue(newValue));

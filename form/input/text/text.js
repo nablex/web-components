@@ -276,7 +276,7 @@ Vue.component("n-form-text", {
 				this.$refs.input.select();
 			}
 			if (this.masker) {
-				this.localValue = this.value != null ? this.masker(this.value) : this.value;
+				this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
 			}
 		},
 		blur: function (value) {
@@ -356,6 +356,16 @@ Vue.component("n-form-text", {
 					self.valid = messages.length == 0;
 					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 				}
+				// make sure we emit the value we just validated. in case of validate on blur (or a short validate timeout) and a longer emit timeout
+				// we might be validating values that are not persisted, we can then browse to the next page without persisting it at all
+				if (self.valid != false) {
+					// don't send out a belated update
+					if (self.timer) {
+						clearTimeout(self.timer);
+						self.timer = null;
+					}
+					self.$emit("input", valueToValidate);
+				}
 			});
 			return messages;
 		}, 
@@ -374,6 +384,12 @@ Vue.component("n-form-text", {
 				this.$refs.tooltip.style.display = "block";
 				this.$refs.tooltip.style.left = Math.floor((ratio * this.$refs.input.offsetWidth) - (thumbWidth * ratio)) + "px";
 			}
+		},
+		triggerChange: function(event) {
+			// IE does not fire input events for range, but it does trigger a change event
+			if (this.type == "range" && navigator.userAgent && navigator.userAgent.toLowerCase().indexOf("rv:11.0") >= 0) {
+				this.updateValue(event.target.value);
+			}	
 		},
 		updateValue: function(value) {
 			if (this.trim && typeof(value) != "undefined" && value != null) {
