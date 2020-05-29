@@ -178,7 +178,8 @@ Vue.component("n-form-text", {
 			valid: null,
 			timer: null,
 			localValue: null,
-			offsetX: 0
+			offsetX: 0,
+			blurred: false
 		};
 	},
 	created: function() {
@@ -271,15 +272,17 @@ Vue.component("n-form-text", {
 			return true;
 		},
 		focus: function($event) {
+			this.blurred = false;
 			this.$emit('focus', $event);
 			if (this.autoSelect) {
 				this.$refs.input.select();
 			}
 			if (this.masker) {
-				this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+				this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
 			}
 		},
 		blur: function (value) {
+			this.blurred = true;
 			this.localValue = this.masker && value != null ? this.masker(value) : value;
 			this.$emit('blur');
 		},
@@ -358,14 +361,12 @@ Vue.component("n-form-text", {
 				}
 				// make sure we emit the value we just validated. in case of validate on blur (or a short validate timeout) and a longer emit timeout
 				// we might be validating values that are not persisted, we can then browse to the next page without persisting it at all
-				if (self.valid != false) {
-					// don't send out a belated update
-					if (self.timer) {
-						clearTimeout(self.timer);
-						self.timer = null;
-					}
-					self.$emit("input", valueToValidate);
+				// don't send out a belated update
+				if (self.timer) {
+					clearTimeout(self.timer);
+					self.timer = null;
 				}
+				self.$emit("input", valueToValidate);
 			});
 			return messages;
 		}, 
@@ -408,11 +409,11 @@ Vue.component("n-form-text", {
 				if (this.type == "range") {
 					if (this.exclusiveMinimum != null && this.minimum != null && value < this.minimum) {
 						value = this.minimum;
-						this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+						this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
 					}
 					if (this.exclusiveMaximum != null && this.maximum != null && value > this.maximum) {
 						value = this.maximum;
-						this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+						this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
 					}					
 					this.calculateOffset(value);
 				}
@@ -437,7 +438,12 @@ Vue.component("n-form-text", {
 			this.valid = null;
 			// remove local messages
 			this.messages.splice(0);
-			this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+			if (!this.blurred) {
+				this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+			}
+			else {
+				this.localValue = this.masker && this.value != null ? this.masker(this.value) : this.value;
+			}
 			// if we have a range, calculate the offset, if we do it without the timeout, it is always one value too late :(
 			if (this.type == "range") {
 				var self = this;
@@ -492,4 +498,6 @@ HTMLInputElement.prototype.insertAtCaret = function(text) {
 		this.value += text;
 	}
 };
+
+
 
