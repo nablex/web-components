@@ -12,6 +12,12 @@
 		</slot>
 		<div class="n-form-richtext-menu" v-if="edit && focused" v-auto-close="function() { showBlock = false; showJustify = false; showDecoration = false; }">
 			<div class="n-form-richtext-menu-container" @click="focused = true" v-auto-close.block="function() { showBlock = false }">
+				<div class="n-form-richtext-menu-container" @click="focused = true" v-auto-close.block="function() { showBlock = false }">
+					<button @click="function () {showRawHtml = !showRawHtml}">
+						<span class="n-icon fa n-icon-code-large fa-code"></span>
+						<span class="n-form-richtext-button-description">%{text:RAW}</span>
+					</button>
+				</div>
 				<button @click="showBlock = !showBlock">
 					<span class="n-icon fa n-icon-th-large fa-th-large"></span>
 					<span class="n-form-richtext-button-description">%{text:Block}</span>
@@ -111,7 +117,8 @@
 				</div>
 			</div></div>
 		<div class="n-form-richtext-editor">
-			<div @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
+			<div v-if="!showRawHtml" @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
+			<n-form-text type="area" v-if="showRawHtml" v-model="value" @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"/>
 			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
 		</div>
 		<slot name="messages" :messages="messages">
