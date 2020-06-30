@@ -77,7 +77,8 @@ Vue.component("n-form-richtext", {
 			showJustify: false,
 			showDecoration: false,
 			color: "#000000",
-			focused: false
+			focused: false,
+			showRawHtml: false
 		};
 	},
 	created: function () {
