@@ -183,7 +183,7 @@ Vue.component("n-form-text", {
 		};
 	},
 	created: function() {
-		this.localValue = this.parser && this.value != null ? this.parser(this.value) : this.value;
+		this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
 		if (this.masker) {
 			this.localValue = this.value != null ? this.masker(this.value) : this.value;
 		}
@@ -417,7 +417,7 @@ Vue.component("n-form-text", {
 					}					
 					this.calculateOffset(value);
 				}
-				var valueToEmit = this.formatter && value != null ? this.formatter(value) : value;
+				var valueToEmit = this.parser && value != null ? this.parser(value) : value;
 				// always emit the change event, it is not subject to timeout
 				this.$emit("change", valueToEmit);
 				if (this.timeout) {

@@ -23,6 +23,7 @@
 				@keypress="validateKey"
 				:name="name"
 				:value="content"
+				:readonly="!allowTyping"
 				:disabled="disabled">
 		
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValues = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>

@@ -49,7 +49,7 @@
 				/><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
 		</div>
 		<div class="n-form-read-only" v-else>
-			<slot><span class="n-form-read">{{ type == 'password' ? '*******' : value }}</span></slot>
+			<slot><span class="n-form-read">{{ type == 'password' ? '*******' : localValue }}</span></slot>
 		</div>
 		<slot name="messages" :messages="messages">
 			<n-messages :messages="messages" v-if="messages && messages.length"/>

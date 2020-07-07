@@ -134,7 +134,9 @@ nabu.utils.vue.form = {
 				var childMessages = component.$children[i].validate(soft);
 				if (component.$children[i].name) {
 					for (var j = 0; j < childMessages.length; j++) {
-						childMessages[j].context.push(component.$children[i].name);
+						if (childMessages[j].context instanceof Array) {
+							childMessages[j].context.push(component.$children[i].name);
+						}
 					}
 				}
 				nabu.utils.arrays.merge(messages, childMessages);
