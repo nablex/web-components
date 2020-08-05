@@ -19,6 +19,11 @@ Vue.component("n-form-switch", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		invert: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	template: "#n-form-switch",

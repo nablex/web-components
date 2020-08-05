@@ -366,7 +366,13 @@ Vue.component("n-form-text", {
 					clearTimeout(self.timer);
 					self.timer = null;
 				}
-				self.$emit("input", valueToValidate);
+				// the original value can be undefined or null or an empty string
+				// the valueToValidate can be any one of those too (realistically likely an empty string as we are talking about text fields)
+				// to make sure we only update if it is relevant, we add this if
+				// otherwise we "update" from undefined to an empty string for example which whill (after the validate) trigger the watcher which immediately resets the validation errors
+				if (!(self.value == null && !valueToValidate)) {
+					self.$emit("input", valueToValidate);
+				}
 			});
 			return messages;
 		}, 
