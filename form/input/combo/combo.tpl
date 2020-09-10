@@ -34,6 +34,7 @@
 			:placeholder="placeholder"
 			:disabled="disabled"
 			:initial-label="initialLabel"
+			:allow-typing="allowTyping"
 			:extracter="extracter"
 			:resolver="resolver"
 			v-bubble:label

@@ -25,7 +25,7 @@ Vue.component("n-input-date", {
 		yearsDropdown: {
 			type: Boolean,
 			required: false,
-			default: true
+			default: false
 		},
 		yearsFrom: {
 			type: Number,
@@ -47,6 +47,9 @@ Vue.component("n-input-date", {
 		},
 		includeSeconds: {
 			type: Boolean,
+			required: false
+		}}
+		"default": {
 			required: false
 		}
 	},
@@ -85,7 +88,18 @@ Vue.component("n-input-date", {
 			else {
 				this.setValue(newValue);
 			}
-		}
+		},
+		years: function (newValue) {
+			if (newValue) {
+				if (newValue.indexOf(this.year) < 0) {
+					this.year = newValue[0];
+					this.selectYear(this.year);
+				}
+				else {
+					this.selectYear(this.year);
+				}
+			}
+                }
 	},
 	methods: {
 		setValue: function(newValue) {
@@ -254,10 +268,14 @@ Vue.component("n-input-date", {
 						date = tmp;
 					}
 				}
-				if (isAvailable) {
+				if (isAvailable && this.default != null) {
 					this.date = date;
 					this.internalChange = true;
 					this.$emit("input", this.format(date));
+				}
+				else if (isAvailable && !this.default){
+					this.date = date;
+					this.$emit("input", null);
 				}
 			}
 		}

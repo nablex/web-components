@@ -12,6 +12,7 @@
 					<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-next-year n-icon n-icon-chevron-circle-right fa fa-chevron-circle-right" @click="canIncrementMonth(12) ? date = incrementMonth(12) : null" :disabled="!canIncrementMonth(12)"></a>
 				
 					<n-input-combo v-if="yearsDropdown"
+						:allow-typing="false"
 						v-model="year" 
 						@input="selectYear(year)"
 						:items="years"

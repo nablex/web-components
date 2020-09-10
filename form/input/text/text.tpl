@@ -41,7 +41,7 @@
 					:rows="rows"
 					:placeholder="placeholder" 
 					:disabled="disabled" 
-					:value="value" 
+					:value="localValue" 
 					class="field" 
 					:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 					ref="input"

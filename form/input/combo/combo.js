@@ -117,6 +117,10 @@ Vue.component("n-form-combo", {
 		validator: {
 			type: Function,
 			required: false
+		},
+		allowTyping: {
+			type: Boolean,
+			default: true
 		}
 	},
 	template: "#n-form-combo",

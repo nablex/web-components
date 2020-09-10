@@ -193,6 +193,9 @@ Vue.component("n-form-date", {
 				pattern += "$";
 				return pattern;
 			}
+		},
+		defaultValue: function () {
+			return this.default;
 		}
 	},
 	created: function() {
@@ -319,6 +322,15 @@ Vue.component("n-form-date", {
 			this.valid = !messages.length;
 			return messages;
 		},
+		focus: function () {
+			this.showPopup();
+			if ( this.edit && !this.disabled ) {
+				this.show = !this.show;
+			} 
+			else {
+				this.show = false;
+			}
+		},
 		showPopup: function() {
 			if (this.popup) {
 				var self = this;
@@ -384,6 +396,7 @@ Vue.component("n-form-date", {
 						this.lastParsed = newValue;
 						this.$emit("input", newValue);
 						this.$emit("label", this.formatValue(newValue));
+						this.show = false;
 					}
 				}
 				// otherwise unset the value, at this point you are visually looking at something that is not a date

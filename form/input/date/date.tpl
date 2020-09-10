@@ -3,7 +3,7 @@
 		<slot name="top"></slot>
 		
 		<n-form-text class="n-form-date-input" 
-			@focus="showPopup" 
+			@focus="focus" 
 			:pattern="pattern ? pattern : dynamicPattern" 
 			:pattern-comment="patternComment"
 			v-model="date" 
@@ -44,6 +44,7 @@
 			:includeHours="includeHours"
 			:includeMinutes="includeMinutes"
 			:includeSeconds="includeSeconds"
+			:default="defaultValue"
 			ref="dateInput"/>
 		
 		<slot name="messages">

@@ -245,7 +245,7 @@ Vue.component("n-form-text", {
 			}
 		},
 		checkKey: function($event) {
-			if (this.allow && $event.key) {
+			if (this.allow && $event.key && !$event.ctrlKey && !$event.metaKey) {
 				var result = this.allow($event.key, this.mergeContent($event.key));
 				// you can send back an array of validation messages
 				// this can't be asynchronous because we need to block the event _now_

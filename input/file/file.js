@@ -38,6 +38,10 @@ Vue.component("n-input-file", {
 			type: String,
 			required: false,
 			default: "fa fa-times"			
+		},
+		restrictionMessage: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-input-file",
@@ -57,6 +61,7 @@ Vue.component("n-input-file", {
 			var result = this.addFiles(event.target.files || event.dataTransfer.files);
 			event.preventDefault();
 			event.stopPropagation();
+			this.$refs.input.value = "";
 			return result;
 		},
 		addFiles: function(fileList) {
