@@ -48,7 +48,7 @@ Vue.component("n-input-date", {
 		includeSeconds: {
 			type: Boolean,
 			required: false
-		}}
+		},
 		"default": {
 			required: false
 		}
