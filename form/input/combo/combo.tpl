@@ -19,6 +19,7 @@
 		</slot>
 
 		<n-input-combo v-show="edit" 
+			:empty-value="emptyValue"
 			:case-insensitive="caseInsensitive"
 			@label="function(newValue) { valueLabel = newValue }"
 			:value="value" 

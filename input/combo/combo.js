@@ -79,6 +79,10 @@ Vue.component("n-input-combo", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		emptyValue: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-input-combo",

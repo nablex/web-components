@@ -121,6 +121,10 @@ Vue.component("n-form-combo", {
 		allowTyping: {
 			type: Boolean,
 			default: true
+		},
+		emptyValue: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-combo",
@@ -170,6 +174,7 @@ Vue.component("n-form-combo", {
 				}
 				else {
 					self.valid = messages.length == 0;
+					self.messages.splice(0);
 					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 				}
 			});

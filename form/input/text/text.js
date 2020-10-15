@@ -357,6 +357,7 @@ Vue.component("n-form-text", {
 				}
 				else {
 					self.valid = messages.length == 0;
+					self.messages.splice(0);
 					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 				}
 				// make sure we emit the value we just validated. in case of validate on blur (or a short validate timeout) and a longer emit timeout

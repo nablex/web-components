@@ -78,6 +78,10 @@ Vue.component("n-form-radio", {
 		before: {
 			type: String,
 			required: false
+		},
+		mustChoose: {
+			type: Boolean,
+			required: false
 		}		
 	},
 	template: "#n-form-radio",
@@ -111,6 +115,26 @@ Vue.component("n-form-radio", {
 		validate: function(soft) {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
+			
+			if(!this.chosen && this.mustChoose) {
+				var message = {
+					soft: false,
+					severity: "error",
+					code: "required",
+					title: "%{validation:The value is required}",
+					priority: 0,
+					values: {
+						actual: false,
+						expected: true
+					},
+					context: []
+				}
+				Object.defineProperty(message, 'component', {
+					value: this,
+					enumerable: false
+				});
+				messages.push(message);				
+			}
 			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
 			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
 			if (requiredMessage && this.$refs && this.$refs.combo && this.$refs.combo.content) {

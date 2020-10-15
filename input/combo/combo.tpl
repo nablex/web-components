@@ -33,6 +33,11 @@
 					<slot name="value" :value="potential"><span>{{ formatter ? formatter(potential) : potential }}</span></slot>
 				</li>
 			</ul>
+			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && emptyValue">
+				<li class="n-input-combo-dropdown-value n-input-combo-dropdown-empty-value" :auto-close="autoclose">
+					<span v-content="emptyValue"></span>
+				</li>
+			</ul>
 		</div>
 		<slot name="bottom"></slot>
 	</div>

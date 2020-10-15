@@ -21,7 +21,7 @@
 				:name="name"
 				:disabled="!edit || disabled"
 				:value="extracter ? extracter(item) : item"
-				v-checked="value == (extracter ? extracter(item) : item)"
+				v-checked="(!mustChoose || chosen) && value == (extracter ? extracter(item) : item)"
 				@input="select(item)"
 				v-if="!hide" 
 				class="n-form-radio-input"

@@ -15,7 +15,16 @@ Vue.component("n-messages", {
 			}
 			if (values) {
 				for (key in values) {
-					text = text.replace("{" + key + "}", values[key]);
+					var value = values[key];
+					if (this.$services && this.$services.formatter && this.$services.formatter.number) {
+						if (typeof(value) == "string" && value.match && value.match(/^[0-9.]+/)) {
+							value = Number(value);
+						}
+						if (value instanceof Number || typeof(value) == "number") {
+							value = this.$services.formatter.number(value);
+						}
+					}
+					text = text.replace("{" + key + "}", value);
 				}
 			}
 			return text;
