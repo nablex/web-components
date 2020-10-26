@@ -83,6 +83,18 @@
 				:name="streetNumber"
 				class="streetNumber"
 				ref="streetNumber"/>
+				
+			<n-form-text v-if="additional"
+				:disabled="(countryField && !value[countryField]) || (city && !value[city]) || (postCode && !value[postCode]) || (street && !value[street])"  
+				:label="additionalLabel"
+				:value="value[additional]"
+				@input="updateAdditional"
+				:timeout="timeout"
+				:allow-type-match="false"
+				:schema="schemaResolver ? schemaResolver(additional) : null"
+				:name="additional"
+				class="additional"
+				ref="additional"/>
 
 		</div>
 		<div v-else>

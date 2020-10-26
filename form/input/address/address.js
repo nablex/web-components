@@ -139,8 +139,16 @@ Vue.component("n-form-address", {
 			type: String,
 			required: false
 		},
+		additional: {
+			type: String,
+			required: false
+		},
 		// street_number
 		streetNumberLabel: {
+			type: String,
+			required: false
+		},
+		additionalLabel: {
 			type: String,
 			required: false
 		},
@@ -192,8 +200,21 @@ Vue.component("n-form-address", {
 			else if (this.countryCode && this.value[this.countryCode]) {
 				address += this.value[this.countryCode];
 			}
-			if (this.city && this.value[this.city]) {
-				address = this.value[this.city] + ", " + address;
+			if (this.city && this.value[this.city] && this.postCode && this.value[this.postCode]) {
+				if (address != "") {
+					address = this.value[this.postCode] + " " + this.value[this.city] + ", " + address;
+				}
+				else {
+					address = this.value[this.postCode] + " " + this.value[this.city]
+				}
+			}
+			else if (this.city && this.value[this.city]) {
+				if (address != "") {
+					address = this.value[this.city] + ", " + address;
+				}
+				else {
+					address = this.value[this.city];
+				}
 			}
 			else if (!this.city && this.postCode && this.value[this.postCode]) {
 				if (this.postCodeFull) {
@@ -207,6 +228,9 @@ Vue.component("n-form-address", {
 				var street = this.value[this.street];
 				if (this.streetNumber && this.value[this.streetNumber]) {
 					street += " " + this.value[this.streetNumber];
+					if (this.additional && this.value[this.additional]) {
+						street += " " + this.value[this.additional];
+					}
 				}
 				address = street + ", " + address;
 			}
@@ -438,6 +462,13 @@ Vue.component("n-form-address", {
 		},
 		updateStreetNumber: function(streetNumber, ignoreEmit) {
 			Vue.set(this.value, this.streetNumber, this.formatAutocomplete('streetNumber', streetNumber));
+			if (!ignoreEmit) {
+				this.$emit("changed");
+			}
+			this.checkFullAddress();
+		},
+		updateAdditional: function(additional, ignoreEmit) {
+			Vue.set(this.value, this.additional, this.formatAutocomplete('additional', additional));
 			if (!ignoreEmit) {
 				this.$emit("changed");
 			}
