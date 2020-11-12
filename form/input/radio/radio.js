@@ -116,12 +116,16 @@ Vue.component("n-form-radio", {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			
-			if(!this.chosen && this.mustChoose) {
+			var existingRequired = messages.filter(function(x) { return x.code == "required" })[0];
+			if (existingRequired) {
+				existingRequired.title = "%{validation:You must choose an option}";
+			}
+			else if (!this.chosen && this.mustChoose) {
 				var message = {
 					soft: false,
 					severity: "error",
 					code: "required",
-					title: "%{validation:The value is required}",
+					title: "%{validation:You must choose an option}",
 					priority: 0,
 					values: {
 						actual: false,
