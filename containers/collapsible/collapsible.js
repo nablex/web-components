@@ -10,6 +10,18 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 		load: {
 			type: Function,
 			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
+		},
+		startOpen: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-collapsible",
@@ -17,6 +29,11 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 		return {
 			show: false,
 			loading: false
+		}
+	},
+	created: function() {
+		if (this.startOpen) {
+			this.show = true;
 		}
 	},
 	methods: {
