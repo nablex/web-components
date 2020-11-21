@@ -4,7 +4,7 @@ Vue.component("n-sidebar", {
 		popout: {
 			type: Boolean,
 			required: false,
-			default: true
+			default: false
 		},
 		autocloseable: {
 			type: Boolean,
@@ -41,7 +41,8 @@ Vue.component("n-sidebar", {
 		closeOther: function() {
 			var position = this.position == "left" ? "left" : "right";
 			// by default we just want one open, or they would pop over each other
-			var existing = document.querySelectorAll("#n-sidebar-" + position + "-instance");
+			//var existing = document.querySelectorAll("#n-sidebar-" + position + "-instance");
+			var existing = document.querySelectorAll(".n-sidebar." + position);
 			var self = this;
 			existing.forEach(function(x) {
 				if (x != self.$el) {
