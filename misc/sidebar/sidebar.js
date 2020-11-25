@@ -24,16 +24,16 @@ Vue.component("n-sidebar", {
 	},
 	ready: function() {
 		this.closeOther();
+		var position = this.position == "left" ? "left" : "right";
 		if (this.popout) {
-			var position = this.position == "left" ? "left" : "right";
 			this.$el.setAttribute("id", "n-sidebar-" + position + "-instance");
 			this.parentNode = this.$el.parentNode;
 			if (this.$root.$el != this.parentNode) {
 				this.$root.$el.appendChild(this.$el);
 			}
-			if (this.inline) {
-				document.body.setAttribute("has-sidebar-" + position, "true");
-			}
+		}
+		if (this.inline) {
+			document.body.setAttribute("has-sidebar-" + position, "true");
 		}
 		this.$el.$$close = this.close;
 	},
@@ -51,15 +51,15 @@ Vue.component("n-sidebar", {
 			});
 		},
 		close: function() {
-			if (this.popout) {
-				if (this.inline) {
-					if (this.position == "left") {
-						document.body.removeAttribute("has-sidebar-left");
-					}
-					else {
-						document.body.removeAttribute("has-sidebar-right");
-					}
+			if (this.inline) {
+				if (this.position == "left") {
+					document.body.removeAttribute("has-sidebar-left");
 				}
+				else {
+					document.body.removeAttribute("has-sidebar-right");
+				}
+			}
+			if (this.popout) {
 				if (this.parentNode && this.$el.parentNode != this.parentNode) {
 					this.parentNode.appendChild(this.$el);
 				}
