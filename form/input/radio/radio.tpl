@@ -25,7 +25,7 @@
 				@input="select(item)"
 				v-if="!hide" 
 				class="n-form-radio-input"
-			/><slot name="label" :select="function() { select(item) }"><label class="n-form-label" @click="select(item); $event.stopPropagation()">{{ formatter ? formatter(item) : item }}</label></slot>
+			/><slot name="label" :value="item" :select="function() { select(item) }"><label class="n-form-label" @click="select(item); $event.stopPropagation()">{{ formatter ? formatter(item) : item }}</label></slot>
 		</div>
 
 		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
