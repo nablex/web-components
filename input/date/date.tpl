@@ -3,20 +3,22 @@
 		<table :class="yearsDropdown ? 'table dropdown' : 'table'" cellspacing="0" cellpadding="0">
 			<thead class="caption">
 				<tr>
-					<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-previous-year n-icon n-icon-chevron-circle-left fa fa-chevron-circle-left" @click="canIncrementMonth(-12) ? date = incrementMonth(-12) : null" :disabled="!canIncrementMonth(-12)"></a>
-					<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="canIncrementMonth(-1) ? date = incrementMonth(-1) : null" :disabled="!canIncrementMonth(-1)"></a>
-	 
-					<span class="month">{{ months[date.getMonth()] }} {{ !yearsDropdown ? date.getFullYear() : '' }}</span>
-	
-					<a href="javascript:void(0)" class="n-input-date-next n-icon n-icon-chevron-right fa fa-chevron-right" @click="canIncrementMonth(1) ? date = incrementMonth(1) : null" :disabled="!canIncrementMonth(1)"></a>
-					<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-next-year n-icon n-icon-chevron-circle-right fa fa-chevron-circle-right" @click="canIncrementMonth(12) ? date = incrementMonth(12) : null" :disabled="!canIncrementMonth(12)"></a>
-				
-					<n-input-combo v-if="yearsDropdown"
-						:allow-typing="false"
-						v-model="year" 
-						@input="selectYear(year)"
-						:items="years"
-					></n-input-combo>
+					<td colspan="7">
+						<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-previous-year n-icon n-icon-chevron-circle-left fa fa-chevron-circle-left" @click="canIncrementMonth(-12) ? date = incrementMonth(-12) : null" :disabled="!canIncrementMonth(-12)"></a>
+						<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="canIncrementMonth(-1) ? date = incrementMonth(-1) : null" :disabled="!canIncrementMonth(-1)"></a>
+		 
+						<span class="month">{{ months[date.getMonth()] }} {{ !yearsDropdown ? date.getFullYear() : '' }}</span>
+		
+						<a href="javascript:void(0)" class="n-input-date-next n-icon n-icon-chevron-right fa fa-chevron-right" @click="canIncrementMonth(1) ? date = incrementMonth(1) : null" :disabled="!canIncrementMonth(1)"></a>
+						<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-next-year n-icon n-icon-chevron-circle-right fa fa-chevron-circle-right" @click="canIncrementMonth(12) ? date = incrementMonth(12) : null" :disabled="!canIncrementMonth(12)"></a>
+					
+						<n-input-combo v-if="yearsDropdown"
+							:allow-typing="false"
+							v-model="year" 
+							@input="selectYear(year)"
+							:items="years"
+						></n-input-combo>
+					</td>
 				</tr>
 			</thead>
 			<thead>
