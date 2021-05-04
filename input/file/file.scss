@@ -1,8 +1,10 @@
+$n-input-file-height: 6rem !default;
+
 .n-input-file {
 	align-items: center;
 	border: $beta-border solid 1px;
 	display: flex;
-	height: 6rem;
+	height: $n-input-file-height;
 	justify-content: center;
 	flex-direction: column;
 	max-width: 30rem;
@@ -13,9 +15,13 @@
 	}
 
 	&.drag-over {
-		background-color: #ADDEFF;
+		background-color: lighten(#ADDEFF,10%);
 	}
-
+	.n-messages {
+		margin-right: auto;
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;	
+	}
 	input {
 		height: 0.1px;
 		opacity: 0;

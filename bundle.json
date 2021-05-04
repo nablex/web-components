@@ -20,8 +20,8 @@
 				"file.js": {
 					"url": "input/file/file.js"
 				}, 
-				"file.sass": {
-					"url": "input/file/file.sass"
+				"file.scss": {
+					"url": "input/file/file.scss"
 				}, 
 				"file.tpl": {
 					"url": "input/file/file.tpl"
