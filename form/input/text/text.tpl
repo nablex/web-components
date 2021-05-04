@@ -23,8 +23,8 @@
 				:disabled="disabled" 
 				v-model="localValue"
 				class="field"
-				:min="(exclusiveMinimum != null && type == 'range') ? exclusiveMinimum : minimum"
-				:max="(exclusiveMaximum != null && type == 'range') ? exclusiveMaximum : maximum"
+				:min="minimum"
+				:max="maximum"
 				:step="step"
 				v-if="type != 'area'" 
 				:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
@@ -32,6 +32,8 @@
 				@focus="focus"
 				ref="input"
 				:name="name"
+				:style="'width:'+rangeWidth+';left:'+rangeLeftOffset"
+				v-bind="{'contentEditable': type == 'range' ? 'false' : null}"
 				/><textarea
 					v-else
 					@focus="$emit('focus')"

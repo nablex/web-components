@@ -212,6 +212,22 @@ Vue.component("n-form-text", {
 			}
 			return definition;
 		},
+		rangeWidth: function () {
+			if (this.minimum && this.maximum && this.exclusiveMinimum && this.exclusiveMaximum) {
+				return (this.maximum - this.minimum) / (this.exclusiveMaximum - this.exclusiveMinimum)*100 + "%";	
+			}
+			else {
+				return "100%";
+			}
+		},
+		rangeLeftOffset: function () {
+			if (this.minimum && this.maximum && this.exclusiveMinimum && this.exclusiveMaximum) {
+				return (this.minimum - this.exclusiveMinimum) / (this.exclusiveMaximum - this.exclusiveMinimum)*100 + "%";	
+			}
+			else {
+				return "0%";
+			}
+		},
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
 		}
@@ -350,6 +366,18 @@ Vue.component("n-form-text", {
 			var self = this;
 			messages.then(function(validations) {
 				nabu.utils.vue.form.rewriteCodes(messages, self.codes);
+
+				// we want to separate out the info & warning messages, they should not be blocking and can be displayed alongside actual errors
+				// currently the informational & warning messages are only ever shown on the component itself, not at the form level
+				// this is why we are removing them from the actual messages array, they do not follow the component setting for errors (currently)
+				var informational = messages.filter(function(x) { return x.severity != "error" });
+				if (informational.length) {
+					informational.forEach(function(x) {
+						messages.splice(messages.indexOf(x), 1);
+					});
+				}
+
+				self.messages.splice(0);
 				var hardMessages = messages.filter(function(x) { return !x.soft });
 				// if we are doing a soft validation and all messages were soft, set valid to unknown
 				if (soft && hardMessages.length == 0 && (messages.length > 0 || !valueToValidate) && self.valid == null) {
@@ -357,7 +385,6 @@ Vue.component("n-form-text", {
 				}
 				else {
 					self.valid = messages.length == 0;
-					self.messages.splice(0);
 					nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 				}
 				// make sure we emit the value we just validated. in case of validate on blur (or a short validate timeout) and a longer emit timeout
@@ -373,6 +400,10 @@ Vue.component("n-form-text", {
 				// otherwise we "update" from undefined to an empty string for example which whill (after the validate) trigger the watcher which immediately resets the validation errors
 				if (!(self.value == null && !valueToValidate)) {
 					self.$emit("input", valueToValidate);
+				}
+				// if we have any informational messages, we want to show them locally
+				if (informational.length) {
+					nabu.utils.arrays.merge(self.messages, informational);
 				}
 			});
 			return messages;

@@ -36,15 +36,25 @@ nabu.utils.vue.form = {
 				if (codes[x.code]) {
 					if (typeof(codes[x.code]) == "string") {
 						x.title = codes[x.code];
+						x.title = nabu.utils.vue.form.replaceVariables(x.title, x);
 					}
 					else {
 						Object.keys(codes[x.code]).forEach(function(key) {
 							x[key] = codes[x.code][key];
+							x[key] = nabu.utils.vue.form.replaceVariables(x[key], x);
 						});
 					}
 				}
 			});
 		}
+	},
+	replaceVariables: function(template, variables) {
+		if (variables) {
+			Object.keys(variables).forEach(function(x) {
+				template = template.replace(new RegExp("\\{[\\s]*" + x + "[\\s]*\\}", "g"), variables[x]);
+			});
+		}
+		return template;
 	},
 	mandatory: function(component) {
 		var required = component.required;

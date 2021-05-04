@@ -12,6 +12,11 @@ Vue.component("n-input-file", {
 		amount: {
 			required: false
 		},
+		// in bytes, you can explicitly pass in 0 to set to unlimited
+		maxFileSize: {
+			type: Number,
+			required: false	
+		},
 		disabled: {
 			type: Boolean,
 			required: false,
@@ -42,6 +47,17 @@ Vue.component("n-input-file", {
 		restrictionMessage: {
 			type: String,
 			required: false
+		},
+		// a json schema component stating the definition
+		schema: {
+			type: Object,
+			required: false
+		},
+		required: {
+			type: Boolean,
+			required: false,
+			// explicitly set default value to null, otherwise vue will make it false which we can't distinguish from "not set"
+			default: null
 		}
 	},
 	template: "#n-input-file",
@@ -49,10 +65,15 @@ Vue.component("n-input-file", {
 		return {
 			// used to dynamically create new file names
 			counter: 0,
-			dragging: false
+			dragging: false,
+			messages: []
 		}
 	},
 	methods: {
+		dragOver: function($event) {
+			this.dragging = true; 
+			$event.preventDefault();
+		},
 		hasDropSupport: function () {
 			var div = document.createElement("div");
 			return (("draggable" in div) || ("ondragstart" in div && "ondrop" in div)) && "FormData" in window && "FileReader" in window;
@@ -68,7 +89,7 @@ Vue.component("n-input-file", {
 			var notAllowed = [];
 			var changed = this.makeRoomFor(fileList.length);
 			for (var i = 0; i < fileList.length; i++) {
-				if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(fileList.item(i).type)) {
+				if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(fileList.item(i).type) && this.isAllowedSize(fileList.item(i).size)) {
 					changed = true;
 					this.value.push(fileList.item(i));
 				}
@@ -76,6 +97,7 @@ Vue.component("n-input-file", {
 					notAllowed.push(fileList.item(i));
 				}
 			}
+			this.validate();
 			if (changed) {
 				this.$emit("change", this.value);
 			}
@@ -98,7 +120,7 @@ Vue.component("n-input-file", {
 			if (files) {
 				var changed = this.makeRoomFor(files.length);
 				for (var i = 0; i < files.length; i++) {
-					if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(files[i].type)) {
+					if ((!this.amount || this.value.length < this.amount) && this.isAllowedType(files[i].type) && this.isAllowedSize(files[i].size)) {
 						var blob = files[i].getAsFile();
 						changed = true;
 						this.value.push(new File([blob], "pasted_file_" + this.counter++, { type: files[i].type}));
@@ -116,12 +138,88 @@ Vue.component("n-input-file", {
 		isAllowedType: function(type) {
 			return type && (!this.types || !this.types.length || this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "")) >= 0);
 		},
+		isAllowedSize: function(size) {
+			if (!this.maxFileSize) {
+				return true;
+			}
+			if (size == null) {
+				return false;
+			}
+			return size <= this.maxFileSize ? true : false;
+		},
+		isAllAllowedSize: function() {
+			var self = this;
+			return this.value.reduce(function(file, current) {
+				return current && self.isAllowedSize(file.size);
+			}, true);
+		},
+		isAllAllowedType: function() {
+			var self = this;
+			return this.value.reduce(function(file, current) {
+				return current && self.isAllowedType(file.type);
+			}, true);
+		},		
 		browse: function() {
 			this.$refs.input.click();
 		},
 		removeFile: function (file) {
 			this.value.splice(this.value.indexOf(file),1);
 			this.$emit("change", this.value);
-		}
+		},
+		validate: function(soft) {
+			this.messages.splice(0);
+			var messages = [];
+			var mandatory = nabu.utils.vue.form.mandatory(this);
+			if (!this.isAllAllowedType()) {
+				var title = "%{validation:This file type is not allowed}";
+				messages.push({
+					severity: "error",
+					code: "invalidFileType",
+					title: title,
+					priority: -1,
+					values: {
+						actual: this.value.map(function(x) { return x.type }),
+						expected: this.types
+					},
+					context: [this]
+				});
+			}
+			if (!this.isAllAllowedSize()) {
+				var title = "%{validation:This file is too big, the maximum file size is {maxFileSize}}";
+				if (this.maxFileSize < 1024 * 1024) {
+					title = title.replace("{maxFileSize}", (this.maxFileSize / 1024) + "kb");
+				}
+				else {
+					title = title.replace("{maxFileSize}", (this.maxFileSize / (1024 * 1024)) + "mb");
+				}
+				messages.push({
+					severity: "error",
+					code: "invalidFileSize",
+					title: title,
+					priority: -1,
+					values: {
+						actual: this.value.map(function(x) { return x.size }),
+						expected: this.maxFileSize
+					},
+					context: [this]
+				});
+			}
+			if (mandatory && this.value.length < 1) {
+				messages.push({
+					soft: true,
+					severity: "error",
+					code: "required",
+					title: "%{validation:The value is required}",
+					priority: 0,
+					values: {
+						actual: false,
+						expected: true
+					},
+					context: [this]
+				});
+			}
+			nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
+			return messages;
+		}	
 	}
 });
