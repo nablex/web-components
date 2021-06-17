@@ -1,3 +1,4 @@
+test
 // need to import the following url: https://maps.googleapis.com/maps/api/js?key=<apikey>&libraries=places&callback=application.services.geo.initialize
 Vue.service("geo", {
 	data: function() {
