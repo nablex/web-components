@@ -64,7 +64,8 @@ Vue.component("n-input-combo", {
 		},
 		autocomplete: {
 			type: String,
-			default: "off"
+			// for chrome, if we only set it to "off", we still get the auto suggestions popup that layers over everything....
+			default: window.navigator.userAgent.indexOf("Chrome") >= 0 ? "nothing" : "off"
 		},
 		autoselectSingle: {
 			type: Boolean,
@@ -83,6 +84,11 @@ Vue.component("n-input-combo", {
 		emptyValue: {
 			type: String,
 			required: false
+		},
+		reloadOnFocus: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-input-combo",
@@ -148,6 +154,11 @@ Vue.component("n-input-combo", {
 			// for this reason, we do the showvalues in a tiny timeout to circumvent this behavior
 			setTimeout(function() {
 				if (self.stillFocused) {
+					// the problem is if your combo box has values that are dependent on another value in the form, you may have changed that value
+					// by reloading here, we make sure the dropdown shows relevant items
+					if (self.reloadOnFocus) {
+						self.filterItems(self.content, self.label);
+					}
 					self.showValues = true;
 				}
 			}, 100);

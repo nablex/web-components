@@ -58,6 +58,11 @@ Vue.component("n-input-file", {
 			required: false,
 			// explicitly set default value to null, otherwise vue will make it false which we can't distinguish from "not set"
 			default: null
+		},
+		visualizeFileNames: {
+			type: Boolean,
+			required: false,
+			default: true
 		}
 	},
 	template: "#n-input-file",
@@ -136,7 +141,7 @@ Vue.component("n-input-file", {
 			return notAllowed;
 		},
 		isAllowedType: function(type) {
-			return type && (!this.types || !this.types.length || this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "")) >= 0);
+			return !this.types || !this.types.length || (type && (this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "")) >= 0));
 		},
 		isAllowedSize: function(size) {
 			if (!this.maxFileSize) {
@@ -149,13 +154,13 @@ Vue.component("n-input-file", {
 		},
 		isAllAllowedSize: function() {
 			var self = this;
-			return this.value.reduce(function(file, current) {
+			return this.value.reduce(function(current, file) {
 				return current && self.isAllowedSize(file.size);
 			}, true);
 		},
 		isAllAllowedType: function() {
 			var self = this;
-			return this.value.reduce(function(file, current) {
+			return this.value.reduce(function(current, file) {
 				return current && self.isAllowedType(file.type);
 			}, true);
 		},		

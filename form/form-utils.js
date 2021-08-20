@@ -30,6 +30,7 @@ nabu.utils.vue.form = {
 					result[x.code] = x;
 				}
 			});
+			codes = result;
 		}
 		if (messages && messages.length && codes) {
 			messages.forEach(function(x) {

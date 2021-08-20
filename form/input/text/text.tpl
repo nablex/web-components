@@ -11,6 +11,9 @@
 			<div class="n-form-component-before" v-if="before" v-html="before"></div>
 		</slot>
 		<div class="n-form-input-wrapper" v-if="edit">
+			<div class="n-form-increment" v-if="type == 'number'" @click="increment">
+				<span class="icon fa fa fa-chevron-up"></span>
+			</div>
 			<input 
 				@change="triggerChange"
 				@blur="blur($event.target.value)"
@@ -34,6 +37,7 @@
 				:name="name"
 				:style="'width:'+rangeWidth+';left:'+rangeLeftOffset"
 				v-bind="{'contentEditable': type == 'range' ? 'false' : null}"
+				:autocomplete="autocomplete"
 				/><textarea
 					v-else
 					@focus="$emit('focus')"
@@ -48,7 +52,10 @@
 					:class="{ 'n-form-required': mandatory, 'n-form-optional': !mandatory, 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 					ref="input"
 					:name="name"
-				/><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
+					:autocomplete="autocomplete"
+				/><div class="n-form-decrement" v-if="type == 'number'" @click="decrement">
+					<span class="icon fa fa fa-chevron-down"></span>
+				</div><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
 		</div>
 		<div class="n-form-read-only" v-else>
 			<slot><span class="n-form-read">{{ type == 'password' ? '*******' : localValue }}</span></slot>

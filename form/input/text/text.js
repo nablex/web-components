@@ -169,6 +169,11 @@ Vue.component("n-form-text", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		autocomplete: {
+			type: String,
+			// for chrome, if we only set it to "off", we still get the auto suggestions popup that layers over everything....
+			default: window.navigator.userAgent.indexOf("Chrome") >= 0 ? "nothing" : "off"
 		}
 	},
 	template: "#n-form-text",
