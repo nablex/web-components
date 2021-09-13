@@ -141,7 +141,7 @@ Vue.component("n-input-file", {
 			return notAllowed;
 		},
 		isAllowedType: function(type) {
-			return !this.types || !this.types.length || (type && (this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "")) >= 0));
+			return !this.types || !this.types.length || (type && (this.types.indexOf(type) >= 0 || this.types.indexOf(type.replace(/\/.*$/, "") + "/*") >= 0));
 		},
 		isAllowedSize: function(size) {
 			if (!this.maxFileSize) {

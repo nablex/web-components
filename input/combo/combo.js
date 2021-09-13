@@ -156,7 +156,8 @@ Vue.component("n-input-combo", {
 				if (self.stillFocused) {
 					// the problem is if your combo box has values that are dependent on another value in the form, you may have changed that value
 					// by reloading here, we make sure the dropdown shows relevant items
-					if (self.reloadOnFocus) {
+					// only relevant if we can filter?
+					if (self.reloadOnFocus && self.filter) {
 						// by default we filter on what is there
 						var contentToFilter = self.content;
 						// if however the current content matches exactly with the current value, we filter with no content
