@@ -17,7 +17,7 @@
 			<input 
 				@change="triggerChange"
 				@blur="blur($event.target.value)"
-				@keyup="$emit('keyup')"
+				@keyup="$emit('keyup', $event)"
 				@input="updateValue($event.target.value)"
 				@keypress="checkKey($event)"
 				@paste="pasteHandler"
