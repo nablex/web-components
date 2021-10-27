@@ -24,6 +24,22 @@ Vue.component("n-form-switch", {
 			type: Boolean,
 			required: false,
 			default: false
+		},
+		info: {
+			type: String,
+			required: false
+		},
+		infoIcon: {
+			type: String,
+			required: false
+		},
+		before: {
+			type: String,
+			required: false
+		},
+		after: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form-switch",

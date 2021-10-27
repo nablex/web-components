@@ -11,7 +11,7 @@
 			<div class="n-form-component-before" v-if="before" v-html="before"></div>
 		</slot>
 		<div class="n-form-input-wrapper" v-if="edit">
-			<div class="n-form-increment" v-if="type == 'number'" @click="increment">
+			<div class="n-form-increment" v-if="type == 'number' && showCustomSpinner" @click="increment">
 				<span class="icon fa fa fa-chevron-up"></span>
 			</div>
 			<input 
@@ -53,7 +53,7 @@
 					ref="input"
 					:name="name"
 					:autocomplete="autocomplete"
-				/><div class="n-form-decrement" v-if="type == 'number'" @click="decrement">
+				/><div class="n-form-decrement" v-if="type == 'number' && showCustomSpinner" @click="decrement">
 					<span class="icon fa fa fa-chevron-down"></span>
 				</div><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
 		</div>

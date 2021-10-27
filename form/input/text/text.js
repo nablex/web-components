@@ -174,6 +174,12 @@ Vue.component("n-form-text", {
 			type: String,
 			// for chrome, if we only set it to "off", we still get the auto suggestions popup that layers over everything....
 			default: window.navigator.userAgent.indexOf("Chrome") >= 0 ? "nothing" : "off"
+		},
+		// you can show the customer spinners (for numbers only)
+		// you need css to hide the default ones then
+		showCustomSpinner: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -473,7 +479,20 @@ Vue.component("n-form-text", {
 					this.$emit("input", valueToEmit);
 				}
 			}
-		}
+		},
+        increment: function () {
+                if (this.type == "number") {
+                        this.$refs.input.stepUp();
+                        this.$emit("input", this.$refs.input.value);
+                }       
+        },
+        decrement: function () {
+                if (this.type == "number") {
+                        this.$refs.input.stepDown();
+                        console.log('value', this.$refs.input.value)
+                        this.$emit("input", this.$refs.input.value);
+                }       
+        }
 	},
 	watch: {
 		// reset validity if the value is updated
