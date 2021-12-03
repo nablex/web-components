@@ -122,6 +122,18 @@ Vue.component("n-form-date-picker", {
 			required: false,
 			default: function() { return ["year", "month", "day"]; }
 		},
+		// we can autoformat the result depending on the fields required
+		// e.g. yyyy-MM or yyyy-MM-dd
+		autoFormat: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
+		allowPartial: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
 		description: {
 			type: String,
 			required: false
@@ -263,7 +275,7 @@ Vue.component("n-form-date-picker", {
 			if (this.notBefore != null) {
 				from = this.notBefore instanceof Date ? this.notBefore : new Date(this.notBefore);
 			}
-			else if (this.maximumOffset != null && this.maximumOffset < 0) {
+			else if (this.maximumOffset != null && this.maximumOffset <= 0) {
 				from = new Date(new Date().getTime() + (this.maximumOffset * 1000 * 60 * 60 * 24));
 			}
 			else if (this.minimumOffset != null && this.minimumOffset > 0) {
@@ -279,7 +291,7 @@ Vue.component("n-form-date-picker", {
 			else if (this.maximumOffset != null && this.maximumOffset > 0) {
 				to = new Date(new Date().getTime() + (this.maximumOffset * 1000 * 60 * 60 * 24));
 			}
-			else if (this.minimumOffset != null && this.minimumOffset < 0) {
+			else if (this.minimumOffset != null && this.minimumOffset <= 0) {
 				to = new Date(new Date().getTime() + (this.minimumOffset * 1000 * 60 * 60 * 24));
 			}
 			else {
@@ -386,8 +398,14 @@ Vue.component("n-form-date-picker", {
 						this.result.day = null;
 					}
 				}
-				this.$refs.day[0].refilter();
+				if (this.fields.indexOf("day") >= 0) {
+					this.$refs.day[0].refilter();
+				}
 			}
+			this.emitValue();
+		},
+		emitValue: function() {
+			var format = "dateTime";
 			// we want to avoid timezone issues
 			var string = null;
 			var hasAllFields = true;
@@ -397,7 +415,7 @@ Vue.component("n-form-date-picker", {
 					break;
 				}
 			}
-			if (hasAllFields) {
+			if (hasAllFields || this.allowPartial) {
 				string = this.result.year == null ? new Date().getFullYear() : this.result.year;
 				string += "-" + (this.result.month == null ? "01" : (this.result.month < 10 ? "0" : "") + this.result.month);
 				string += "-" + (this.result.day == null ? "01" : (this.result.day < 10 ? "0" : "") + this.result.day);
@@ -405,7 +423,24 @@ Vue.component("n-form-date-picker", {
 			}
 			// should also check if the value is the same but less critical
 			if (string != null || this.value != null) {
-				this.$emit("input", string == null ? null : new Date(string));
+				if (this.autoFormat) {
+					var format = null;
+					if (this.result.year) {
+						format = "yyyy";
+					}
+					if (this.result.month) {
+						format = "yyyy-MM";
+					}
+					if (this.result.day) {
+						format = "yyyy-MM-dd";
+					}
+					if (format != null) {
+						this.$emit("input", string == null ? null : this.$services.formatter.date(new Date(string), format));
+					}
+				}
+				else {
+					this.$emit("input", string == null ? null : new Date(string));
+				}
 			}
 		}
 	}

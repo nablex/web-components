@@ -29,11 +29,19 @@
 			<slot name="input-after" :toggle="function() { showValues = !showValues }"><span @click="showValues = !showValues" class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && values && values.length">
+				<li v-if="resetValue && value != null" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close="autoclose" @click="updateValue(null)">
+					<span v-content="resetValue"></span>
+				</li>
 				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': extracter ? extracter(potential) == value : potential == value, 'pondering': potential == keyValue }" @click="updateValue(potential)" :auto-close="autoclose">
 					<slot name="value" :value="potential"><span>{{ formatter ? formatter(potential) : potential }}</span></slot>
 				</li>
 			</ul>
-			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && emptyValue">
+			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && filtering && calculatingValue">
+				<li class="n-input-combo-dropdown-value n-input-combo-dropdown-calculating-value" :auto-close="autoclose">
+					<span v-content="calculatingValue"></span>
+				</li>
+			</ul>
+			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && emptyValue && !filtering">
 				<li class="n-input-combo-dropdown-value n-input-combo-dropdown-empty-value" :auto-close="autoclose">
 					<span v-content="emptyValue"></span>
 				</li>

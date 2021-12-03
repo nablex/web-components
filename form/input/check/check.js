@@ -84,12 +84,8 @@ Vue.component("n-form-checkbox", {
 		};
 	},
 	created: function() {
-		if (this.value === "false") {
-			this.calculatedValue = false;
-		}
-		else {
-			this.calculatedValue = this.invertIfNecessary(this.value instanceof Array ? this.value.indexOf(this.item) >= 0 : this.value);
-		}
+		var booleanValue = this.getBooleanValue(this.value);
+		this.calculatedValue = this.invertIfNecessary(booleanValue);
 	},
 	computed: {
 		definition: function() {
@@ -100,6 +96,37 @@ Vue.component("n-form-checkbox", {
 		}
 	},
 	methods: {
+		getBooleanValue: function(newValue) {
+			var booleanValue = false;
+			// for arrays we want a separate path
+			if (newValue == null) {
+				booleanValue = false;
+			}
+			else if (newValue === "false") {
+				booleanValue = false;
+			}
+			else if (newValue === "true") {
+				booleanValue = true;
+			}
+			if (newValue instanceof Array) {
+				if (this.item instanceof Array) {
+					booleanValue = true;
+					for (var i = 0; i < this.item.length; i++) {
+						if (newValue.indexOf(this.item[i]) < 0) {
+							booleanValue = false;
+							break;
+						}
+					}
+				}
+				else {
+					booleanValue = newValue.indexOf(this.item) >= 0;
+				}
+			}
+			else {
+				booleanValue = newValue;
+			}
+			return booleanValue;
+		},
 		invertIfNecessary: function(value) {
 			return this.invert ? !value : value;
 		},
@@ -133,14 +160,40 @@ Vue.component("n-form-checkbox", {
 		toggleValue: function() {
 			if (!this.disabled && this.edit) {
 				if (this.value instanceof Array) {
-					var index = this.value.indexOf(this.item);
-					if (index >= 0) {
-						this.value.splice(index, 1);
-						this.$emit("remove", this.item);
+					var self = this;
+					var merge = function(item) {
+						var index = self.value.indexOf(item);
+						if (index >= 0) {
+							self.value.splice(index, 1);
+							self.$emit("remove", item);
+						}
+						else {
+							self.value.push(item);
+							self.$emit("add", item);
+						}
+					}
+					// if the item itself is an array, we merge all
+					if (this.item instanceof Array) {
+						// we don't want to simply toggle every single entry, if you change the list of items, it will always be partially set and unset
+						// this means we can never get a "full" match again
+						// instead, we check what the current boolean situation is and try to invert it
+						var current = this.getBooleanValue(this.value);
+						this.item.forEach(function(x) {
+							var index = self.value.indexOf(x);
+							// if we are currently set to "true" (so everything is in there), we want to remove it
+							if (current && index >= 0) {
+								self.value.splice(index, 1);
+								self.$emit("remove", x);
+							}
+							// if we are set to "false" and want to include everything, add it
+							else if (!current && index < 0) {
+								self.value.push(x);
+								self.$emit("add", x);
+							}
+						});
 					}
 					else {
-						this.value.push(this.item);
-						this.$emit("add", this.item);
+						merge(this.item);
 					}
 				}
 				else {
@@ -161,7 +214,8 @@ Vue.component("n-form-checkbox", {
 	},
 	watch: {
 		value: function(newValue) {
-			this.calculatedValue = this.invertIfNecessary(newValue instanceof Array ? newValue.indexOf(this.item) >= 0 : newValue);
+			var booleanValue = this.getBooleanValue(this.value);
+			this.calculatedValue = this.invertIfNecessary(booleanValue);
 			this.updateChecked(this.calculatedValue);
 		}
 	}

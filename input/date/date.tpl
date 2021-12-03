@@ -14,7 +14,7 @@
 					
 						<n-input-combo v-if="yearsDropdown"
 							:allow-typing="false"
-							v-model="year" 
+							:value="year" 
 							@input="selectYear(year)"
 							:items="years"
 						></n-input-combo>
@@ -42,15 +42,15 @@
 		</table>
 		<div v-if="includeHours || includeMinutes || includeSeconds" class="time">
 			<n-form-text type="number"
-				v-model="hours"
+				:value="hours"
 				v-if="includeHours"
 				@input="select(date)"/>
 			<n-form-text type="number"
-				v-model="minutes"
+				:value="minutes"
 				v-if="includeMinutes"
 				@input="select(date)"/>
 			<n-form-text type="number"
-				v-model="seconds"
+				:value="seconds"
 				v-if="includeSeconds"
 				@input="select(date)"/>
 		</div>

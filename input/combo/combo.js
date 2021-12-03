@@ -81,7 +81,18 @@ Vue.component("n-input-combo", {
 			required: false,
 			default: true
 		},
+		// the text to show when there are no hits
 		emptyValue: {
+			type: String,
+			required: false
+		},
+		// the text to show while the hits are being calculated
+		calculatingValue: {
+			type: String,
+			required: false
+		},
+		// the text to show to reset the current choice (value must not be null)
+		resetValue: {
 			type: String,
 			required: false
 		},
@@ -104,6 +115,8 @@ Vue.component("n-input-combo", {
 			actualValue: null,
 			// the value selected with the keys
 			keyValue: null,
+			// whether or not the async filter is busy
+			filtering: false,
 			stillFocused: false
 		}
 	},
@@ -370,6 +383,9 @@ Vue.component("n-input-combo", {
 				this.showValues = true;
 			}
 			var result = this.filter(content, label);
+			// if we have a promise, set filtering to true before we clear the values
+			// once the values are cleared, we might want to show the placeholder
+			this.filtering = !!result.then;
 			this.values.splice(0, this.values.length);
 			if (result instanceof Array) {
 				nabu.utils.arrays.merge(this.values, result);
@@ -408,6 +424,9 @@ Vue.component("n-input-combo", {
 					if (this.value == null && this.autoselectSingle && results != null && results.length == 1) {
 						this.updateValue(results[0]);
 					}
+					self.filtering = false;
+				}, function() {
+					self.filtering = false;
 				});
 			}
 		},

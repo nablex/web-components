@@ -348,10 +348,10 @@ Vue.component("n-form-date", {
 				value += "T00:00:00Z"
 			}
 			else if (!this.includeMinutes) {
-				value += ":00:00"
+				value += ":00:00Z"
 			}
 			else if (!this.includeSeconds) {
-				value += ":00";
+				value += ":00Z";
 			}
 			return new Date(value);
 		}
@@ -433,6 +433,13 @@ Vue.component("n-form-date", {
 			}
 			else {
 				this.date = newValue;
+			}
+		},
+		'default': function (newValue) {
+			// if we have a default date and no value yet
+			// or we have a value but it is no (longer) valid, we emit the default
+			if ((newValue && !this.value) || (this.value && !this.isAvailable(this.value))) {
+				this.$emit("input", newValue);
 			}
 		}
 	}

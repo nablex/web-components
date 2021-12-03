@@ -122,7 +122,18 @@ Vue.component("n-form-combo", {
 			type: Boolean,
 			default: true
 		},
+		// the text to show when there are no hits
 		emptyValue: {
+			type: String,
+			required: false
+		},
+		// the text to show while the hits are being calculated
+		calculatingValue: {
+			type: String,
+			required: false
+		},
+		// the text to show to reset the current choice (value must not be null)
+		resetValue: {
 			type: String,
 			required: false
 		}

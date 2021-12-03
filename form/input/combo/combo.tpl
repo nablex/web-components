@@ -9,7 +9,7 @@
 		</div>		
 
 
-		<div class="n-form-component-description n-form-component-description-before"  v-if="before || descriptionType == 'before'">
+		<div class="n-form-component-before n-form-component-description n-form-component-description-before"  v-if="before || descriptionType == 'before'">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
 			<span class="n-form-component-description-label">{{ before ? before : description }}</span>
 		</div>
@@ -20,6 +20,8 @@
 
 		<n-input-combo v-show="edit" 
 			:empty-value="emptyValue"
+			:reset-value="resetValue"
+			:calculating-value="calculatingValue"
 			:case-insensitive="caseInsensitive"
 			@label="function(newValue) { valueLabel = newValue }"
 			:value="value" 
@@ -55,7 +57,7 @@
 
 		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
 		
-		<div class="n-form-component-description n-form-component-description-after" v-if="after || descriptionType == 'after'">
+		<div class="n-form-component-after n-form-component-description n-form-component-description-after" v-if="after || descriptionType == 'after'">
 			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
 			<span class="n-form-component-description-label">{{ after ? after : description }}</span>
 		</div>		

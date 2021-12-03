@@ -192,7 +192,13 @@ Vue.component("n-input-date", {
 			return date.getFullYear() == today.getFullYear() && date.getMonth() == today.getMonth() && date.getDate() == today.getDate();
 		},
 		isSelected: function(date) {
-			return this.value != null && this.format(date) == this.value;
+			if (!this.value) {
+				return false;
+			}
+			var parsed = this.parse(this.value);
+			return parsed.getFullYear() == date.getFullYear()
+				&& parsed.getMonth() == date.getMonth()
+				&& parsed.getDate() == date.getDate();
 		},
 		isAvailable: function(date) {
 			return this.allow == null || this.allow(date);
@@ -268,14 +274,21 @@ Vue.component("n-input-date", {
 						date = tmp;
 					}
 				}
+				
+				// we either have the original date or an allowed date within that year, either way, we want to visualize the change in the popup
+				this.date = date;
+
+				// we never want to emit it
+				// it's very weird that your date choice changes if you are scrolling through the years
+				
 				if (isAvailable && this.default != null) {
 					this.date = date;
 					this.internalChange = true;
-					this.$emit("input", this.format(date));
+					//this.$emit("input", this.format(date));
 				}
 				else if (isAvailable && !this.default){
 					this.date = date;
-					this.$emit("input", null);
+					//this.$emit("input", null);
 				}
 			}
 		}
@@ -359,6 +372,10 @@ Vue.component("n-input-date", {
 				years.unshift(yearFrom);
 				years.push(yearTo);
 			}
+			// not sure what this does at time of backporting so disabled for now
+			//else {
+			//	years.push(yearToday);
+			//}
 			
 			return years;
 		}
