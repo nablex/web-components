@@ -7,7 +7,7 @@
 			ref="combo"
 			:label="label"
 			:value="place"
-			:timeout="300"
+			:timeout="timeout"
 			@input="update"
 			:formatter="formatPlace"/>
 	</div>

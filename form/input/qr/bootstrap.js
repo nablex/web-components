@@ -8,6 +8,7 @@ window.addEventListener("load", function() {
 				+ "	<n-form-text v-model='field.icon' label='Icon' />"
 				+ "	<n-form-text v-model='field.buttonLabel' label='Buton Label' />"
 				+ "	<n-form-switch v-model='field.manualEntry' label='Manual Entry' />"
+				+ "	<n-form-switch v-model='field.zoom' label='Zoom' info='Whether or not we should allow zooming in if the device supports it' />"
 				+ "	<n-form-text v-if='field.manualEntry' v-model='field.manualLabel' label='Manual Label' />"
 				+ "	<n-page-mapper v-model='field.bindings' :from='availableParameters' :to='[\"validator\"]'/>"
 				+ "</n-form-section>",
@@ -53,6 +54,7 @@ window.addEventListener("load", function() {
 				+ "	:manual-label='$services.page.translate($services.page.interpret(field.manualLabel, $self))'"
 				+ "	:placeholder='placeholder ? $services.page.translate($services.page.interpret(placeholder, $self)) : null'"
 				+ "	:icon='field.icon'"
+				+ "	:zoom='field.zoom'"
 				+ "	:disabled='disabled'/>",
 			props: {
 				cell: {

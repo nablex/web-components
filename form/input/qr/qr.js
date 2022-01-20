@@ -1,3 +1,4 @@
+// for the zoom, referenced from: https://stackoverflow.com/questions/62336847/video-mediadevices-getusermedia-zoom-is-not-working-in-ios
 Vue.component("n-form-qr", {
 	template: "#n-form-qr",
 	props: {
@@ -63,6 +64,10 @@ Vue.component("n-form-qr", {
 		manualEntry: {
 			type: Boolean,
 			required: false
+		},
+		zoom: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data: function() {
@@ -70,7 +75,12 @@ Vue.component("n-form-qr", {
 			code: null,
 			failed: false,
 			scanning: false,
-			scanned: false
+			scanned: false,
+			zoomLevel: 0,
+			zoomCapable: false,
+			zoomMin: 0,
+			zoomMax: 0,
+			zoomStep: 0
 		}
 	},
 	created: function() {
@@ -93,6 +103,9 @@ Vue.component("n-form-qr", {
 		},
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
+		},
+		zoomable: function() {
+			return this.zoom && this.zoomCapable;
 		}
 	},
 	methods: {
@@ -105,6 +118,21 @@ Vue.component("n-form-qr", {
 			var self = this;
 			// Use facingMode: environment to attempt to get the front camera on phones
 			navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function(stream) {
+				var track = stream.getVideoTracks()[0];
+				var capabilities = track && track.getCapabilities ? track.getCapabilities() : {};
+				console.log("capabilities are", capabilities);
+				if (Object.keys(capabilities).indexOf("zoom") >= 0) {
+					var settings = track.getSettings();
+					self.zoomMin = capabilities.zoom.min;
+					self.zoomMax = capabilities.zoom.max;
+					self.zoomMax = capabilities.zoom.max;
+					self.zoomLevel = settings.zoom;
+					self.zoomCapable = true;
+					self.$watch("zoomLevel", function(level) {
+						console.log("zoom level updated to", level);
+						track.applyConstraints({advanced: [ {zoom: level }]});
+					});
+				}
 				self.scanning = true;
 				video.srcObject = stream;
 				video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen

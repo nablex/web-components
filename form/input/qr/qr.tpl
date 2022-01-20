@@ -11,5 +11,6 @@
 			:placeholder='placeholder'
 			:validator='validator'
 			:edit='edit'/>
+		<n-form-text v-if="zoomable" type="range" v-model="zoomLevel" label="Zoom" :min="zoomMin" :max="zoomMax" :step="zoomStep"/>
 	</div>
 </template>
