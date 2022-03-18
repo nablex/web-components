@@ -120,7 +120,7 @@ Vue.component("n-input-combo", {
 			stillFocused: false
 		}
 	},
-	created: function() {
+	mounted: function() {
 		if (this.labels) {
 			this.label = this.initialLabel && this.labels.indexOf(this.initialLabel) >= 0 ? this.initialLabel : this.labels[0];
 		}
