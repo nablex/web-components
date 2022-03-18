@@ -7,9 +7,10 @@ window.addEventListener("load", function() {
 				+ "	<n-form-text type='number' v-model='field.canvasHeight' label='Height (in pixels)' />"
 				+ "	<n-form-text v-model='field.icon' label='Icon' />"
 				+ "	<n-form-text v-model='field.buttonLabel' label='Buton Label' />"
-				+ "	<n-form-switch v-model='field.manualEntry' label='Manual Entry' />"
+				+ "	<n-form-text v-if='field.allowManualEntry' v-model='field.manualLabel' label='Manual Label' />"
 				+ "	<n-form-switch v-model='field.zoom' label='Zoom' info='Whether or not we should allow zooming in if the device supports it' />"
-				+ "	<n-form-text v-if='field.manualEntry' v-model='field.manualLabel' label='Manual Label' />"
+				+ "	<n-form-switch v-if='hasQrRenderer' v-model='field.showScannedQRCode' label='When scanned, display the qr code' />"
+				+ "	<p v-else>If you plug in the service nabu.libs.misc.qr.web.render, you can choose to render the qr code you just scanned.</p>"
 				+ "	<n-page-mapper v-model='field.bindings' :from='availableParameters' :to='[\"validator\"]'/>"
 				+ "</n-form-section>",
 			props: {
@@ -35,12 +36,16 @@ window.addEventListener("load", function() {
 			computed: {
 				availableParameters: function() {
 					return this.$services.page.getAvailableParameters(this.page, this.cell, true);
+				},
+				hasQrRenderer: function() {
+					console.log("qr rendering", this.$services.swagger.operations, this.$services.swagger.operations["nabu.libs.misc.qr.web.render"]);
+					return this.$services.swagger.operations["nabu.libs.misc.qr.web.render"] != null;
 				}
 			}
 		});
 
 		Vue.component("page-form-input-qr", {
-			template: "<n-form-qr :allow-manual='field.allowManualEntry' ref='form'"
+			template: "<n-form-qr :manual-entry='field.allowManualEntry' ref='form'"
 				+ "	:schema='schema'"
 				+ "	@input=\"function(newValue) { $emit('input', newValue) }\""
 				+ "	:label='label'"
@@ -53,6 +58,7 @@ window.addEventListener("load", function() {
 				+ "	:button-label='$services.page.translate($services.page.interpret(field.buttonLabel, $self))'"
 				+ "	:manual-label='$services.page.translate($services.page.interpret(field.manualLabel, $self))'"
 				+ "	:placeholder='placeholder ? $services.page.translate($services.page.interpret(placeholder, $self)) : null'"
+				+ "	:switch-qr-code='field.showScannedQRCode'"
 				+ "	:icon='field.icon'"
 				+ "	:zoom='field.zoom'"
 				+ "	:disabled='disabled'/>",

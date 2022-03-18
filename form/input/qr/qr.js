@@ -68,6 +68,11 @@ Vue.component("n-form-qr", {
 		zoom: {
 			type: Boolean,
 			default: false
+		},
+		// whether or not you want to switch to viewing the actual qr code rather than the last still
+		switchQrCode: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data: function() {
@@ -80,7 +85,9 @@ Vue.component("n-form-qr", {
 			zoomCapable: false,
 			zoomMin: 0,
 			zoomMax: 0,
-			zoomStep: 0
+			zoomStep: 0,
+			canvasWidth: null,
+			canvasHeight: null
 		}
 	},
 	created: function() {
@@ -106,6 +113,10 @@ Vue.component("n-form-qr", {
 		},
 		zoomable: function() {
 			return this.zoom && this.zoomCapable;
+		},
+		hasQrRenderer: function() {
+			console.log("qr rendering", this.$services.swagger.operations, this.$services.swagger.operations["nabu.libs.misc.qr.web.render"]);
+			return this.$services.swagger.operations["nabu.libs.misc.qr.web.render"] != null;
 		}
 	},
 	methods: {
@@ -178,6 +189,10 @@ Vue.component("n-form-qr", {
 				context.drawImage(video, 0, 0, canvas.width, canvas.height);
 				var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 				*/
+				
+				// retain for other purposes
+				this.canvasWidth = canvas.width;
+				this.canvasHeight = canvas.height;
 
 				context.drawImage(video, 0, 0, canvas.width, canvas.height);
 				var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
