@@ -38,6 +38,9 @@ Vue.component("n-sidebar", {
 		this.$el.$$close = this.close;
 	},
 	methods: {
+		classes: function() {
+			return [position, position == "right" ? "is-position-right" : "is-position-left"];
+		},
 		closeOther: function() {
 			var position = this.position == "left" ? "left" : "right";
 			// by default we just want one open, or they would pop over each other
