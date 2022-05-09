@@ -156,6 +156,9 @@ Vue.component("n-input-combo", {
 		}
 	},
 	methods: {
+		cleanUpHtml: function(value) {
+			return value ? value.replace(/<[^>]+>/g, "") : value;
+		},
 		focusOn: function($event) {
 			var self = this;
 			this.stillFocused = true;

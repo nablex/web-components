@@ -5,7 +5,7 @@
 		
 		<div class="n-form-label-wrapper">
 			<slot name="radios-label" :label="label" :mandatory="mandatory">
-				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
+				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
 			</slot>
 			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info'">{{ description }}</n-info>
 		</div>
@@ -25,7 +25,7 @@
 				@input="select(item)"
 				v-if="!hide" 
 				class="n-form-radio-input"
-			/><slot name="label" :value="item" :select="function() { select(item) }"><label class="n-form-label" @click="select(item); $event.stopPropagation()">{{ formatter ? formatter(item) : item }}</label></slot>
+			/><slot name="label" :value="item" :select="function() { select(item) }"><label class="n-form-label" @click="select(item); $event.stopPropagation()" v-html="formatter ? formatter(item) : item"></label></slot>
 		</div>
 
 		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>

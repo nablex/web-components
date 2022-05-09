@@ -3,7 +3,7 @@
 		
 		<div class="n-form-label-wrapper" v-if="label || info || descriptionType == 'info'">
 				<slot name="label" :label="label" :mandatory="mandatory">
-					<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label">{{ label }}</label>
+					<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
 				</slot>
 			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="info || descriptionType == 'info'"><span v-html="info ? info : description"></span></n-info>
 		</div>		

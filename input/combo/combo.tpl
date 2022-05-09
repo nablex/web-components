@@ -2,12 +2,12 @@
 	<div class="n-component n-input-combo" :class="{ 'n-input-combo-no-labels': !labels }">
 		<div class="n-input-combo-label-container" v-auto-close="function() { showLabels = false }" v-if="labels">
 			<div class="n-component-label n-input-combo-label" v-if="label" @click="showLabels = !showLabels">
-				<slot name="label" :label="label"><span>{{ typeof(label) == "string" ? label : label.title }}</span><span class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
+				<slot name="label" :label="label"><span v-html="typeof(label) == 'string' ? label : label.title"></span><span class="n-icon n-icon-arrow-down fa fa-chevron-down"></span></slot>
 			</div>
 			
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-labels" v-if="labels.length > 1 && showLabels">
 				<li v-for="single in labels" class="n-input-combo-dropdown-label" :class="{ 'active': single == label }" @click="selectLabel(single)" auto-close>
-					<slot name="label-dropdown" :label="single"><span>{{ typeof(single) == "string" ? single : single.title }}</span></slot>
+					<slot name="label-dropdown" :label="single"><span v-html="typeof(single) == 'string' ? single : single.title"></span></slot>
 				</li>
 			</ul>
 		</div>
@@ -22,7 +22,7 @@
 				@keydown.down="moveDown"
 				@keypress="validateKey"
 				:name="name"
-				:value="content"
+				:value="cleanUpHtml(content)"
 				:readonly="!allowTyping"
 				:disabled="disabled">
 		
@@ -33,7 +33,7 @@
 					<span v-content="resetValue"></span>
 				</li>
 				<li v-for="potential in values" class="n-input-combo-dropdown-value" :class="{ 'active': extracter ? extracter(potential) == value : potential == value, 'pondering': potential == keyValue }" @click="updateValue(potential)" :auto-close="autoclose">
-					<slot name="value" :value="potential"><span>{{ formatter ? formatter(potential) : potential }}</span></slot>
+					<slot name="value" :value="potential"><span v-html="formatter ? formatter(potential) : potential"></span></slot>
 				</li>
 			</ul>
 			<ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && filtering && calculatingValue">

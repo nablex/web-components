@@ -1,0 +1,62 @@
+{
+	"name": "fontawesome5-free", 
+	"resources": {
+		"icon": {
+			"icon.js": {
+				"url": "misc/font-awesome5-icon/icon.js"
+			}
+		},
+		"css": {
+			"font-awesome.css": {
+				"url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/5.0.12/web-fonts-with-css/css/fontawesome-all.css"
+			}
+		},
+		"webfonts": {
+			"fa-brands-400.eot": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-brands-400.eot?raw=true"
+			},
+			"fa-brands-400.svg": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-brands-400.svg?raw=true"
+			},
+			"fa-brands-400.ttf": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-brands-400.ttf?raw=true"
+			},
+			"fa-brands-400.woff": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-brands-400.woff?raw=true"
+			},
+			"fa-brands-400.woff2": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-brands-400.woff2?raw=true"
+			},
+			"fa-regular-400.eot": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-regular-400.eot?raw=true"
+			},
+			"fa-regular-400.svg": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-regular-400.svg?raw=true"
+			},
+			"fa-regular-400.ttf": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-regular-400.ttf?raw=true"
+			},
+			"fa-regular-400.woff": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-regular-400.woff?raw=true"
+			},
+			"fa-regular-400.woff2": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-regular-400.woff2?raw=true"
+			},
+			"fa-solid-900.eot": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-solid-900.eot?raw=true"
+			},
+			"fa-solid-900.svg": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-solid-900.svg?raw=true"
+			},
+			"fa-solid-900.ttf": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-solid-900.ttf?raw=true"
+			},
+			"fa-solid-900.woff": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-solid-900.woff?raw=true"
+			},
+			"fa-solid-900.woff2": {
+				"url": "https://github.com/FortAwesome/Font-Awesome/blob/5.0.12/web-fonts-with-css/webfonts/fa-solid-900.woff2?raw=true"
+			}
+		}
+	}
+}
