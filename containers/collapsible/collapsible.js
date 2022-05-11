@@ -22,6 +22,10 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 		startOpen: {
 			type: Boolean,
 			required: false
+		},
+		onlyOneOpen: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-collapsible",
@@ -39,12 +43,25 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 	},
 	methods: {
 		toggle: function() {
+			var self = this;
+			var closeRest = function() {
+				if (self.onlyOneOpen) {
+					self.$parent.$children.forEach(function(child) {
+						if (child.toggle && child.$el.classList.contains("is-collapsible"))	{
+							if (child.show) {
+								child.toggle();
+							}
+						}
+					});
+				}
+			}
 			if (this.toggleable) {
 				if (!this.show) {
 					if (this.load) {
 						this.loading = true;
 						var self = this;
 						this.load().then(function() {
+							closeRest();
 							self.show = true;
 							self.loading = false;
 							self.$emit("show", self);
@@ -55,6 +72,7 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 						});
 					}
 					else {
+						closeRest();
 						this.show = true;
 						this.$emit("show", this);
 					}

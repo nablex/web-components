@@ -126,6 +126,10 @@ Vue.component("n-form-text", {
 			type: String,
 			required: false
 		},
+		prefix: {
+			type: String,
+			required: false
+		},
 		suffix: {
 			type: String,
 			required: false

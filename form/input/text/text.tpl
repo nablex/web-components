@@ -1,18 +1,19 @@
 <template id="n-form-text">
-	<div class="n-form-component n-form-text" :class="[mandatory ? 'n-form-input-required' : 'n-form-input-optional', { 'n-form-hidden': hide },{ 'n-form-invalid': valid != null && !valid },{ 'n-form-valid': valid != null && valid }, type ? 'n-form-text-' + type : null, {'has-suffix': !!suffix} ]" :optional="hide != null">
+	<div class="is-form-text is-form-component" :class="[{ 'is-required': mandatory, 'is-optional': !mandatory, 'is-hidden': hide, 'is-invalid': valid != null && !valid, 'is-valid': valid != null && valid }, type ? 'n-form-text-' + type : null ]">
 		<slot name="top"></slot>
-		<div class="n-form-label-wrapper" v-if="label || info">
+		<div class="is-form-label-wrapper" v-if="label || info">
 			<slot name="label" :label="label" :mandatory="mandatory">
-				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
+				<label class="is-form-label" v-if="label" v-html="label"></label>
 			</slot>
-			<n-info class="n-form-label-info" :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info>
+			<n-info class="is-info" :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info>
 		</div>
 		<slot name="before" :content="before">
-			<div class="n-form-component-before" v-if="before" v-html="before"></div>
+			<div class="is-form-content-before" v-if="before" v-html="before"></div>
 		</slot>
-		<div class="n-form-input-wrapper" v-if="edit">
-			<div class="n-form-increment" v-if="type == 'number' && showCustomSpinner" @click="increment">
-				<span class="icon fa fa fa-chevron-up"></span>
+		<div class="is-form-input-wrapper" v-if="edit">
+			<slot name="prefix"><div class="is-prefix" v-if="prefix" v-html="prefix"></div></slot>
+			<div class="is-form-action-increment" v-if="type == 'number' && showCustomSpinner" @click="increment">
+				<icon name="chevron-up"/>
 			</div>
 			<input 
 				@change="triggerChange"
@@ -53,18 +54,18 @@
 					ref="input"
 					:name="name"
 					:autocomplete="autocomplete"
-				/><div class="n-form-decrement" v-if="type == 'number' && showCustomSpinner" @click="decrement">
-					<span class="icon fa fa fa-chevron-down"></span>
-				</div><slot name="suffix"><div class="n-form-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
+				/><div class="n-form-decrement is-form-action-decrement" v-if="type == 'number' && showCustomSpinner" @click="decrement">
+					<icon name="chevron-down"/>
+				</div><slot name="suffix"><div class="n-form-suffix is-suffix" v-if="suffix" v-html="suffix"></div></slot><span class="n-input-result"></span><span v-if="type == 'range' && showTooltip" class="n-form-tooltip" ref="tooltip">{{value}}</span>
 		</div>
-		<div class="n-form-read-only" v-else>
+		<div class="n-form-read-only is-form-read-only" v-else>
 			<slot><span class="n-form-read">{{ type == 'password' ? '*******' : localValue }}</span></slot>
 		</div>
 		<slot name="messages" :messages="messages">
 			<n-messages :messages="messages" v-if="messages && messages.length"/>
 		</slot>
 		<slot name="after" :content="after">
-			<div class="n-form-component-after" v-if="after" v-html="after"></div>
+			<div class="n-form-component-after is-form-content-after" v-if="after" v-html="after"></div>
 		</slot>
 		<slot name="bottom"></slot>
 	</div>
