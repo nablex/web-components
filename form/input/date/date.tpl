@@ -1,7 +1,5 @@
 <template id="n-form-date">
 	<div class="n-form-date" v-auto-close="function() { show = false }">
-		<slot name="top"></slot>
-		
 		<n-form-text class="n-form-date-input" 
 			@focus="focus" 
 			:pattern="pattern ? pattern : dynamicPattern" 
@@ -47,8 +45,6 @@
 			:default="defaultValue"
 			ref="dateInput"/>
 		
-		<slot name="messages">
-			<n-messages :messages="messages" v-if="messages && messages.length"/>
-		</slot>
+		<n-messages :messages="messages" v-if="messages && messages.length"/>
 	</div>
 </template>

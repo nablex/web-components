@@ -1,5 +1,9 @@
 Vue.component("n-form-checkbox", {
 	props: {
+		component: {
+			type: String,
+			default: "is-form-checkbox"
+		},
 		value: {
 			required: true
 		},

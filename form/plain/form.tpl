@@ -1,7 +1,7 @@
 <template id="n-form">
 	<form v-on:submit.prevent class="is-form">
 		<slot name="header"></slot>
-		<section class="is-form-content">
+		<section class="is-form-section">
 			<slot></slot>
 		</section>
 		<slot name="footer"></slot>
