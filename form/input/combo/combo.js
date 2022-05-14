@@ -106,6 +106,10 @@ Vue.component("n-form-combo", {
 			type: String,
 			required: false
 		},
+		infoIcon: {
+			type: String,
+			required: false
+		},
 		after: {
 			type: String,
 			required: false
