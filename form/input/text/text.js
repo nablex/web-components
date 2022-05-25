@@ -184,6 +184,15 @@ Vue.component("n-form-text", {
 		showCustomSpinner: {
 			type: Boolean,
 			default: false
+		},
+		autofocus: {
+			type: Boolean,
+			default: false
+		},
+		// require the user to hit "enter" to commit the value
+		commit: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -194,7 +203,8 @@ Vue.component("n-form-text", {
 			timer: null,
 			localValue: null,
 			offsetX: 0,
-			blurred: false
+			blurred: false,
+			valueToCommit: null
 		};
 	},
 	created: function() {
@@ -206,7 +216,11 @@ Vue.component("n-form-text", {
 	ready: function() {
 		if (this.type == "range") {
 			this.calculateOffset(this.value);
-		}	
+		}
+		if (this.autofocus && this.$refs.input) {
+			this.$refs.input.focus();
+			this.$refs.input.select();
+		}
 	},
 	computed: {
 		rows: function() {
@@ -276,6 +290,16 @@ Vue.component("n-form-text", {
 			}
 		},
 		checkKey: function($event) {
+			if ($event.key == "Enter") {
+				// ideally we want to actually run the commit value at this point...
+				// but we can't seem to trigger an actual early run of the timer
+				if (this.timer) {
+					clearTimeout(this.timer);
+					this.timer = null;
+				}
+				this.$emit("input", this.valueToCommit);
+				this.$emit("commit");
+			}
 			if (this.allow && $event.key && !$event.ctrlKey && !$event.metaKey) {
 				var result = this.allow($event.key, this.mergeContent($event.key));
 				// you can send back an array of validation messages
@@ -414,6 +438,7 @@ Vue.component("n-form-text", {
 				// to make sure we only update if it is relevant, we add this if
 				// otherwise we "update" from undefined to an empty string for example which whill (after the validate) trigger the watcher which immediately resets the validation errors
 				if (!(self.value == null && !valueToValidate)) {
+					self.valueToCommit = self.valueToValidate;
 					self.$emit("input", valueToValidate);
 				}
 				// if we have any informational messages, we want to show them locally
@@ -473,28 +498,33 @@ Vue.component("n-form-text", {
 				var valueToEmit = this.parser && value != null ? this.parser(value) : value;
 				// always emit the change event, it is not subject to timeout
 				this.$emit("change", valueToEmit);
-				if (this.timeout) {
-					var self = this;
-					this.timer = setTimeout(function() {
-						self.$emit("input", valueToEmit);
-					}, this.timeout);
-				}
-				else {
-					this.$emit("input", valueToEmit);
+				// we always set this because we want to preemptively send it in case of commit with timeout anyway
+				this.valueToCommit = valueToEmit;
+				if (!this.commit) {
+					if (this.timeout) {
+						var self = this;
+						this.timer = setTimeout(function() {
+							self.$emit("input", valueToEmit);
+						}, this.timeout);
+					}
+					else {
+						this.$emit("input", valueToEmit);
+					}
 				}
 			}
 		},
         increment: function () {
                 if (this.type == "number") {
-                        this.$refs.input.stepUp();
-                        this.$emit("input", this.$refs.input.value);
+					this.$refs.input.stepUp();
+					this.valueToCommit = this.$refs.input.value;
+					this.$emit("input", this.$refs.input.value);
                 }       
         },
         decrement: function () {
                 if (this.type == "number") {
-                        this.$refs.input.stepDown();
-                        console.log('value', this.$refs.input.value)
-                        this.$emit("input", this.$refs.input.value);
+					this.$refs.input.stepDown();
+					this.valueToCommit = this.$refs.input.value;
+					this.$emit("input", this.$refs.input.value);
                 }       
         }
 	},

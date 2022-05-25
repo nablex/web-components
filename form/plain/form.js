@@ -13,6 +13,10 @@ Vue.component("n-form", {
 		codes: {
 			type: Object,
 			required: false
+		},
+		contentClass: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-form",

@@ -20,6 +20,8 @@
 				@keyup.esc="doEscape"
 				@keydown.up="moveUp"
 				@keydown.down="moveDown"
+				@keyup="$emit('keyup', $event)"
+				@keydown="$emit('keydown', $event)"
 				@keypress="validateKey"
 				:name="name"
 				:value="content"

@@ -26,6 +26,10 @@ nabu.components.collapsible = Vue.component("n-collapsible", {
 		onlyOneOpen: {
 			type: Boolean,
 			required: false
+		},
+		contentClass: {
+			type: String,
+			required: false
 		}
 	},
 	template: "#n-collapsible",

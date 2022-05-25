@@ -37,6 +37,16 @@ Vue.component("n-sidebar", {
 		}
 		this.$el.$$close = this.close;
 	},
+	beforeDestroy: function() {
+		if (this.inline) {
+			if (this.position == "left") {
+				document.body.removeAttribute("has-sidebar-left");
+			}
+			else {
+				document.body.removeAttribute("has-sidebar-right");
+			}
+		}
+	},
 	methods: {
 		closeOther: function() {
 			var position = this.position == "left" ? "left" : "right";

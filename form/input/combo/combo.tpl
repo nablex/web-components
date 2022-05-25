@@ -32,6 +32,8 @@
 				:extracter="extracter"
 				:resolver="resolver"
 				v-bubble:label
+				@keyup="$emit('keyup', $event)"
+				@keydown="$emit('keydown', $event)"
 				:name="name"
 				:autocomplete="autocomplete"
 				:autoselect-single="autoselectSingle"
