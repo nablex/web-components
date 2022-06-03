@@ -11,7 +11,8 @@
 						"url": "form/input/barcode/barcode.scss"
 					}, 
 					"barcode.tpl": {
-						"url": "form/input/barcode/barcode.tpl"
+						"url": "form/input/barcode/barcode.tpl",
+						"template": true
 					}, 
 					"barcode.js": {
 						"url": "form/input/barcode/barcode.js"

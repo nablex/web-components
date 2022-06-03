@@ -7,24 +7,28 @@
 					"url": "input/date/date.sass"
 				}, 
 				"date.tpl": {
-					"url": "input/date/date.tpl"
+					"url": "input/date/date.tpl",
+					"template": true
 				}, 
 				"date.gcss": {
 					"url": "input/date/date.gcss"
 				}, 
 				"date.js": {
-					"url": "input/date/date.js"
+					"url": "input/date/date.js",
+					"template": true
 				}
 			}, 
 			"file": {
 				"file.js": {
-					"url": "input/file/file.js"
+					"url": "input/file/file.js",
+					"template": true
 				}, 
 				"file.sass": {
 					"url": "input/file/file.sass"
 				}, 
 				"file.tpl": {
-					"url": "input/file/file.tpl"
+					"url": "input/file/file.tpl",
+					"template": true
 				}, 
 				"file.gcss": {
 					"url": "input/file/file.gcss"
@@ -48,9 +52,6 @@
 		"form": {
 			"input": {
 				"date": {
-					"date.sass": {
-						"url": "form/input/date/date.sass"
-					}, 
 					"date.tpl": {
 						"url": "form/input/date/date.tpl"
 					}, 
@@ -58,13 +59,11 @@
 						"url": "form/input/date/date.gcss"
 					}, 
 					"date.js": {
-						"url": "form/input/date/date.js"
+						"url": "form/input/date/date.js",
+						"template": true
 					}
 				},
 				"date-picker": {
-					"date-picker.sass": {
-						"url": "form/input/date-picker/date-picker.sass"
-					}, 
 					"date-picker.tpl": {
 						"url": "form/input/date-picker/date-picker.tpl"
 					}, 
@@ -73,14 +72,9 @@
 					}
 				}, 
 				"combo": {
-					"combo.sass": {
-						"url": "form/input/combo/combo.sass"
-					}, 
-					"combo.gcss": {
-						"url": "form/input/combo/combo.gcss"
-					}, 
 					"combo.js": {
-						"url": "form/input/combo/combo.js"
+						"url": "form/input/combo/combo.js",
+						"template": true
 					}, 
 					"combo.tpl": {
 						"url": "form/input/combo/combo.tpl"
@@ -107,9 +101,6 @@
 					}
 				}, 
 				"check": {
-					"check.gcss": {
-						"url": "form/input/check/check.gcss"
-					}, 
 					"check.js": {
 						"url": "form/input/check/check.js"
 					}, 
@@ -126,12 +117,6 @@
 					}
 				}, 
 				"switch": {
-					"switch.sass": {
-						"url": "form/input/switch/switch.sass"
-					}, 
-					"switch.gcss": {
-						"url": "form/input/switch/switch.gcss"
-					}, 
 					"switch.tpl": {
 						"url": "form/input/switch/switch.tpl"
 					}, 
@@ -144,7 +129,8 @@
 						"url": "form/input/radio/radio.tpl"
 					}, 
 					"radio.js": {
-						"url": "form/input/radio/radio.js"
+						"url": "form/input/radio/radio.js",
+						"template": true
 					}, 
 					"radio.sass": {
 						"url": "form/input/radio/radio.sass"
@@ -155,7 +141,8 @@
 						"url": "form/input/location/location.tpl"
 					},
 					"location.js": {
-						"url": "form/input/location/location.js"
+						"url": "form/input/location/location.js",
+						"template": true
 					}
 				},
 				"address": {
@@ -168,12 +155,6 @@
 				}
 			}, 
 			"plain": {
-				"form.sass": {
-					"url": "form/plain/form.sass"
-				}, 
-				"form.gcss": {
-					"url": "form/plain/form.gcss"
-				}, 
 				"form.tpl": {
 					"url": "form/plain/form.tpl"
 				}, 
@@ -182,17 +163,12 @@
 				}
 			}, 
 			"table": {
-				"table.gcss": {
-					"url": "form/table/table.gcss"
-				}, 
 				"table.tpl": {
-					"url": "form/table/table.tpl"
+					"url": "form/table/table.tpl",
+					"template": true
 				}, 
 				"table.js": {
 					"url": "form/table/table.js"
-				}, 
-				"table.sass": {
-					"url": "form/table/table.sass"
 				}
 			}, 
 			"form-utils.js": {
@@ -214,25 +190,13 @@
 				"wizard.js": {
 					"url": "containers/wizard/wizard.js"
 				}, 
-				"wizard.sass": {
-					"url": "containers/wizard/wizard.sass"
-				}, 
 				"wizard.tpl": {
 					"url": "containers/wizard/wizard.tpl"
-				}, 
-				"wizard.gcss": {
-					"url": "containers/wizard/wizard.gcss"
 				}
 			}, 
 			"collapsible": {
-				"collapsible.gcss": {
-					"url": "containers/collapsible/collapsible.gcss"
-				}, 
 				"collapsible.js": {
 					"url": "containers/collapsible/collapsible.js"
-				}, 
-				"collapsible.sass": {
-					"url": "containers/collapsible/collapsible.sass"
 				}, 
 				"collapsible.tpl": {
 					"url": "containers/collapsible/collapsible.tpl"
@@ -246,9 +210,6 @@
 				}, 
 				"dropdown.js": {
 					"url": "menus/dropdown/dropdown.js"
-				}, 
-				"dropdown.gcss": {
-					"url": "menus/dropdown/dropdown.gcss"
 				}
 			}
 		}, 
@@ -273,20 +234,11 @@
 				"windowing.tpl": {
 					"url": "misc/windowing/windowing.tpl"
 				}, 
-				"windowing.gcss": {
-					"url": "misc/windowing/windowing.gcss"
-				}, 
 				"windowing.js": {
 					"url": "misc/windowing/windowing.js"
 				}
 			}, 
 			"sidebar": {
-				"sidebar.sass": {
-					"url": "misc/sidebar/sidebar.sass"
-				}, 
-				"sidebar.gcss": {
-					"url": "misc/sidebar/sidebar.gcss"
-				}, 
 				"sidebar.js": {
 					"url": "misc/sidebar/sidebar.js"
 				}, 
@@ -295,9 +247,6 @@
 				}
 			}, 
 			"messages": {
-				"messages.gcss": {
-					"url": "misc/messages/messages.gcss"
-				}, 
 				"messages.js": {
 					"url": "misc/messages/messages.js"
 				}, 
@@ -307,30 +256,19 @@
 			}, 
 			"paging": {
 				"paging.tpl": {
-					"url": "misc/paging/paging.tpl"
-				}, 
-				"paging.gcss": {
-					"url": "misc/paging/paging.gcss"
-				}, 
-				"paging.sass": {
-					"url": "misc/paging/paging.sass"
+					"url": "misc/paging/paging.tpl",
+					"template": true
 				}, 
 				"paging.js": {
 					"url": "misc/paging/paging.js"
 				}
 			}, 
 			"info": {
-				"info.sass": {
-					"url": "misc/info/info.sass"
-				}, 
 				"info.js": {
 					"url": "misc/info/info.js"
 				}, 
 				"info.tpl": {
 					"url": "misc/info/info.tpl"
-				}, 
-				"info.gcss": {
-					"url": "misc/info/info.gcss"
 				}
 			}, 
 			"tags": {
@@ -339,9 +277,6 @@
 				}, 
 				"tags.tpl": {
 					"url": "misc/tags/tags.tpl"
-				}, 
-				"tags.gcss": {
-					"url": "misc/tags/tags.gcss"
 				}
 			}
 		},

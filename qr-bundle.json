@@ -11,7 +11,8 @@
 						"url": "form/input/qr/qr.scss"
 					}, 
 					"qr.tpl": {
-						"url": "form/input/qr/qr.tpl"
+						"url": "form/input/qr/qr.tpl",
+						"template": true
 					}, 
 					"qr.js": {
 						"url": "form/input/qr/qr.js"
