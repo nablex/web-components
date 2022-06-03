@@ -24,6 +24,12 @@ Vue.component("n-input-combo", {
 			type: Function,
 			required: false
 		},
+		// the input field itself has to be plain text (the formatter)
+		// however, in the dropdowns (and in the future multiselect?) we can use html
+		prettyFormatter: {
+			type: Function,
+			required: false
+		},
 		// used to resolve an extracted value into a valid item usually returned by filter
 		resolver: {
 			type: Function,
@@ -156,8 +162,8 @@ Vue.component("n-input-combo", {
 		}
 	},
 	methods: {
-		cleanUpHtml: function(value) {
-			return value ? value.replace(/<[^>]+>/g, "") : value;
+		cleanupFormatted: function(formatted) {
+			return formatted ? formatted.replace(/<[^>]+>/g, "").trim() : formatted;
 		},
 		focusOn: function($event) {
 			var self = this;
@@ -180,7 +186,7 @@ Vue.component("n-input-combo", {
 						// otherwise, you get a very limited dropdown
 						// this is consistent with the filter that occurs in updateValue
 						if (self.content && self.actualValue) {
-							var actualValue = self.formatter ? self.formatter(self.actualValue) : self.actualValue;
+							var actualValue = self.cleanupFormatted(self.formatter ? self.formatter(self.actualValue) : self.actualValue);
 							if (actualValue == contentToFilter) {
 								contentToFilter = null;
 							}
@@ -258,7 +264,8 @@ Vue.component("n-input-combo", {
 			if (initial) {
 				// if we did not have a value before, we stranded mid-type, no need to wipe it
 				if (this.actualValue != null || hadValue) {
-					this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
+					// should be handled by formatted computed?
+					//this.content = this.actualValue != null ? (this.formatter ? this.formatter(this.actualValue) : this.actualValue) : null;
 				}
 			}
 			self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
@@ -436,7 +443,7 @@ Vue.component("n-input-combo", {
 		checkForMatch: function(value) {
 			var match = null;
 			for (var i = 0; i < this.values.length; i++) {
-				var formatted = this.values[i] != null && this.formatter ? this.formatter(this.values[i]) : this.values[i];
+				var formatted = this.cleanupFormatted(this.values[i] != null && this.formatter ? this.formatter(this.values[i]) : this.values[i]);
 				if (formatted == value || (this.caseInsensitive && formatted.toLowerCase && value && value.toLowerCase && formatted.toLowerCase() == value.toLowerCase())) {
 					match = this.values[i];
 					break;
@@ -499,7 +506,8 @@ Vue.component("n-input-combo", {
 			this.actualValue = value;
 			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
 			this.$emit("label", this.formatter && value ? this.formatter(value) : value, this.label);
-			this.content = value != null && this.formatter ? this.formatter(value) : value;
+			// should be handled by formatted computed?
+			//this.content = value != null && this.formatter ? this.formatter(value) : value;
 			// reset the results to match everything once you have selected something
 			if (this.filter) {
 				if (this.timer) {
@@ -583,7 +591,7 @@ Vue.component("n-input-combo", {
 		},
 		formatted: function(newValue) {
 			if (newValue) {
-				this.content = newValue;
+				this.content = this.cleanupFormatted(newValue);
 			}
 		}
 	}

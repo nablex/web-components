@@ -19,6 +19,7 @@
 				:labels="labels" 
 				:filter="filter" 
 				:formatter="formatter" 
+				:pretty-formatter="prettyFormatter"
 				:class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }"
 				@input="updateValue"
 				:items="items"

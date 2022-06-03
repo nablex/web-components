@@ -28,6 +28,12 @@ Vue.component("n-form-combo", {
 			type: Function,
 			required: false
 		},
+		// the input field itself has to be plain text (the formatter)
+		// however, in the dropdowns (and in the future multiselect?) we can use html
+		prettyFormatter: {
+			type: Function,
+			required: false
+		},
 		// used to resolve an extracted value into a valid item usually returned by filter
 		resolver: {
 			type: Function,

@@ -76,12 +76,8 @@ Vue.component("n-form-richtext", {
 			showBlock: false,
 			showJustify: false,
 			showDecoration: false,
-			color: "#000000",
-			focused: false
+			color: "#000000"
 		};
-	},
-	created: function () {
-		console.log("created the richtext.js");
 	},
 	computed: {
 		definition: function() {
@@ -94,20 +90,22 @@ Vue.component("n-form-richtext", {
 	methods: {
 		update: function($event) {
 			var content = $event.target.innerHTML;
-			this.$emit("change", content);
-			if (this.timer != null) {
-				clearTimeout(this.timer);
-				this.timer = null;
-			}
-			if (this.timeout) {
-				var self = this;
-				var self = this;
-				this.timer = setTimeout(function() {
-					self.$emit("input", content);
-				}, this.timeout);
-			}
-			else {
-				this.$emit("input", content);
+			if (content != this.value) {
+				this.$emit("change", content);
+				if (this.timer != null) {
+					clearTimeout(this.timer);
+					this.timer = null;
+				}
+				if (this.timeout) {
+					var self = this;
+					var self = this;
+					this.timer = setTimeout(function() {
+						self.$emit("input", content);
+					}, this.timeout);
+				}
+				else {
+					this.$emit("input", content);
+				}
 			}
 		},
 		justify: function(direction) {

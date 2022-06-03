@@ -29,6 +29,10 @@ Vue.component("n-paging", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		buttonClasses: {
+			type: Array,
+			required: false
 		}
 	},
 	template: "#n-paging",

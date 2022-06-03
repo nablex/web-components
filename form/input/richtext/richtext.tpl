@@ -1,126 +1,53 @@
 <template id="n-form-richtext">
-	<div class="n-form-richtext n-form-component" v-auto-close="function() { focused = false }">
-		<slot name="top"></slot>
-		<div class="n-form-label-wrapper" v-if="label || info">
-			<slot name="label" :label="label" :mandatory="mandatory">
-				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
-			</slot>
-			<n-info class="n-form-label-info" v-if="info"><span v-html="info"></span></n-info>
+	<div class="is-form-richtext" v-auto-close="function() { focused = false }">
+		<div class="is-label-wrapper" v-if="label || info">
+			<label class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
-		<slot name="before" :content="before">
-			<div class="n-form-component-before" v-if="before" v-html="before"></div>
-		</slot>
-		<div class="n-form-richtext-menu" v-if="edit && focused" v-auto-close="function() { showBlock = false; showJustify = false; showDecoration = false; }">
-			<div class="n-form-richtext-menu-container" @click="focused = true" v-auto-close.block="function() { showBlock = false }">
-				<button @click="showBlock = !showBlock">
-					<span class="n-icon fa n-icon-th-large fa-th-large"></span>
-					<span class="n-form-richtext-button-description">%{text:Block}</span>
-				</button>
-				<div v-if="showBlock" class="n-form-richtext-choices">
-					<button @click="wrap('p')">
-						<span class="n-icon fa n-icon-paragraph fa-paragraph"></span>
-						<span class="n-form-richtext-button-description">%{text:Block}</span>
-					</button
-					><button @click="wrap('h1')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H1}</span>
-					</button
-					><button @click="wrap('h2')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H2}</span>
-					</button
-					><button @click="wrap('h3')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H3}</span>
-					</button
-					><button @click="wrap('h4')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H4}</span>
-					</button
-					><button @click="wrap('h5')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H5}</span>
-					</button
-					><button @click="wrap('h6')">
-						<span class="n-icon fa n-icon-header fa-heading"></span>
-						<span class="n-form-richtext-button-description">%{text:H6}</span>
-					</button><button @click="insertTable">
-						<span class="n-icon fa n-icon-table fa-table"></span>
-						<span class="n-form-richtext-button-description">%{text:Table}</span>
-					</button><button @click="link">
-						<span class="n-icon fa n-icon-link fa-link"></span>
-						<span class="n-form-richtext-button-description">%{text:Link}</span>
-					</button>
-				</div>
-			</div>
-			<div class="n-form-richtext-menu-container"  v-auto-close.block="function() { showJustify = false }">
-				<button @click="showJustify = !showJustify">
-					<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
-					<span class="n-form-richtext-button-description">%{text:Justify}</span>
-				</button>
-				<div v-if="showJustify" class="n-form-richtext-choices">
-					<button @click="justify('justifyCenter')">
-						<span class="n-icon fa n-icon-align-center fa-align-center"></span>
-						<span class="n-form-richtext-button-description">%{text:Center}</span>
-					</button
-					><button @click="justify('justifyLeft')">
-						<span class="n-icon fa n-icon-align-left fa-align-left"></span>
-						<span class="n-form-richtext-button-description">%{text:Left}</span>
-					</button
-					><button @click="justify('justifyRight')">
-						<span class="n-icon fa n-icon-align-right fa-align-right"></span>
-						<span class="n-form-richtext-button-description">%{text:Right}</span>
-					</button
-					><button @click="justify('justifyFull')">
-						<span class="n-icon fa n-icon-align-justify fa-align-justify"></span>
-						<span class="n-form-richtext-button-description">%{text:Full}</span>
-					</button><button @click="list">
-						<span class="n-icon fa n-icon-list fa-list"></span>
-						<span class="n-form-richtext-button-description">%{text:List}</span>
-					</button><button @click="indent">
-						<span class="n-icon fa n-icon-indent fa-indent"></span>
-						<span class="n-form-richtext-button-description">%{text:Indent}</span>
-					</button><button @click="outdent">
-						<span class="n-icon fa n-icon-outdent fa-outdent"></span>
-						<span class="n-form-richtext-button-description">%{text:Outdent}</span>
-					</button>
-				</div>
-			</div>
-			<div class="n-form-richtext-menu-container"  v-auto-close.block="function() { showDecoration = false }">
-				<button @click="showDecoration = !showDecoration">
-					<span class="n-icon fa n-icon-font fa-font"></span>
-					<span class="n-form-richtext-button-description">%{text:Decoration}</span>
-				</button>
-				<div v-if="showDecoration" class="n-form-richtext-choices">
-					<button @click="bold()">
-						<span class="n-icon fa n-icon-bold fa-bold"></span>
-						<span class="n-form-richtext-button-description">%{text:Bold}</span>
-					</button><button @click="italic">
-						<span class="n-icon fa n-icon-italic fa-italic"></span>
-						<span class="n-form-richtext-button-description">%{text:Italic}</span>
-					</button><button @click="underline">
-						<span class="n-icon fa n-icon-underline fa-underline"></span>
-						<span class="n-form-richtext-button-description">%{text:Line}</span>
-					</button><button @click="clean">
-						<span class="n-icon fa n-icon-eraser fa-eraser"></span>
-						<span class="n-form-richtext-button-description">%{text:Plain}</span>
-					</button><input type="color" v-model="color"><button @click="applyColor()">
-						<span class="n-icon fa n-icon-paint-brush fa-paint-brush"></span>
-						<span class="n-form-richtext-button-description">%{text:Paint}</span>
-					</button>
-				</div>
-			</div></div>
-		<div class="n-form-richtext-editor">
-			<div @focus="focused = true" @keydown.tab="tab($event)" class="n-form-richtext-content" v-html-once="value ? value : ''" ref="input" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
-			<span class="n-input-result n-icon" :class="{'n-icon-check': valid != null && valid, 'n-icon-times': valid != null && !valid }" v-show="valid != null && edit"></span>
+		<div class="is-content-before" v-if="before" v-html="before"></div>
+		<ul class="is-menu is-variant-toolbar" v-if="edit">
+			<li class="is-column">
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="th-large"/><span class="is-text">%{component-text::Block}</span></span>
+				<ul class="is-row">
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('p')"><icon name="paragraph"/><span class="is-text">%{component-text::Paragraph}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h1')"><icon name="heading"/><span class="is-text">%{component-text::H1}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h2')"><icon name="heading"/><span class="is-text">%{component-text::H2}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h3')"><icon name="heading"/><span class="is-text">%{component-text::H3}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h4')"><icon name="heading"/><span class="is-text">%{component-text::H4}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h5')"><icon name="heading"/><span class="is-text">%{component-text::H5}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h6')"><icon name="heading"/><span class="is-text">%{component-text::H6}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="link"><icon name="link"/><span class="is-text">%{component-text::Link}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="insertTable"><icon name="table"/><span class="is-text">%{component-text::Table}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="list"><icon name="list"/><span class="is-text">%{component-text::List}</span></button></li>
+				</ul>
+			</li>
+			<li class="is-column">
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="align-justify"/><span class="is-text">%{component-text::Justify}</span></span>
+				<ul class="is-row">
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyCenter')"><icon name="align-center"/><span class="is-text">%{component-text::Center}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyLeft')"><icon name="align-left"/><span class="is-text">%{component-text::Left}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyRight')"><icon name="align-right"/><span class="is-text">%{component-text::Right}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyFull')"><icon name="align-justify"/><span class="is-text">%{component-text::Full}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="indent"><icon name="indent"/><span class="is-text">%{component-text::Indent}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="outdent"><icon name="outdent"/><span class="is-text">%{component-text::Outdent}</span></button></li>
+				</ul>
+			</li>
+			<li class="is-column">
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="font"/><span class="is-text">%{component-text::Decoration}</span></span>
+				<ul class="is-row">
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="bold"><icon name="bold"/><span class="is-text">%{component-text::Bold}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="italic"><icon name="italic"/><span class="is-text">%{component-text::Italic}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="underline"><icon name="underline"/><span class="is-text">%{component-text::Line}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="clean"><icon name="eraser"/><span class="is-text">%{component-text::Plain}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="applyColor()"><icon name="paint-brush"/><span class="is-text">%{component-text::Paint}</span></button></li>
+					<li class="is-column is-height-min-2 is-align-stretch"><input type="color" v-model="color" class="is-content is-color-secondary is-width-max"></li>
+				</ul>
+			</li>
+		</ul>
+		<div class="is-content-wrapper">
+			<div @keydown.tab="tab($event)" class="is-inline-editor" placeholder="Rich text" v-html-once="value ? value : ''" ref="editor" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
 		</div>
-		<slot name="messages" :messages="messages">
-			<n-messages :messages="messages" v-if="messages && messages.length"/>
-		</slot>
-		<slot name="after" :content="after">
-			<div class="n-form-component-after" v-if="after" v-html="after"></div>
-		</slot>
-		<slot name="bottom"></slot>
+		<n-messages :messages="messages" v-if="messages && messages.length"/>
+		<div class="is-content-after" v-if="after" v-html="after"></div>
 	</div>
 </template>
 

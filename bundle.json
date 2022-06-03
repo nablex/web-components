@@ -96,16 +96,14 @@
 				}, 
 				"richtext": {
 					"richtext.tpl": {
-						"url": "form/input/richtext/richtext.tpl"
+						"url": "form/input/richtext/richtext.tpl",
+						"template": true
 					}, 
-					"richtext.sass": {
-						"url": "form/input/richtext/richtext.sass"
+					"richtext.scss": {
+						"url": "form/input/richtext/richtext.scss"
 					}, 
 					"richtext.js": {
 						"url": "form/input/richtext/richtext.js"
-					}, 
-					"richtext.gcss": {
-						"url": "form/input/richtext/richtext.gcss"
 					}
 				}, 
 				"check": {
