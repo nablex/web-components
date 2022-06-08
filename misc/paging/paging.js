@@ -33,6 +33,10 @@ Vue.component("n-paging", {
 		buttonClasses: {
 			type: Array,
 			required: false
+		},
+		showEmpty: {
+			type: Boolean,
+			required: false
 		}
 	},
 	template: "#n-paging",
@@ -73,6 +77,10 @@ Vue.component("n-paging", {
 					buttons.push(this.total - 1);
 				}
 				buttons.push(this.total);
+			}
+			// at least push the first one if we want _something_
+			if (buttons.length == 0 && this.showEmpty) {
+				buttons.push(1);
 			}
 			return buttons;
 		}

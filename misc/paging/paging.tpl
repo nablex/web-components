@@ -1,5 +1,5 @@
 <template id="n-paging">
-	<ul class="is-menu" v-show="total > 1">
+	<ul class="is-menu" v-show="total > 0 || showEmpty">
 		<li class="is-column" v-if="arrows"><button :class="buttonClasses" class="is-button" @click="update(0)" :disabled="!page || loading"><span class="n-icon n-icon-angle-double-left"></span></button></li>
 		<li class="is-column" v-if="arrows"><button :class="buttonClasses" class="is-button" @click="update(page - 1)" :disabled="!page || loading"><span class="n-icon n-icon-angle-left"></span></button></li>
 		<li class="is-column" v-for="button in buttons"><button :class="[buttonClasses, {'is-active': button - 1 == page}]" class="is-button" :disabled="loading" @click="button == null ? promptPage() : update(button - 1)">{{ button == null ? "..." : button }}</button></li>

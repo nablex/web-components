@@ -593,6 +593,10 @@ Vue.component("n-input-combo", {
 			if (newValue) {
 				this.content = this.cleanupFormatted(newValue);
 			}
+			// we can also empty it out
+			else if (!this.value) {
+				this.content = "";
+			}
 		}
 	}
 });

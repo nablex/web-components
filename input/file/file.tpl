@@ -8,7 +8,7 @@
 			</div>
 			<div v-else>%{file:<strong>Drag a file</strong><span> or </span><a :disabled="disabled" href="javascript:void(0)" @click="browse()">browse</a> ({{value.length}})}</div>
 		</slot> 
-		<input ref="input" type="file" @change="selectFiles($event)" :accept="types" :multiple="!amount || amount > 1" />
+		<input ref="input" type="file" @change="selectFiles($event)" :accept="types" :multiple="!amount || amount > 1" v-show="false" />
 		<slot name="messages" :messages="messages">
 			<n-messages :messages="messages" v-if="messages && messages.length"/>
 		</slot>

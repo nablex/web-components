@@ -5,7 +5,7 @@
 		</div>
 		<div class="is-content-before" v-if="before" v-html="before"></div>
 		<ul class="is-menu is-variant-toolbar" v-if="edit">
-			<li class="is-column">
+			<li class="is-column" v-if="supportBlocks">
 				<span class="is-button is-size-xsmall is-variant-primary"><icon name="th-large"/><span class="is-text">%{component-text::Block}</span></span>
 				<ul class="is-row">
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('p')"><icon name="paragraph"/><span class="is-text">%{component-text::Paragraph}</span></button></li>
@@ -15,7 +15,6 @@
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h4')"><icon name="heading"/><span class="is-text">%{component-text::H4}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h5')"><icon name="heading"/><span class="is-text">%{component-text::H5}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h6')"><icon name="heading"/><span class="is-text">%{component-text::H6}</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="link"><icon name="link"/><span class="is-text">%{component-text::Link}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="insertTable"><icon name="table"/><span class="is-text">%{component-text::Table}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="list"><icon name="list"/><span class="is-text">%{component-text::List}</span></button></li>
 				</ul>
@@ -38,13 +37,14 @@
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="italic"><icon name="italic"/><span class="is-text">%{component-text::Italic}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="underline"><icon name="underline"/><span class="is-text">%{component-text::Line}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="clean"><icon name="eraser"/><span class="is-text">%{component-text::Plain}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="link"><icon name="link"/><span class="is-text">%{component-text::Link}</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="applyColor()"><icon name="paint-brush"/><span class="is-text">%{component-text::Paint}</span></button></li>
 					<li class="is-column is-height-min-2 is-align-stretch"><input type="color" v-model="color" class="is-content is-color-secondary is-width-max"></li>
 				</ul>
 			</li>
 		</ul>
 		<div class="is-content-wrapper">
-			<div @keydown.tab="tab($event)" class="is-inline-editor" placeholder="Rich text" v-html-once="value ? value : ''" ref="editor" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
+			<div @keydown.tab="tab($event)" class="is-inline-editor" :placeholder="placeholder" v-html-once="value ? value : ''" ref="editor" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
 		</div>
 		<n-messages :messages="messages" v-if="messages && messages.length"/>
 		<div class="is-content-after" v-if="after" v-html="after"></div>

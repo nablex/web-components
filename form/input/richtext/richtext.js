@@ -66,6 +66,14 @@ Vue.component("n-form-richtext", {
 		supportLinkType: {
 			type: Boolean,
 			required: false
+		},
+		supportBlocks: {
+			type: Boolean,
+			default: true
+		},
+		placeholder: {
+			type: String,
+			default: "Rich text"
 		}
 	},
 	template: "#n-form-richtext",
