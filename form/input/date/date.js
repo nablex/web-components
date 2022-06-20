@@ -221,7 +221,7 @@ Vue.component("n-form-date", {
 			this.date = this.formatValue(parsed);
 			// if it should not be stringified and we have a string, emit that
 			if (!this.stringified) {
-				this.$emit("input", parsed);
+				this.$emit("input", parsed, this.value);
 				this.$emit("label", this.value);
 			}
 		}
@@ -268,7 +268,7 @@ Vue.component("n-form-date", {
 				this.$emit("input", value);
 			}
 			else {
-				this.$emit("input", this.parser ? this.parser(value) : new Date(value));
+				this.$emit("input", this.parser ? this.parser(value) : new Date(value), value);
 				this.$emit("label", value);
 			}
 		},
@@ -367,21 +367,21 @@ Vue.component("n-form-date", {
 			else if (this.secondsTimestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
-					this.$emit("input", newValue.getTime() / 1000);
+					this.$emit("input", newValue.getTime() / 1000, this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.timestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
 					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
-					this.$emit("input", newValue.getTime());
+					this.$emit("input", newValue.getTime(), this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
 					newValue = this.formatValue(this.parser ? this.parser(newValue) : new Date(newValue))
-					this.$emit("input", newValue);
+					this.$emit("input", newValue, this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
@@ -394,7 +394,7 @@ Vue.component("n-form-date", {
 					}
 					if (!this.value || newValue.getTime() != value.getTime()) {
 						this.lastParsed = newValue;
-						this.$emit("input", newValue);
+						this.$emit("input", newValue, this.formatValue(newValue));
 						this.$emit("label", this.formatValue(newValue));
 						this.show = false;
 					}

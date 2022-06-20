@@ -201,8 +201,8 @@ Vue.component("n-form-combo", {
 			});
 			return messages;
 		},
-		updateValue: function(value, label) {
-			this.$emit("input", value, label);
+		updateValue: function(value, formatted, selectedLabel) {
+			this.$emit("input", value, formatted, selectedLabel);
 		},
 		clear: function() {
 			this.$refs.combo.clear();

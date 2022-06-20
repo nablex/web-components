@@ -163,7 +163,7 @@ Vue.component("n-input-combo", {
 	},
 	methods: {
 		cleanupFormatted: function(formatted) {
-			return formatted ? formatted.replace(/<[^>]+>/g, "").trim() : formatted;
+			return formatted && formatted.replace ? formatted.replace(/<[^>]+>/g, "").trim() : formatted;
 		},
 		focusOn: function($event) {
 			var self = this;
@@ -453,7 +453,7 @@ Vue.component("n-input-combo", {
 			if (match != null || (!value && this.nillable)) {
 				this.updatingContent = true;
 				this.actualValue = value;
-				this.$emit("input", this.extracter && match ? this.extracter(match) : match, this.label);
+				this.$emit("input", this.extracter && match ? this.extracter(match) : match, this.formatter && match ? this.formatter(match) : match, this.label);
 				this.$emit("label", this.formatter && match ? this.formatter(match) : match, this.label);
 			}
 			// if it is nillable and the current bound value has some value, reset it to null
@@ -504,7 +504,7 @@ Vue.component("n-input-combo", {
 			this.keyValue = null;
 			this.updatingContent = true;
 			this.actualValue = value;
-			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.label);
+			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.formatter && value ? this.formatter(value) : value, this.label);
 			this.$emit("label", this.formatter && value ? this.formatter(value) : value, this.label);
 			// should be handled by formatted computed?
 			//this.content = value != null && this.formatter ? this.formatter(value) : value;

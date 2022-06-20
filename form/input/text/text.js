@@ -130,7 +130,15 @@ Vue.component("n-form-text", {
 			type: String,
 			required: false
 		},
+		prefixIcon: {
+			type: String,
+			required: false
+		},
 		suffix: {
+			type: String,
+			required: false
+		},
+		suffixIcon: {
 			type: String,
 			required: false
 		},
