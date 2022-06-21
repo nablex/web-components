@@ -1,0 +1,17 @@
+{
+	"name": "web-components-image-uploader", 
+	"resources": {
+		"form": {
+			"input": {
+				"image-uploader": {
+					"image-uploader.js": {
+						"url": "form/input/image-uploader/image-uploader.scss"
+					}, 
+					"image-uploader.tpl": {
+						"url": "form/input/image-uploader/image-uploader.tpl"
+					}
+				}
+			}
+		}
+	}
+}

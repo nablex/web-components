@@ -93,6 +93,15 @@ nabu.utils.vue.form = {
 		return labels.length ? labels : null;
 	},
 	mode: function(component) {
+		// base it on html elements rather than $parent chains
+		// the $parent chains are not always to be trusted to get to the right component
+		var element = component.$el;
+		while (element && element.getAttribute) {
+			if (element.getAttribute("mode")) {
+				return element.getAttribute("mode");
+			}
+			element = element.parentNode;
+		}
 		while (component) {
 			if (component.mode) {
 				return component.mode;
