@@ -5,7 +5,7 @@
 			"input": {
 				"image-uploader": {
 					"image-uploader.js": {
-						"url": "form/input/image-uploader/image-uploader.scss"
+						"url": "form/input/image-uploader/image-uploader.js"
 					}, 
 					"image-uploader.tpl": {
 						"url": "form/input/image-uploader/image-uploader.tpl"
