@@ -1,4 +1,8 @@
-Vue.component("n-form-radio", {
+Vue.component("n-form-checkbox-list-configure", {
+	template: "#n-form-checkbox-list-configure",
+});
+Vue.component("n-form-checkbox-list", {
+	template: "#n-form-checkbox-list",
 	props: {
 		value: {
 			required: true
@@ -55,18 +59,6 @@ Vue.component("n-form-radio", {
 			type: Function,
 			required: false
 		},
-		descriptionIcon: {
-			type: String,
-			required: false
-		},
-		description: {
-			type: String,
-			required: false
-		},
-		descriptionType: {
-			type: String,
-			default: "after"
-		},
 		info: {
 			type: String,
 			required: false
@@ -78,74 +70,85 @@ Vue.component("n-form-radio", {
 		before: {
 			type: String,
 			required: false
-		},
-		mustChoose: {
-			type: Boolean,
-			required: false
 		}		
-	},
-	template: "#n-form-radio",
-	data: function() {
-		return {
-			messages: [],
-			valid: null,
-			actualValue: null,
-			chosen: false
-		};
-	},
-	created: function() {
-		// if we received an extracter, the current value is an extract from one of the items
-		if (this.extracter && this.value) {
-			var self = this;
-			this.actualValue = this.items.filter(function(x) { return self.extracter(x) == self.value })[0];
-		}
-		else {
-			this.actualValue = this.value;
-		}
 	},
 	computed: {
 		definition: function() {
 			return nabu.utils.vue.form.definition(this);
 		},
 		mandatory: function() {
-			console.log("computed mandatory:", nabu.utils.vue.form.mandatory(this));
 			return nabu.utils.vue.form.mandatory(this);
 		}
 	},
+	data: function() {
+		return {
+			messages: [],
+			valid: null,
+			actualValue: null,
+			chosen: false,
+			// corresponding labels
+			labels: []
+		};
+	},
+	created: function() {
+		if (!this.value || !(this.value instanceof Array)) {
+			this.$emit("input", []);	
+		}
+		// if we already have items, let's fill up the labels
+		else if (this.value.length) {
+			var self = this;
+			this.value.forEach(function(x) {
+				var index;
+				if (!self.extracter) {
+					index = self.items.indexOf(x);
+				}
+				else {
+					self.items.forEach(function(item, i) {
+						if (self.extracter(item) == x) {
+							index = i;
+						}
+					});
+				}
+				self.labels.push(index >= 0 ? (self.formatter ? self.formatter(self.value[index]) : self.value[index]) : self.value[index]);
+			})
+		}
+	},
 	methods: {
+		isChecked: function(item) {
+			var value = this.extracter ? this.extracter(item) : item;
+			return this.value && this.value.indexOf(value) >= 0;
+		},
+		toggle: function(item) {
+			var value = this.extracter ? this.extracter(item) : item;
+			var index = this.value.indexOf(value);
+			if (index >= 0) {
+				this.value.splice(index, 1);
+				this.labels.splice(index, 1);
+			}
+			else {
+				this.value.push(value);
+				this.labels.push(this.formatter ? this.formatter(value ) : value);
+			}
+			//this.$emit("input", this.value, this.labels);
+		},
 		validate: function(soft) {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
 			
 			var existingRequired = messages.filter(function(x) { return x.code == "required" })[0];
 			if (existingRequired) {
-				existingRequired.title = "%{validation:You must choose an option}";
+				existingRequired.title = "%{validation:You must choose at least one option}";
 			}
-			else if (!this.chosen && this.mustChoose) {
-				var message = {
-					soft: false,
-					severity: "error",
+			else if (this.mandatory && this.value.length == 0) {
+				messages.push({
 					code: "required",
-					title: "%{validation:You must choose an option}",
+					severity: "error",
+					soft: true,
 					priority: 0,
-					values: {
-						actual: false,
-						expected: true
-					},
-					context: []
-				}
-				Object.defineProperty(message, 'component', {
-					value: this,
-					enumerable: false
+					title: "%{validation:You must choose at least one option}"
 				});
-				messages.push(message);				
 			}
-			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
-			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
-			if (requiredMessage && this.$refs && this.$refs.combo && this.$refs.combo.content) {
-				requiredMessage.title = "%{validation:Please choose a value}";
-				requiredMessage.actual = this.$refs.combo.content;
-			}
+			
 			for (var i = 0; i < messages.length; i++) {
 				Object.defineProperty(messages[i], 'component', {
 					value: this,
@@ -164,15 +167,23 @@ Vue.component("n-form-radio", {
 				nabu.utils.arrays.merge(this.messages, nabu.utils.vue.form.localMessages(this, messages));
 			}
 			return messages;
-		},		
-		select: function(option) {
-			if (!this.disabled && this.edit) {
-				this.chosen = true;
-				this.$emit("input", this.extracter ? this.extracter(option) : option, this.formatter ? this.formatter(option) : option);
-				// we don't know if it's valid at this point
-				this.valid = null;
-				this.messages.splice(0);
-			}
 		}
 	}
+});
+
+window.addEventListener("load", function() {
+	application.bootstrap(function($services) {
+		nabu.page.provide("page-form-list-input", { 
+			component: "n-form-checkbox-list", 
+			configure: "n-form-checkbox-list-configure", 
+			name: "checkbox-list",
+			namespace: "nabu.page"
+		});
+		nabu.page.provide("page-form-input", { 
+			component: "n-form-checkbox-list", 
+			configure: "n-form-checkbox-list-configure", 
+			name: "checkbox-list",
+			namespace: "nabu.page"
+		});
+	});
 });

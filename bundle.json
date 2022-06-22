@@ -108,6 +108,15 @@
 						"url": "form/input/check/check.tpl"
 					}
 				}, 
+				"check-list": {
+					"check-list.js": {
+						"url": "form/input/check-list/check-list.js",
+						"template": true
+					}, 
+					"check-list.tpl": {
+						"url": "form/input/check-list/check-list.tpl"
+					}
+				}, 
 				"text": {
 					"text.tpl": {
 						"url": "form/input/text/text.tpl"
