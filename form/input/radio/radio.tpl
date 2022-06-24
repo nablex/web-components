@@ -1,39 +1,28 @@
 <template id="n-form-radio">
-	<div class="n-form-component n-form-radios" :class="[ mandatory ? 'n-form-input-required' : 'n-form-input-optional', { 'n-form-hidden': hide, 'n-form-disabled': disabled },{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }]" :optional="hide != null">
-		
-		<slot name="top"></slot>
-		
-		<div class="n-form-label-wrapper">
-			<slot name="radios-label" :label="label" :mandatory="mandatory">
-				<label class="n-form-label" :class="{ 'n-form-input-required': mandatory }" v-if="label" v-html="label"></label>
-			</slot>
-			<n-info class="n-form-component-description n-form-component-description-info" :icon="descriptionIcon" v-if="descriptionType == 'info'">{{ description }}</n-info>
+	<div class="is-form-radio-list" :class="[{ 'is-required': mandatory, 'is-optional': !mandatory, 'is-hidden': hide, 'is-invalid': valid != null && !valid, 'is-valid': valid != null && valid, 'has-prefix': !!prefix, 'has-suffix': !!suffix, 'has-before': !!before, 'has-after': !!after, 'has-label': !!label, 'has-info': !!info }, type ? 'is-form-text-' + type : null ]">
+		<div class="is-label-wrapper" v-if="label || info">
+			<label class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
-		
-		<div class="n-form-component-description n-form-component-description-before"  v-if="before || descriptionType == 'before'">
-			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ before ? before : description }}</span>
-		</div>
-		
-		<div v-for="item in items" class="n-form-component n-form-radio" :class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }">
-			<input ref="input" 
-				type="radio" 
-				:name="name"
-				:disabled="!edit || disabled"
-				:value="extracter ? extracter(item) : item"
-				v-checked="(!mustChoose || chosen) && value == (extracter ? extracter(item) : item)"
-				@input="select(item)"
-				v-if="!hide" 
-				class="n-form-radio-input"
-			/><slot name="label" :value="item" :select="function() { select(item) }"><label class="n-form-label" @click="select(item); $event.stopPropagation()" v-html="formatter ? formatter(item) : item"></label></slot>
-		</div>
+		<div class="is-content-before" v-if="before" v-html="before"></div>
 
-		<slot name="bottom"><n-messages :messages="messages" v-if="messages && messages.length"/></slot>
-		
-		<div class="n-form-component-description n-form-component-description-after" v-if="after || descriptionType == 'after'">
-			<span class="n-form-component-description-icon" :class="descriptionIcon" v-if="descriptionIcon"></span>
-			<span class="n-form-component-description-label">{{ after ? after : description }}</span>
-		</div>		
-		
+		<div class="is-content-wrapper" v-if="edit">
+			<div v-for="item in items" class="is-form-radio" :class="{ 'n-form-valid': valid != null && valid, 'n-form-invalid': valid != null && !valid }">
+				<input ref="input" 
+					type="radio" 
+					:name="name"
+					:disabled="!edit || disabled"
+					:value="extracter ? extracter(item) : item"
+					v-checked="(!mustChoose || chosen) && value == (extracter ? extracter(item) : item)"
+					@input="select(item)"
+					v-if="!hide" 
+					class="n-form-radio-input"
+				/><slot name="label" :value="item" :select="function() { select(item) }"><label class="is-label" @click="select(item); $event.stopPropagation()" v-html="formatter ? formatter(item) : item"></label></slot>
+			</div>
+		</div>
+		<div class="is-read-only" v-else>
+			<slot><span class="is-readable">{{ type == 'password' ? '*******' : localValue }}</span></slot>
+		</div>
+		<n-messages :messages="messages" v-if="messages && messages.length"/>
+		<div class="is-content-after" v-if="after" v-html="after"></div>
 	</div>
 </template>

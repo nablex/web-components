@@ -21,7 +21,11 @@ Vue.component("n-form-radio", {
 		},
 		name: {
 			type: String,
-			required: false
+			required: false,
+			// must always have a name to guarantee single selection within the group
+			default: function() {
+				return ("radio-" + Math.random()).replace("0\.", "");
+			}
 		},
 		// a json schema component stating the definition
 		schema: {
@@ -55,17 +59,9 @@ Vue.component("n-form-radio", {
 			type: Function,
 			required: false
 		},
-		descriptionIcon: {
+		infoIcon: {
 			type: String,
 			required: false
-		},
-		description: {
-			type: String,
-			required: false
-		},
-		descriptionType: {
-			type: String,
-			default: "after"
 		},
 		info: {
 			type: String,

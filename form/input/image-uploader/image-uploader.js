@@ -377,9 +377,11 @@ window.addEventListener("load", function() {
 		$services.router.register({
 			alias: "page-form-image-uploader",
 			enter: function(parameters) {
-				parameters.formComponent = "n-form-image-uploader";
-				parameters.configurationComponent = "n-form-image-uploader-configure";
-				return new nabu.page.views.FormComponent({propsData: parameters});
+				var cloneParameters = {};
+				nabu.utils.objects.merge(cloneParameters, parameters);
+				cloneParameters.formComponent = "n-form-image-uploader";
+				cloneParameters.configurationComponent = "n-form-image-uploader-configure";
+				return new nabu.page.views.FormComponent({propsData: cloneParameters});
 			},
 			form: "imageUploader",
 			category: "Form",
