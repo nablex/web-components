@@ -39,7 +39,7 @@
 					:rows="rows"
 					:placeholder="placeholder" 
 					:disabled="disabled" 
-					:value="localValue" 
+					v-model="localValue" 
 					class="is-input" 
 					ref="input"
 					:name="name"

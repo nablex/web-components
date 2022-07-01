@@ -2,40 +2,44 @@
 	<div class="n-input-date">
 		<table :class="yearsDropdown ? 'table dropdown' : 'table'" cellspacing="0" cellpadding="0">
 			<thead class="caption">
-				<tr>
-					<td colspan="7">
-						<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-previous-year n-icon n-icon-chevron-circle-left fa fa-chevron-circle-left" @click="canIncrementMonth(-12) ? date = incrementMonth(-12) : null" :disabled="!canIncrementMonth(-12)"></a>
-						<a href="javascript:void(0)" class="n-input-date-previous n-icon n-icon-chevron-left fa fa-chevron-left" @click="canIncrementMonth(-1) ? date = incrementMonth(-1) : null" :disabled="!canIncrementMonth(-1)"></a>
-		 
-						<span class="month">{{ months[date.getMonth()] }} {{ !yearsDropdown ? date.getFullYear() : '' }}</span>
-		
-						<a href="javascript:void(0)" class="n-input-date-next n-icon n-icon-chevron-right fa fa-chevron-right" @click="canIncrementMonth(1) ? date = incrementMonth(1) : null" :disabled="!canIncrementMonth(1)"></a>
-						<a v-if="!yearsDropdown" href="javascript:void(0)" class="n-input-date-next-year n-icon n-icon-chevron-circle-right fa fa-chevron-circle-right" @click="canIncrementMonth(12) ? date = incrementMonth(12) : null" :disabled="!canIncrementMonth(12)"></a>
-					
-						<n-input-combo v-if="yearsDropdown"
+				<tr class="year">
+					<th colspan="7">
+						<div class="is-row is-align-space-between">
+							<div class="buttons-previous">
+								<button v-if="!yearsDropdown" class="is-button is-size-small is-variant-ghost" @click="canIncrementMonth(-12) ? date = incrementMonth(-12) : null" :disabled="!canIncrementMonth(-12)"><icon name="chevron-circle-left"/></button>
+								<button class="is-button is-size-small is-variant-ghost" @click="canIncrementMonth(-1) ? date = incrementMonth(-1) : null" :disabled="!canIncrementMonth(-1)"><icon name="chevron-left"/></button>
+							</div>
+							<span class="month">{{ months[date.getMonth()] }} {{ !yearsDropdown ? date.getFullYear() : '' }}</span>
+							<div class="buttons-next">
+								<button class="is-button is-size-small is-variant-ghost" @click="canIncrementMonth(1) ? date = incrementMonth(1) : null" :disabled="!canIncrementMonth(1)"><icon name="chevron-right"/></button>
+								<button v-if="!yearsDropdown" class="is-button is-size-small is-variant-ghost" @click="canIncrementMonth(12) ? date = incrementMonth(12) : null" :disabled="!canIncrementMonth(12)"><icon name="chevron-circle-right"/></button>
+							</div>
+						</div>
+					</th>
+				</tr>
+				<tr v-if="yearsDropdown" class="year-selection">
+					<th colspan="7">
+						<n-form-combo 
 							:allow-typing="false"
 							:value="year" 
-							@input="selectYear(year)"
-							:items="years"
-						></n-input-combo>
-					</td>
+							@input="selectYear"
+							:items="years"/>
+					</th>
 				</tr>
-			</thead>
-			<thead>
-				<tr>
-					<th>%{date:Mon}</th>
-					<th>%{date:Tue}</th>
-					<th>%{date:Wed}</th>
-					<th>%{date:Thu}</th>
-					<th>%{date:Fri}</th>
-					<th>%{date:Sat}</th>
-					<th>%{date:Sun}</th>
+				<tr class="days">
+					<th>%{date:Mo}</th>
+					<th>%{date:Tu}</th>
+					<th>%{date:We}</th>
+					<th>%{date:Th}</th>
+					<th>%{date:Fr}</th>
+					<th>%{date:Sa}</th>
+					<th>%{date:Su}</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="week in weeks">
-					<td v-for="day in week" :class="{'n-input-date-today': day.value != null && isToday(day.value), 'n-input-date-selected': day.value != null && isSelected(day.value), 'n-input-date-available': day.value != null && isAvailable(day.value), 'n-input-date-not-available': day.value != null && !isAvailable(day.value)}">
-						<a auto-close v-if="day.label" class="n-input-date-label" href="javascript:void(0)" @click="select(day.value)">{{ day.label }}</a>
+					<td v-for="day in week" :class="{'is-today': day.value != null && isToday(day.value), 'is-active': day.value != null && isSelected(day.value), 'is-available': day.value != null && isAvailable(day.value), 'is-unavailable': day.value != null && !isAvailable(day.value)}">
+						<button auto-close v-if="day.label" class="is-button is-size-small is-variant-ghost" @click="select(day.value)" :disabled="day.value != null && !isAvailable(day.value)"><span class="is-text">{{ day.label }}</span></button>
 					</td>
 				</tr>
 			</tbody>

@@ -1,5 +1,5 @@
 <template id="n-form-date">
-	<div class="n-form-date" v-auto-close="function() { show = false }">
+	<div class="is-form-date" v-auto-close="function() { show = false }">
 		<n-form-text class="n-form-date-input" 
 			@focus="focus" 
 			:pattern="pattern ? pattern : dynamicPattern" 
@@ -24,8 +24,7 @@
 			ref="text"
 			:timeout="timeout">
 			
-			<span slot="suffix" class="n-form-suffix n-icon fa n-form-date-icon" 
-				:class="{ 'n-icon-calendar': !show, 'fa-calendar-alt': !show, 'n-icon-times': show, 'fa-times': show, 'n-form-date-icon-show': show }" @click="edit && !disabled ? show = !show : show = false" v-show="edit"></span>
+			<icon class="is-suffix" slot="suffix" :name="show ? 'times' : 'calendar-alt'" :class="{'is-open': shown, 'is-closed': !shown }" @click.native="function() { edit && !disabled ? show = !show : show = false }" v-show="edit"/>
 		</n-form-text>
 		
 		<n-input-date 
