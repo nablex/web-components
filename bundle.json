@@ -71,6 +71,14 @@
 						"url": "form/input/date-picker/date-picker.js"
 					}
 				}, 
+				"file": {
+					"file.tpl": {
+						"url": "form/input/file/file.tpl"
+					}, 
+					"file.js": {
+						"url": "form/input/file/file.js"
+					}
+				},
 				"combo": {
 					"combo.js": {
 						"url": "form/input/combo/combo.js",

@@ -24,7 +24,7 @@
 			ref="text"
 			:timeout="timeout">
 			
-			<icon class="is-suffix" slot="suffix" :name="show ? 'times' : 'calendar-alt'" :class="{'is-open': shown, 'is-closed': !shown }" @click.native="function() { edit && !disabled ? show = !show : show = false }" v-show="edit"/>
+			<icon class="is-suffix" slot="suffix" :name="show ? 'times' : 'calendar-alt'" :class="{'is-open': show, 'is-closed': !show }" @click.native="function() { edit && !disabled ? show = !show : show = false }" v-show="edit"/>
 		</n-form-text>
 		
 		<n-input-date 
