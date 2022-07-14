@@ -5,7 +5,7 @@
 		</div>
 		<div class="is-content-before" v-if="before" v-html="before"></div>
 		<div class="is-content-wrapper" v-if="edit">
-			<n-input-file :types='fileTypes' ref='form' :amount='1'
+			<n-input-file :types='types' ref='form' :amount='1'
 				:edit='edit'
 				:schema='schema'
 				v-bubble:change
