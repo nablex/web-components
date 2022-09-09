@@ -504,7 +504,8 @@ Vue.component("n-input-combo", {
 			this.keyValue = null;
 			this.updatingContent = true;
 			this.actualValue = value;
-			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.formatter && value ? this.formatter(value) : value, this.label);
+			this.$emit("input", this.extracter && value ? this.extracter(value) : value, this.formatter && value ? this.formatter(value) : value, value, this.label);
+			// backwards compatibility
 			this.$emit("label", this.formatter && value ? this.formatter(value) : value, this.label);
 			// should be handled by formatted computed?
 			//this.content = value != null && this.formatter ? this.formatter(value) : value;

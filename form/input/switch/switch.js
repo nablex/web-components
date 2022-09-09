@@ -48,6 +48,9 @@ Vue.component("n-form-switch", {
 			if (!this.disabled) {
 				this.$emit("input", newValue);
 			}
+		},
+		validate: function(soft) {
+			return this.$refs.form.validate(soft);
 		}
 	}
 });
