@@ -47,7 +47,7 @@
 				/><div class="is-number-spinner" v-if="type == 'number' && showCustomSpinner">
 					<icon name="chevron-up" @click="increment"/>
 					<icon name="chevron-down" @click="decrement"/>
-				</div><slot name="suffix"><div class="is-suffix" v-if="suffix || suffixIcon"><icon v-if="suffixIcon" :name="suffixIcon"/><span class="is-text" v-html="suffix" v-html="suffix"></span></div></slot><span class="is-range-value"></span><span v-if="type == 'range' && showTooltip" class="is-tooltip" ref="tooltip">{{value}}</span>
+				</div><slot name="suffix"><div class="is-suffix" v-if="suffix || suffixIcon"><icon v-if="suffixIcon" :name="suffixIcon"/><span class="is-text" v-html="suffix"></span></div></slot><span class="is-range-value"></span><span v-if="type == 'range' && showTooltip" class="is-tooltip" ref="tooltip">{{value}}</span>
 		</div>
 		<div class="is-read-only" v-else>
 			<slot><span class="is-readable">{{ type == 'password' ? '*******' : localValue }}</span></slot>
