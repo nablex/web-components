@@ -127,6 +127,22 @@ window.addEventListener("load", function() {
 				name: "barcode",
 				namespace: "nabu.page"
 			});
+			$services.router.register({
+				alias: "page-form-barcode",
+				enter: function(parameters) {
+					// do not modify parameters directly, this may lead to rerendering issues
+					var cloneParameters = {};
+					nabu.utils.objects.merge(cloneParameters, parameters);
+					cloneParameters.formComponent = "page-form-input-barcode";
+					cloneParameters.configurationComponent = "page-form-input-barcode-configure";
+					return new nabu.page.views.FormComponent({propsData: cloneParameters});
+				},
+				form: "barcode",
+				category: "Form",
+				name: "Barcode",
+				description: "A barcode code reader",
+				icon: "page/core/images/form-text.svg"
+			});
 		});
 	}
 });    

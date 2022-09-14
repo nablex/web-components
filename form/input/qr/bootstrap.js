@@ -126,6 +126,23 @@ window.addEventListener("load", function() {
 				name: "qr",
 				namespace: "nabu.page"
 			});
+			$services.router.register({
+				alias: "page-form-qr",
+				enter: function(parameters) {
+					// do not modify parameters directly, this may lead to rerendering issues
+					var cloneParameters = {};
+					nabu.utils.objects.merge(cloneParameters, parameters);
+					cloneParameters.formComponent = "page-form-input-qr";
+					cloneParameters.configurationComponent = "page-form-input-qr-configure";
+					return new nabu.page.views.FormComponent({propsData: cloneParameters});
+				},
+				form: "qr",
+				category: "Form",
+				name: "Qr",
+				description: "A QR code reader",
+				icon: "page/core/images/form-text.svg"
+			});
 		});
+
 	}
 });    
