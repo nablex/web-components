@@ -146,6 +146,26 @@ Vue.component("n-form-combo", {
 		resetValue: {
 			type: String,
 			required: false
+		},
+		prefix: {
+			type: String,
+			required: false
+		},
+		prefixIcon: {
+			type: String,
+			required: false
+		},
+		suffix: {
+			type: String,
+			required: false
+		},
+		suffixIcon: {
+			type: String,
+			required: false
+		},
+		allowTypeMatch: {
+			type: Boolean,
+			required: false,
 		}
 	},
 	template: "#n-form-combo",

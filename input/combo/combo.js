@@ -85,7 +85,7 @@ Vue.component("n-input-combo", {
 		allowTypeMatch: {
 			type: Boolean,
 			required: false,
-			default: true
+			default: false
 		},
 		// the text to show when there are no hits
 		emptyValue: {
