@@ -467,7 +467,9 @@ Vue.component("n-input-combo", {
 		updateContent: function(value) {
 			// explicitly set it, the v-model does not always seem to work in combination with the input event?
 			this.content = value;
-			var match = this.allowTypeMatch ? this.checkForMatch(value) : null;
+
+			// if you have no value left AND nillable is an option, we _do_ want to reset the value to null
+			var match = this.allowTypeMatch || (!value && this.nillable) ? this.checkForMatch(value) : null;
 			
 			// hide dropdown if you have a match by typing
 			if (match) {

@@ -14,8 +14,8 @@ Vue.component("n-form", {
 			type: Object,
 			required: false
 		},
+		// something that can be passed to :class
 		contentClass: {
-			type: String,
 			required: false
 		}
 	},
