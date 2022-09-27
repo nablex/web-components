@@ -92,7 +92,8 @@ Vue.component("n-form-image-uploader", {
 			selectedImage: null,
 			// this component supports both arrays and singular elements
 			// this boolean keeps track of the type
-			singular: false
+			singular: false,
+			valid: null
 		}
 	},
 	computed: {

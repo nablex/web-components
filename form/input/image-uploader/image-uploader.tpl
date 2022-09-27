@@ -35,13 +35,13 @@
 				:button-class="getChildComponentClasses('file-input-button')"
 				/>
 		</div>
-		<div v-else-if="field.showLargeSelectedReadOnly" class="is-column" :class="getChildComponentClasses('image-hero-wrapper')">
+		<div v-if="readOnly && field.showLargeSelectedReadOnly" class="is-column" :class="getChildComponentClasses('image-hero-wrapper')">
 			<img class="is-image" v-if="selectedImage && selectedImage[typeField].indexOf('image/') == 0" :src="selectedImage.$url" :class="getChildComponentClasses('image-hero')" />
 			<img class="is-image" v-else-if="field.emptyImage" :src="field.emptyImage" :class="getChildComponentClasses('image-hero')"/>
 			<div v-else-if="selectedImage" class="description">{{selectedImage[nameField]}}</div>
 		</div>
-		<div v-else class="file-empty">
-			<img class="is-image" v-else-if="field.emptyImage" :src="field.emptyImage"/>
+		<div v-else-if="(singular && !value.$url) || (!singular && value.length == 0)" class="file-empty">
+			<img class="is-image" v-if="field.emptyImage" :src="field.emptyImage"/>
 			<div v-else-if="field.emptyText" class="no-data">{{$services.page.translate(field.emptyText)}}</div>
 		</div>
 		<n-messages :messages="messages" v-if="messages && messages.length"/>

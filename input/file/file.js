@@ -65,7 +65,6 @@ Vue.component("n-input-file", {
 			default: true
 		},
 		buttonClass: {
-			type: String,
 			required: false
 		}
 	},
