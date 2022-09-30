@@ -25,6 +25,7 @@
 				@change='changed'
 				:value='files'
 				:name='field.name'
+				:capture="field.capture"
 				:dropLabel='field.dropLabel ? $services.page.translate(field.dropLabel) : null'
 				:browseLabel='field.browseLabel ? $services.page.translate(field.browseLabel) : null'
 				:browseIcon='field.browseIcon'
@@ -59,6 +60,7 @@
 		<n-form-text label='Maximum amount' v-model='field.maximum' :timeout="600"/>
 		<n-form-text v-if="!field.emptyText" label='Empty read-only placeholder image' v-model='field.emptyImage' info="The image to show in the main spot when in read-only mode if none has been selected" :timeout="600"/>
 		<n-form-text v-if="!field.emptyImage" label='Empty read-only placeholder text' v-model='field.emptyText' info="The text to show in the main spot when in read-only mode if none has been selected" :timeout="600"/>
+		<n-form-combo label='Capture mode' :items="['user','environment']" info="The capture attribute specifies that, optionally, a new file should be captured, and which device should be used to capture that new media of a type defined by the accept attribute." v-model="field.capture"/>		
 		<n-form-switch label="Allow non-image files" v-model="field.allowNonImages"/>
 		<n-form-switch label="Show large selected in read-only mode" v-model="field.showLargeSelectedReadOnly"/>
 		<n-form-switch label="Show file names" v-model="field.showFileNames"/>
