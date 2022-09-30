@@ -257,7 +257,10 @@ Vue.component("n-form-image-uploader", {
 					result[self.nameField] = file.name;
 					result[self.typeField] = file.type ? file.type : (self.field.allowNonImages ? "application/octet-stream" : "image/jpeg");
 					if (self.singular) {
-						nabu.utils.objects.merge(self.value, result);
+						//nabu.utils.objects.merge(self.value, result);
+						Object.keys(result).forEach(function(key) {
+							Vue.set(self.value, key, result[key]);
+						});
 					}
 					else {
 						self.value.push(result);
