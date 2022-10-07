@@ -221,7 +221,13 @@ Vue.component("n-form-barcode", {
 			}
 		},
 		validate: function(soft) {
-			return this.$refs.text.validate(soft);
+			if (this.$refs.text) {
+				return this.$refs.text.validate(soft);
+			}
+			else {
+				// TODO: could do further validation checks at this point, we have stuff like mandatory etc
+				return [];
+			}
 		}
 	},
 	watch: {
