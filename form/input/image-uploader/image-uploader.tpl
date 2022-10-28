@@ -12,13 +12,13 @@
 						:title="image[nameField]"
 						:class="[getChildComponentClasses('image-entry'), {'is-selected': selectedImage == image }]"/>
 					<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{image[nameField]}}</h6>
-					<button class="is-button is-variant-close is-size-small is-color-danger" @click="remove(index)" v-if="!readOnly"><icon name="times"/></button>
+					<button type="button" class="is-button is-variant-close is-size-small is-color-danger" @click="remove(index)" v-if="!readOnly"><icon name="times"/></button>
 				</div>
 			</template>
 			<div class="is-column has-button-close" v-else-if="value && value.$url" :class="getChildComponentClasses('image-entry-wrapper')">
 				<img class="is-image" v-if="value[typeField].indexOf('image/') == 0" :src="value.$url" :class="getChildComponentClasses('image-entry')" />
-				<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{image[nameField]}}</h6>
-				<button class="is-button is-variant-close is-size-small is-color-danger" @click="remove()" v-if="!readOnly"><icon name="times"/></button>
+				<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{value[nameField]}}</h6>
+				<button type="button" class="is-button" :class="getChildComponentClasses('file-delete-button')" @click="remove()" v-if="!readOnly"><icon name="times"/></button>
 			</div>
 			<n-input-file :types='fileTypes' ref='form' :amount='remaining > 1 ? remaining : 1'
 				v-if="!readOnly"

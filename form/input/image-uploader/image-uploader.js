@@ -175,7 +175,11 @@ Vue.component("n-form-image-uploader", {
 				title: "File Input Button",
 				name: "file-input-button",
 				component: "button"
-			}]	
+			}, {
+				title: "Remove Button",
+				name: "file-delete-button",
+				component: "button"
+			}]
 		},
 		validate: function(soft) {
 			var minimum = this.field.minimum ? parseInt(this.field.minimum) : null;
@@ -390,7 +394,7 @@ window.addEventListener("load", function() {
 			form: "imageUploader",
 			category: "Form",
 			name: "Image uploader",
-			description: "Uploades images and can resize them",
+			description: "Uploads images and can resize them",
 			icon: "page/core/images/image.svg"
 		});
 	});
