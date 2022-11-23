@@ -73,6 +73,9 @@ Vue.component("n-form-qr", {
 		switchQrCode: {
 			type: Boolean,
 			default: false
+		},
+		buttonClass: {
+			required: false
 		}
 	},
 	data: function() {
@@ -249,6 +252,7 @@ Vue.component("n-form-qr", {
 				self.valid = messages.length == 0;
 				nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
 			}
+			return messages;
 		}
 	},
 	watch: {

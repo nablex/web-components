@@ -61,6 +61,8 @@ window.addEventListener("load", function() {
 				+ "	:switch-qr-code='field.showScannedQRCode'"
 				+ "	:icon='field.icon'"
 				+ "	:zoom='field.zoom'"
+				+ "	:class=\"getChildComponentClasses('scan-component')\""
+				+ "	:button-class=\"getChildComponentClasses('scan-button')\""
 				+ "	:disabled='disabled'/>",
 			props: {
 				cell: {
@@ -100,6 +102,10 @@ window.addEventListener("load", function() {
 				placeholder: {
 					type: String,
 					required: false
+				},
+				childComponents: {
+					type: Object,
+					required: false
 				}
 			},
 			computed: {
@@ -108,6 +114,17 @@ window.addEventListener("load", function() {
 				}
 			},
 			methods: {
+				getChildComponents: function() {
+					return [{
+						title: "Scan Component (qr)",
+						name: "scan-component",
+						component: "form-qr"
+					}, {
+						title: "Scan Button",
+						name: "scan-button",
+						component: "button"
+					}];
+				},
 				validate: function(soft) {
 					return this.$refs.form.validate(soft);
 				},
