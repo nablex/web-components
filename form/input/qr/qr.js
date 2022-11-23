@@ -87,7 +87,11 @@ Vue.component("n-form-qr", {
 			zoomMax: 0,
 			zoomStep: 0,
 			canvasWidth: null,
-			canvasHeight: null
+			canvasHeight: null,
+			cwidth: 0,
+			cheight: 0,
+			messages: [],
+			valid: null
 		}
 	},
 	created: function() {
@@ -102,11 +106,7 @@ Vue.component("n-form-qr", {
 	},
 	computed: {
 		definition: function() {
-			var definition = nabu.utils.vue.form.definition(this);
-			if (this.type == "number") {
-				definition.type = "number";
-			}
-			return definition;
+			return nabu.utils.vue.form.definition(this);
 		},
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
@@ -119,7 +119,20 @@ Vue.component("n-form-qr", {
 			return this.$services.swagger.operations["nabu.libs.misc.qr.web.render"] != null;
 		}
 	},
+	ready: function() {
+		this.resize();
+	},
 	methods: {
+		resize: function() {
+			var width = this.$el.offsetWidth;
+			var height = (width * 2) / 3;
+			this.$refs.canvas.style.width = width + "px";
+			this.$refs.canvas.style.height = height + "px";
+			this.$refs.overlay.style.width = width + "px";
+			this.$refs.overlay.style.height = height + "px";
+			this.$refs.canvas.setAttribute("width", width);
+			this.$refs.canvas.setAttribute("height", height);
+		},
 		scan: function() {
 			this.video = document.createElement("video");
 			var video = this.video;
@@ -222,7 +235,20 @@ Vue.component("n-form-qr", {
 			}
 		},
 		validate: function(soft) {
-			return this.$refs.text.validate(soft);
+			var self = this;
+			this.messages.splice(0);
+			// this performs all basic validation and enriches the messages array to support asynchronous
+			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
+			self.messages.splice(0);
+			var hardMessages = messages.filter(function(x) { return !x.soft });
+			// if we are doing a soft validation and all messages were soft, set valid to unknown
+			if (soft && hardMessages.length == 0 && (messages.length > 0 || !this.value) && self.valid == null) {
+				self.valid = null;
+			}
+			else {
+				self.valid = messages.length == 0;
+				nabu.utils.arrays.merge(self.messages, nabu.utils.vue.form.localMessages(self, messages));
+			}
 		}
 	},
 	watch: {

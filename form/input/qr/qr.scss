@@ -1,6 +1,10 @@
-.n-form-qr {
+// @component form-qr form-component
+@mixin form-qr_variant_default {
+	canvas, .overlay {
+		width: 100%;
+		aspect-ratio: 3/2
+	}
 	.n-form-qr-container {
-		text-align: center;
 		.n-form-canvas-container {
 			position: relative;
 			display: inline-block;

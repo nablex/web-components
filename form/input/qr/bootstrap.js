@@ -2,7 +2,7 @@ window.addEventListener("load", function() {
 	if (application && nabu && nabu.page) {
 		Vue.component("page-form-input-qr-configure", {
 			template: "<n-form-section>"
-				+ "	<n-form-switch v-model='field.allowManualEntry' label='Allow manual entry' />"
+				+ "	<n-form-switch v-model='field.allowManualEntry' label='Allow manual entry' v-if='false' />"
 				+ "	<n-form-text type='number' v-model='field.canvasWidth' label='Width (in pixels)' />"
 				+ "	<n-form-text type='number' v-model='field.canvasHeight' label='Height (in pixels)' />"
 				+ "	<n-form-text v-model='field.icon' label='Icon' />"
