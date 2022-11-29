@@ -90,7 +90,7 @@ Vue.component("n-form-checkbox-list", {
 			labels: []
 		};
 	},
-	created: function() {
+	mounted: function() {
 		if (!this.value || !(this.value instanceof Array)) {
 			this.$emit("input", []);	
 		}
