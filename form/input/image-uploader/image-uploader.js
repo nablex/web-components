@@ -105,7 +105,7 @@ Vue.component("n-form-image-uploader", {
 			var storedAmount = this.singular
 				? (this.value.content != null ? 1 : 0)
 				: this.value.length;
-			return maximum - this.files.length + storedAmount;
+			return maximum - (this.files.length + storedAmount);
 		}
 	},
 	created: function() {
