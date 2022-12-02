@@ -21,7 +21,7 @@
 				<button type="button" class="is-button" :class="getChildComponentClasses('file-delete-button')" @click="remove()" v-if="!readOnly"><icon name="times"/></button>
 			</div>
 			<n-input-file :types='fileTypes' ref='form' :amount='remaining > 1 ? remaining : 1'
-				v-if="!readOnly"
+				v-if="!readOnly && (remaining == null || remaining > 0)"
 				@change='changed'
 				:value='files'
 				:name='field.name'
