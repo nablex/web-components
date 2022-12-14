@@ -270,6 +270,21 @@ Vue.component("n-form-text", {
 		}
 	},
 	methods: {
+		attemptSubmit: function() {
+			var el = this.$el;
+			while (el) {
+				if (el.tagName && el.tagName.toLowerCase() == "form") {
+					var button = el.querySelector("button[type='submit']");
+					if (button) {
+						button.click();
+					}
+					break;
+				}
+				else {
+					el = el.parentNode;
+				}
+			}
+		},
 		mergeContent: function(content) {
 			return this.$refs.input.value
 				? this.$refs.input.value.substring(0, this.$refs.input.selectionStart) + content + 

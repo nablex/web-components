@@ -36,6 +36,7 @@
 					@blur="$emit('blur')"
 					@keyup="$emit('keyup')"
 					@input="updateValue($event.target.value)" 
+					@keydown.enter.ctrl="attemptSubmit"
 					:rows="rows"
 					:placeholder="placeholder" 
 					:disabled="disabled" 
