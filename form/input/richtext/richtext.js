@@ -144,12 +144,13 @@ Vue.component("n-form-richtext", {
 				if (this.supportLinkType) {
 					type = prompt("Link Type (optional)");
 				}
+				classes = prompt("Link classes");
 				if (type) {
-					document.execCommand("insertHTML", false, "<a target='_blank' type='" + type + "' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
+					document.execCommand("insertHTML", false, "<a class='" + classes + "' target='_blank' type='" + type + "' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
 				}
 				else {
 					//document.execCommand("createLink", false, link);
-					document.execCommand("insertHTML", false, "<a target='_blank' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
+					document.execCommand("insertHTML", false, "<a class='" + classes + "' target='_blank' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
 				}
 			}
 		},
