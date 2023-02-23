@@ -39,22 +39,22 @@
 			<tbody>
 				<tr v-for="week in weeks">
 					<td v-for="day in week" :class="{'is-today': day.value != null && isToday(day.value), 'is-active': day.value != null && isSelected(day.value), 'is-available': day.value != null && isAvailable(day.value), 'is-unavailable': day.value != null && !isAvailable(day.value)}">
-						<button auto-close v-if="day.label" class="is-button is-size-small is-variant-ghost" @click="select(day.value)" :disabled="day.value != null && !isAvailable(day.value)"><span class="is-text">{{ day.label }}</span></button>
+						<button auto-close-date-picker v-if="day.label" class="is-button is-size-small is-variant-ghost" @click="select(day.value)" :disabled="day.value != null && !isAvailable(day.value)"><span class="is-text">{{ day.label }}</span></button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<div v-if="includeHours || includeMinutes || includeSeconds" class="time">
 			<n-form-text type="number"
-				:value="hours"
+				v-model="hours"
 				v-if="includeHours"
 				@input="select(date)"/>
 			<n-form-text type="number"
-				:value="minutes"
+				v-model="minutes"
 				v-if="includeMinutes"
 				@input="select(date)"/>
 			<n-form-text type="number"
-				:value="seconds"
+				v-model="seconds"
 				v-if="includeSeconds"
 				@input="select(date)"/>
 		</div>

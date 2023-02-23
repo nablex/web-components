@@ -1,5 +1,5 @@
 <template id="n-form-date">
-	<div class="is-form-date" v-auto-close="function() { show = false }">
+	<div class="is-form-date" v-auto-close.date-picker="function() { show = false }">
 		<n-form-text class="n-form-date-input" 
 			@focus="focus" 
 			:pattern="pattern ? pattern : dynamicPattern" 

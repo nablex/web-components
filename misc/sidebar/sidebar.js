@@ -60,7 +60,7 @@ Vue.component("n-sidebar", {
 				}
 			});
 		},
-		close: function() {
+		close: function(explicit) {
 			if (this.inline) {
 				if (this.position == "left") {
 					document.body.removeAttribute("has-sidebar-left");
@@ -74,7 +74,7 @@ Vue.component("n-sidebar", {
 					this.parentNode.appendChild(this.$el);
 				}
 			}
-			this.$emit('close');
+			this.$emit('close', {explicit: explicit});
 		},
 		autoClose: function() {
 			if (this.autocloseable) {
