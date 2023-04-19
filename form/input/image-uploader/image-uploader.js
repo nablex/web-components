@@ -102,10 +102,18 @@ Vue.component("n-form-image-uploader", {
 			if (maximum == null) {
 				return null;
 			}
-			var storedAmount = this.singular
-				? (this.value.content != null ? 1 : 0)
-				: this.value.length;
-			return maximum - (this.files.length + storedAmount);
+			return maximum - (this.files.length + this.storedAmount);
+		},
+		storedAmount: function() {
+			if (this.field.binary) {
+				return this.value != null ? 1 : 0;
+			}
+			else if (this.singular) {
+				return this.value[this.contentField] != null ? 1 : 0;
+			}
+			else {
+				return this.value.length;
+			}
 		}
 	},
 	created: function() {
@@ -113,7 +121,10 @@ Vue.component("n-form-image-uploader", {
 			Vue.set(this.field, "showLargeSelectedReadOnly", true);
 		}
 		var self = this;
-		if (this.value instanceof Array) {
+		if (this.field.binary) {
+			this.singular = true;
+		}
+		else if (this.value instanceof Array) {
 			this.singular = false;
 		}
 		else if (this.value != null) {
@@ -130,7 +141,7 @@ Vue.component("n-form-image-uploader", {
 			}
 		}
 		if (!this.value) {
-			this.$emit("input", this.singular ? {} : []);
+			this.$emit("input", this.singular ? (this.field.binary ? null : {}) : []);
 			//this.$services.page.setValue(this.parentValue, this.field.name, this.singular ? {} : []);
 		}
 		else {
@@ -184,10 +195,7 @@ Vue.component("n-form-image-uploader", {
 		validate: function(soft) {
 			var minimum = this.field.minimum ? parseInt(this.field.minimum) : null;
 			var messages = [];
-			var storedAmount = this.singular
-				? (this.value.content != null ? 1 : 0)
-				: this.value.length;
-			if (minimum != null && this.files.length + storedAmount < minimum) {
+			if (minimum != null && this.files.length + this.storedAmount < minimum) {
 				messages.push({
 					severity: "error",
 					code: "not-enough-files",
@@ -206,10 +214,13 @@ Vue.component("n-form-image-uploader", {
 			this.messages.splice(0);
 			this.valid = null;
 			var maximum = this.field.maximum ? parseInt(this.field.maximum) : null;
-			var storedAmount = this.singular
-				? (this.value.content != null ? 1 : 0)
-				: this.value.length;
-			if (maximum != null && this.files.length + storedAmount + this.working.length > maximum) {
+			// only one allowed, remove the current one
+			if ((this.field.binary || this.singular) && this.files.length == 1) {
+				this.$emit("input", this.field.binary ? null : {});
+				self.working.push(this.files[0]);
+				self.resizeAndAdd(this.files[0]);
+			}
+			else if (maximum != null && this.files.length + this.storedAmount + this.working.length > maximum) {
 				this.messages.push({
 					severity: "info",
 					code: "too-many-files",
@@ -260,7 +271,15 @@ Vue.component("n-form-image-uploader", {
 					result[self.contentField] = self.urlToBlob(dataUrl);
 					result[self.nameField] = file.name;
 					result[self.typeField] = file.type ? file.type : (self.field.allowNonImages ? "application/octet-stream" : "image/jpeg");
-					if (self.singular) {
+					if (self.field.binary) {
+						// enrich blob with file data that is lost during resize
+						result[self.contentField].name = file.name;
+						result[self.contentField].type = file.type;
+						result[self.contentField]["$url"] = dataUrl;
+						// emit the blob itself
+						self.$emit("input", result[self.contentField]);
+					}
+					else if (self.singular) {
 						//nabu.utils.objects.merge(self.value, result);
 						Object.keys(result).forEach(function(key) {
 							Vue.set(self.value, key, result[key]);
@@ -342,8 +361,18 @@ Vue.component("n-form-image-uploader", {
 				imagesToProcess = [imagesToProcess];
 			}
 			imagesToProcess.forEach(function(image) {
+				if (image.$url == null && self.field.binary && image instanceof Blob) {
+					var reader = new FileReader();
+					reader.onload = function(event) { 
+						Vue.set(image, "$url", event.target.result);
+					}
+					reader.readAsDataURL(image);
+					if (self.selectedImage == null) {
+						self.selectedImage = image;
+					}
+				}
 				// if our content is already base64 encoded, it is likely from the backend
-				if (image.$url == null && image[self.contentField] != null && typeof(image[self.contentField]) == "string") {
+				else if (image.$url == null && image[self.contentField] != null && typeof(image[self.contentField]) == "string") {
 					image.$url = "data:" + image[self.typeField] + ";base64," + image[self.contentField];
 					image[self.contentField] = self.base64ToBlob(image[self.contentField], image[self.typeField]);
 					if (self.selectedImage == null) {

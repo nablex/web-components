@@ -16,7 +16,7 @@
 				</div>
 			</template>
 			<div class="is-column has-button-close" v-else-if="value && value.$url" :class="getChildComponentClasses('image-entry-wrapper')">
-				<img class="is-image" v-if="value[typeField].indexOf('image/') == 0" :src="value.$url" :class="getChildComponentClasses('image-entry')" />
+				<img class="is-image" v-if="(field.binary && value && value.type && value.type.indexOf('image/') == 0) || (!field.binary && value[typeField].indexOf('image/') == 0)" :src="value.$url" :class="getChildComponentClasses('image-entry')" />
 				<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{value[nameField]}}</h6>
 				<button type="button" class="is-button" :class="getChildComponentClasses('file-delete-button')" @click="remove()" v-if="!readOnly"><icon name="times"/></button>
 			</div>
@@ -41,7 +41,7 @@
 			<img class="is-image" v-else-if="field.emptyImage" :src="field.emptyImage" :class="getChildComponentClasses('image-hero')"/>
 			<div v-else-if="selectedImage" class="description">{{selectedImage[nameField]}}</div>
 		</div>
-		<div v-else-if="(singular && !value.$url) || (!singular && value.length == 0)" class="file-empty">
+		<div v-else-if="(field.binary && !value) || (!field.binary && singular && !value.$url) || (!singular && value.length == 0)" class="file-empty">
 			<img class="is-image" v-if="field.emptyImage" :src="field.emptyImage"/>
 			<div v-else-if="field.emptyText" class="no-data">{{$services.page.translate(field.emptyText)}}</div>
 		</div>
@@ -56,8 +56,9 @@
 		<n-form-text label='Label drop' v-model='field.dropLabel' :timeout="600"/>
 		<n-form-text label='Label browse' v-model='field.browseLabel' :timeout="600"/>
 		<n-form-text label='Icon browse' v-model='field.browseIcon' :timeout="600"/>
+		<n-form-switch label="Upload as binary data" v-model="field.binary"/>
 		<n-form-text label='Minimum amount' v-model='field.minimum' :timeout="600"/>
-		<n-form-text label='Maximum amount' v-model='field.maximum' :timeout="600"/>
+		<n-form-text label='Maximum amount' v-model='field.maximum' :timeout="600" v-if="!field.binary"/>
 		<n-form-text v-if="!field.emptyText" label='Empty read-only placeholder image' v-model='field.emptyImage' info="The image to show in the main spot when in read-only mode if none has been selected" :timeout="600"/>
 		<n-form-text v-if="!field.emptyImage" label='Empty read-only placeholder text' v-model='field.emptyText' info="The text to show in the main spot when in read-only mode if none has been selected" :timeout="600"/>
 		<n-form-combo label='Capture mode' :items="['user','environment']" info="The capture attribute specifies that, optionally, a new file should be captured, and which device should be used to capture that new media of a type defined by the accept attribute." v-model="field.capture"/>		
