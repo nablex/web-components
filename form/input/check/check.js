@@ -112,7 +112,7 @@ Vue.component("n-form-checkbox", {
 			else if (newValue === "true") {
 				booleanValue = true;
 			}
-			if (newValue instanceof Array) {
+			else if (newValue instanceof Array) {
 				if (this.item instanceof Array) {
 					booleanValue = true;
 					for (var i = 0; i < this.item.length; i++) {
