@@ -8,7 +8,7 @@
 			<slot></slot>
 		</section>
 		<section class="n-form-table-no-content" v-if="!hasContent">
-			<slot name="no-content"><span>%{form:No Content}</span></slot>
+			<slot name="no-content"><span>No Content</span></slot>
 		</section>
 		<slot name="footer"></slot>
 	</form>

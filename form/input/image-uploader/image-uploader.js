@@ -261,6 +261,11 @@ Vue.component("n-form-image-uploader", {
 			this.valid = null;
 			this.$emit("changed");
 		},
+		getPlaceholder: function(file) {
+			// TODO: if for example we don't have an image but a pdf we may want to show a clean pdf logo
+			// however, for now, we just return the $url, knowing full well that it is not a valid image, but otherwise we have _nothing_ which is even worse
+			return this.field.emptyImage ? this.field.emptyImage : file.$url;
+		},
 		resizeAndAdd: function(file) {
 			var self = this;
 			var reader = new FileReader();

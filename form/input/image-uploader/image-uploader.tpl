@@ -11,12 +11,16 @@
 					<img class="is-image" v-if="image[typeField].indexOf('image/') == 0" :src="image.$url" @click="selectedImage = image"
 						:title="image[nameField]"
 						:class="[getChildComponentClasses('image-entry'), {'is-selected': selectedImage == image }]"/>
+					<img class="is-image" v-else-if="image[typeField].indexOf('image/') < 0" :src="getPlaceholder(image)" @click="selectedImage = image"
+						:title="image[nameField]"
+						:class="[getChildComponentClasses('image-entry'), {'is-selected': selectedImage == image }]"/>
 					<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{image[nameField]}}</h6>
 					<button type="button" class="is-button is-variant-close is-size-small is-color-danger" @click="remove(index)" v-if="!readOnly"><icon name="times"/></button>
 				</div>
 			</template>
 			<div class="is-column has-button-close" v-else-if="value && value.$url" :class="getChildComponentClasses('image-entry-wrapper')">
 				<img class="is-image" v-if="(field.binary && value && value.type && value.type.indexOf('image/') == 0) || (!field.binary && value[typeField].indexOf('image/') == 0)" :src="value.$url" :class="getChildComponentClasses('image-entry')" />
+				<img class="is-image" v-else-if="(field.binary && value && value.type && value.type.indexOf('image/') < 0) || (!field.binary && value[typeField].indexOf('image/') < 0)" :src="getPlaceholder(value)" :class="getChildComponentClasses('image-entry')" />
 				<h6 v-if="field.showFileNames" class="is-h6" :class="getChildComponentClasses('image-title')">{{value[nameField]}}</h6>
 				<button type="button" class="is-button" :class="getChildComponentClasses('file-delete-button')" @click="remove()" v-if="!readOnly"><icon name="times"/></button>
 			</div>

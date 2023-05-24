@@ -1,0 +1,20 @@
+{
+	"name": "web-components-article", 
+	"resources": {
+		"article": {
+			"article.scss": {
+				"url": "form/input/article/article.scss"
+			}, 
+			"article.tpl": {
+				"url": "form/input/article/article.tpl",
+				"template": true
+			}, 
+			"article.js": {
+				"url": "form/input/article/article.js"
+			},
+			"article-bootstrap.js": {
+				"url": "form/input/article/bootstrap.js"
+			}
+		}
+	}
+}
