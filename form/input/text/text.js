@@ -201,6 +201,10 @@ Vue.component("n-form-text", {
 		commit: {
 			type: Boolean,
 			default: false
+		},
+		validateOnBlur: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -363,6 +367,9 @@ Vue.component("n-form-text", {
 			this.blurred = true;
 			this.localValue = this.masker && value != null ? this.masker(value) : value;
 			this.$emit('blur');
+			if (this.validateOnBlur) {
+				this.validate(true);
+			}
 		},
 		validate: function(soft) {
 			// in some cases you block the update of the value if the validation fails, however this is a catch 22 if we use the value itself for validation

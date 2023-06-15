@@ -240,7 +240,7 @@ Vue.component("n-input-combo", {
 							});
 						}
 						else if (result != null) {
-							self.actualValue = self.extracter(result);
+							self.actualValue = result;
 							self.$emit("label", self.actualValue != null ? (self.formatter ? self.formatter(self.actualValue) : self.actualValue) : null);
 						}
 					}
