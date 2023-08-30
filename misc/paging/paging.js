@@ -34,6 +34,13 @@ Vue.component("n-paging", {
 			type: Array,
 			required: false
 		},
+		formClasses: {
+			type: Array,
+			required: false,
+			default: function() {
+				return "is-color-background is-spacing-large is-shadow-xsmall is-variant-vertical".split(" ");
+			}
+		},
 		showEmpty: {
 			type: Boolean,
 			required: false
@@ -109,7 +116,7 @@ Vue.component("n-paging", {
 			var self = this;
 			this.$prompt(function() {
 				var component = Vue.extend({ template: "#n-paging-prompt" });
-				return new component({data: { page: null }});
+				return new component({data: { page: null, formClasses: self.formClasses }});
 			}).then(function(page) {
 				page = parseInt(page) - 1;
 				page = Math.max(0, page);

@@ -353,6 +353,9 @@ Vue.component("n-form-date", {
 			else if (!this.includeSeconds) {
 				value += ":00Z";
 			}
+			if (value && value.match && value.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}[\s]+[0-9]{2}:[0-9]{2}:[0-9]{2}.*$/)) {
+				value = value.replace(/([0-9]{4}-[0-9]{2}-[0-9]{2})[\s]+([0-9]{2}:[0-9]{2}:[0-9]{2}.*)$/, "$1T$2");
+			}
 			return new Date(value);
 		}
 	},

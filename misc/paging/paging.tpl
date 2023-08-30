@@ -9,13 +9,13 @@
 </template>
 
 <template id="n-paging-prompt">
-	<n-form class="layout1">
+	<n-form :class="formClasses" ref="form">
 		<n-form-section>
 			<n-form-text v-focus v-model="page" type="number" pattern="^[0-9]+" label="%{Go To Page}"/>
 		</n-form-section>
-		<footer class="actions global-actions">
-			<a href="javascript:void(0)" @click="$reject()">%{Cancel}</a>
-			<button class="info" :disabled="!page" @click="$resolve(page)">%{Ok}</button>
+		<footer class="is-row is-align-space-between">
+			<button @click="$reject" class="is-button is-variant-link" type="button">Cancel</button>
+			<button type="submit" class="is-button is-variant-primary" :disabled="!page" @click="$resolve(page)">%{Go}</button>
 		</footer>
 	</n-form>
 </template>
