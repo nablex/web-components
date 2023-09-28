@@ -4,7 +4,7 @@
 			<label class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
 		<div class="is-content-before" v-if="before" v-html="before"></div>
-		<ul class="is-menu is-variant-toolbar" v-if="edit">
+		<ul class="is-menu is-variant-toolbar" v-if="edit && showMenu">
 			<li class="is-column" v-if="supportBlocks">
 				<span class="is-button is-size-xsmall is-variant-primary"><icon name="th-large"/><span class="is-text">Block</span></span>
 				<ul class="is-row">

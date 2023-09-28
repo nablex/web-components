@@ -74,6 +74,10 @@ Vue.component("n-form-richtext", {
 		placeholder: {
 			type: String,
 			default: "Rich text"
+		},
+		showMenu: {
+			type: Boolean,
+			default: true
 		}
 	},
 	template: "#n-form-richtext",
