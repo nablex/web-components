@@ -77,6 +77,9 @@ Vue.component("n-form-checkbox", {
 		labelBefore: {
 			type: Boolean,
 			required: false
+		},
+		tabindex: {
+			type: String
 		}
 	},
 	template: "#n-form-checkbox",

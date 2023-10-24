@@ -1,5 +1,5 @@
 <template id="n-input-combo2">
-	<div class="n-input-combo2" v-auto-close="function() { showValues = false }">
+	<div class="n-input-combo2" v-auto-close="function() { showValues = false }" tabindex="-1" @keydown.tab="showValues=false">
 		<div class="n-input-combo2-input-container" @click="showValues = true">
 			<div class="n-input-combo-tag-container" v-if="showTags && multiple && rawValues.length">
 				<div v-if="hiddenAmount" class="is-tag" :class="getChildComponentClasses('combo-tag')">
@@ -29,14 +29,14 @@
 			<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>
 		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues && potentialValues.length" ref="valueList">
 			<li v-if="multiple && selectAllValue && potentialValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value" :class="{'selected-all': rawValues.length == potentialValues.length, 'selected-partial': rawValues.length < potentialValues.length}" @click="toggleAll">
-				<n-form-checkbox v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
+				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<span v-content="potentialValues.length == rawValues.length && resetValue ? resetValue : selectAllValue"></span>
 			</li>
 			<li v-if="!(multiple && selectAllValue) && resetValue && rawValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close="autoclose" @click="deselect">
 				<span v-content="resetValue"></span>
 			</li>
 			<li v-for="potential in potentialValues" class="n-input-combo-dropdown-value" :class="{ 'is-active': rawValues.indexOf(potential) >= 0, 'is-pondering': potential == keyValue }" @click="toggle(potential)" :auto-close="!multiple">
-				<n-form-checkbox v-if="useCheckbox" :value="rawValues.indexOf(potential) >= 0" @input="toggle(potential)"/>
+				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.indexOf(potential) >= 0" @input="toggle(potential)"/>
 				<slot name="value" :value="potential"><span v-html="getPrettyFormatted(potential)"></span></slot>
 			</li>
 		</ul

@@ -5,6 +5,7 @@
 		</slot>
 		<div class="is-content-wrapper">
 			<input ref="input" 
+				:tabindex="tabindex"
 				@click="toggleValue()" 
 				type="checkbox" 
 				v-checked="calculatedValue" 
