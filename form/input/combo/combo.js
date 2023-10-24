@@ -166,6 +166,36 @@ Vue.component("n-form-combo", {
 		allowTypeMatch: {
 			type: Boolean,
 			required: false,
+		},
+		comboType: {
+			type: String,
+			default: "n-input-combo"
+		},
+		// the text to show to select all
+		selectAllValue: {
+			type: String,
+			required: false
+		},
+		useCheckbox: {
+			type: Boolean,
+			default: false
+		},
+		showTags: {
+			type: Boolean,
+			default: false
+		},
+		// set to 0 to get unlimited
+		maxAmountOfTags: {
+			type: Number,
+			default: 3
+		},
+		showAmount: {
+			type: Boolean,
+			default: false
+		},
+		deleteTagIcon: {
+			type: String,
+			default: "times"
 		}
 	},
 	template: "#n-form-combo",

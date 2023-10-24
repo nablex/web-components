@@ -47,6 +47,14 @@
 				"combo.tpl": {
 					"url": "input/combo/combo.tpl"
 				}
+			}, 
+			"combo2": {
+				"combo.js": {
+					"url": "input/combo2/combo.js"
+				}, 
+				"combo.tpl": {
+					"url": "input/combo2/combo.tpl"
+				}
 			}
 		}, 
 		"form": {

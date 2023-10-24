@@ -9,7 +9,7 @@
 		
 		<div class="is-content-wrapper" v-if="edit">
 			<slot name="prefix"><div class="is-prefix" v-if="prefix || prefixIcon"><icon v-if="prefixIcon" :name="prefixIcon"/><span class="is-text" v-html="prefix" v-if="prefix"></span></div></slot>
-			<n-input-combo v-show="edit" 
+			<component :is="comboType" v-show="edit" 
 				:empty-value="emptyValue"
 				:reset-value="resetValue"
 				:calculating-value="calculatingValue"
@@ -42,8 +42,13 @@
 				:description="description"
 				:descriptionType="descriptionType"
 				:allow-type-match="allowTypeMatch"
-				ref="combo">
-			</n-input-combo>
+				:select-all-value="selectAllValue"
+				:use-checkbox="useCheckbox"
+				:show-tags="showTags"
+				:show-amount="showAmount"
+				:max-amount-of-tags="maxAmountOfTags"
+				:delete-tag-icon="deleteTagIcon"
+				ref="combo"/>
 			<slot name="suffix"><div class="is-suffix" v-if="suffix || suffixIcon"><icon v-if="suffixIcon" :name="suffixIcon"/><span class="is-text" v-html="suffix"></span></div></slot>
 		</div>
 		<slot v-else class="is-read-only">
