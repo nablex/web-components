@@ -27,8 +27,8 @@
 				@focus="showValues = true"
 				:after="showAmount ? rawValues.length : null" />
 			<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>
-		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues && potentialValues.length" ref="valueList">
-			<li v-if="multiple && selectAllValue && potentialValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value" :class="{'selected-all': rawValues.length == potentialValues.length, 'selected-partial': rawValues.length < potentialValues.length}" @click="toggleAll">
+		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues.length" ref="valueList">
+			<li v-if="multiple && selectAllValue" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value" :class="{'selected-all': rawValues.length == potentialValues.length, 'selected-partial': rawValues.length < potentialValues.length}" @click="toggleAll">
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<span v-content="potentialValues.length == rawValues.length && resetValue ? resetValue : selectAllValue"></span>
 			</li>

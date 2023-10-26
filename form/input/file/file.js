@@ -131,7 +131,19 @@ Vue.component("n-form-file", {
 			required: false
 		},
 		buttonClass: {
-			type: String,
+			required: false
+		},
+		visualizeFileNames: {
+			type: Boolean,
+			required: false
+		},
+		fileNameDeleteClass: {
+			required: false
+		},
+		fileNameContainerClass: {
+			required: false
+		},
+		fileNameClass: {
 			required: false
 		}
 	},

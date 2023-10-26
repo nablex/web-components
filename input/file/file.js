@@ -62,7 +62,7 @@ Vue.component("n-input-file", {
 		visualizeFileNames: {
 			type: Boolean,
 			required: false,
-			default: true
+			default: false
 		},
 		buttonClass: {
 			required: false
@@ -71,6 +71,18 @@ Vue.component("n-input-file", {
 			type: String,
 			required: false,
 			default: null
+		},
+		fileNameDeleteClass: {
+			required: false
+		},
+		fileNameContainerClass: {
+			required: false
+		},
+		fileNameRowClass: {
+			required: false
+		},
+		fileNameClass: {
+			required: false
 		}
 	},
 	template: "#n-input-file",

@@ -196,7 +196,7 @@ Vue.component("n-input-combo2", {
 		},
 		getPrettyFormatted: function(entry) {
 			if (this.prettyFormatter && entry != null) {
-				entry = this.prettyFormatter(entry);
+				return this.prettyFormatter(entry);
 			}
 			else {
 				return this.getFormatted(entry);
@@ -492,7 +492,7 @@ Vue.component("n-input-combo2", {
 		}},
 		search: function(newValue) {
 			// if you emptied it out 
-			if (!this.multiple && this.nillable && newValue == null || newValue.trim() == "") {
+			if (!this.multiple && this.nillable && (newValue == null || newValue.trim() == "")) {
 				this.$emit("input", null);
 			}
 			if (this.searchTimer) {
