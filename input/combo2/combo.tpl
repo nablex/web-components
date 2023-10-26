@@ -23,7 +23,7 @@
 				@keydown.up="moveUp"
 				@keydown.down="moveDown"
 				@keydown.tab="showValues = false"
-				:placeholder="placeholder"
+				:placeholder="currentPlaceholder"
 				@focus="showValues = true"
 				:after="showAmount ? rawValues.length : null" />
 			<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>

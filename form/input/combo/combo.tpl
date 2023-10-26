@@ -27,6 +27,7 @@
 				:timeout="timeout"
 				:autoclose="autoclose"
 				:placeholder="placeholder"
+				:placeholder-selected="placeholderSelected"
 				:disabled="disabled"
 				:initial-label="initialLabel"
 				:allow-typing="allowTyping"

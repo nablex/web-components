@@ -70,6 +70,10 @@ Vue.component("n-form-combo", {
 			type: String,
 			required: false
 		},
+		placeholderSelected: {
+			type: String,
+			required: false
+		},
 		autoclose: {
 			type: Boolean,
 			required: false,
@@ -186,7 +190,6 @@ Vue.component("n-form-combo", {
 		},
 		// set to 0 to get unlimited
 		maxAmountOfTags: {
-			type: Number,
 			default: 3
 		},
 		showAmount: {

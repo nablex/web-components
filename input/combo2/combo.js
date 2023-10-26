@@ -10,6 +10,9 @@ Vue.component("n-input-combo2", {
 		placeholder: {
 			type: String
 		},
+		placeholderSelected: {
+			type: String
+		},
 		items: {
 			type: Array,
 			required: false
@@ -85,7 +88,6 @@ Vue.component("n-input-combo2", {
 		},
 		// set to 0 to get unlimited
 		maxAmountOfTags: {
-			type: Number,
 			default: 3
 		},
 		showAmount: {
@@ -176,6 +178,14 @@ Vue.component("n-input-combo2", {
 				nabu.utils.arrays.merge(items, this.potentialValues);
 			}
 			return items;
+		},
+		currentPlaceholder: function() {
+			if (!this.multiple || this.value == null || this.value.length == 0 || !this.placeholderSelected) {
+				return this.placeholder;
+			}
+			else {
+				return this.placeholderSelected.replace("{amount}", this.value.length);
+			}
 		}
 	},
 	methods: {
