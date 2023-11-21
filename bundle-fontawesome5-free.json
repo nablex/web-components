@@ -4,6 +4,9 @@
 		"icon": {
 			"icon.js": {
 				"url": "misc/font-awesome5-icon/icon.js"
+			},
+			"icon.scss": {
+				"url": "misc/font-awesome5-icon/icon.scss"
 			}
 		},
 		"css": {

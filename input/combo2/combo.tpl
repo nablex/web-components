@@ -32,7 +32,8 @@
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<span v-content="potentialValues.length == rawValues.length && resetValue ? resetValue : selectAllValue"></span>
 			</li>
-			<li v-if="!(multiple && selectAllValue) && resetValue && rawValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close="autoclose" @click="deselect">
+			<li v-if="!(multiple && selectAllValue) && resetValue && rawValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close="autoclose" @click="deselect()">
+				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="deselect()"/>
 				<span v-content="resetValue"></span>
 			</li>
 			<li v-for="potential in potentialValues" class="n-input-combo-dropdown-value" :class="{ 'is-active': rawValues.indexOf(potential) >= 0, 'is-pondering': potential == keyValue }" @click="toggle(potential)" :auto-close="!multiple">
