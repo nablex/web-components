@@ -126,7 +126,8 @@ Vue.component("n-input-combo2", {
 			// whether we have searched at all
 			hasSearched: false,
 			// keep track of the last search value, don't run again if it hasn't changed
-			lastSearch: null
+			lastSearch: null,
+			initialized: false
 		}
 	},
 	created: function() {
@@ -281,7 +282,6 @@ Vue.component("n-input-combo2", {
 			if (valueToSearch != null && valueToSearch.trim() == "") {
 				valueToSearch = null;
 			}
-			console.log("searching", this.hasSearched, this.lastSearch, valueToSearch, this.search);
 			// if we are in the singular usecase and the search matches the formatted value of the current item, don't search for that
 			if (!this.multiple && this.rawValues.length && this.getFormatted(this.rawValues[0]) == valueToSearch) {
 				valueToSearch = null;
@@ -464,6 +464,14 @@ Vue.component("n-input-combo2", {
 		}
 	},
 	watch: {
+		calculating: function(newValue) {
+			if (!newValue && !this.initialized) {
+				if (this.value != null) {
+					this.synchronize(this.value);
+				}
+				this.initialized = true;
+			}
+		},
 		// if our potential values change, our key value is reset
 		potentialValues: function() {
 			this.keyValue = null;	
@@ -473,13 +481,17 @@ Vue.component("n-input-combo2", {
 			var self = this;
 			this.updating = true;
 			if (this.multiple) {
+				var labels = [];
 				var parameters = this.rawValues.map(function(single) {
+					labels.push(self.getFormatted(single));
 					return self.getExtracted(single);
 				});
 				parameters.unshift(this.value.length);
 				parameters.unshift(0);
 				// we want it to be one atomic action
 				this.value.splice.apply(this.value, parameters);
+				// emit labels separately
+				this.$emit("label", labels);				
 			}
 			else {
 				// update the search text to match the formatted value

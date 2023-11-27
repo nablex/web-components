@@ -1,6 +1,6 @@
 <template id="n-input-combo2">
-	<div class="n-input-combo2" v-auto-close="function() { showValues = false }" tabindex="-1" @keydown.tab="showValues=false">
-		<div class="n-input-combo2-input-container" @click="showValues = true">
+	<div class="n-input-combo2" v-auto-close.combo2="function() { showValues = false }" tabindex="-1" @keydown.tab="showValues=false">
+		<div class="n-input-combo2-input-container" @click="showValues = true" :class="{'has-suffix': showAmount && rawValues.length}">
 			<div class="n-input-combo-tag-container" v-if="showTags && multiple && rawValues.length">
 				<div v-if="hiddenAmount" class="is-tag" :class="getChildComponentClasses('combo-tag')">
 					<span class="is-text">
@@ -32,25 +32,24 @@
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<span v-content="potentialValues.length == rawValues.length && resetValue ? resetValue : selectAllValue"></span>
 			</li>
-			<li v-if="!(multiple && selectAllValue) && resetValue && rawValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close="autoclose" @click="deselect()">
+			<li v-if="!(multiple && selectAllValue) && resetValue && rawValues.length" class="n-input-combo-dropdown-value n-input-combo-dropdown-reset-value" :auto-close-combo2="autoclose" @click="deselect()">
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="deselect()"/>
 				<span v-content="resetValue"></span>
 			</li>
-			<li v-for="potential in potentialValues" class="n-input-combo-dropdown-value" :class="{ 'is-active': rawValues.indexOf(potential) >= 0, 'is-pondering': potential == keyValue }" @click="toggle(potential)" :auto-close="!multiple">
+			<li v-for="potential in potentialValues" class="n-input-combo-dropdown-value" :class="{ 'is-active': rawValues.indexOf(potential) >= 0, 'is-pondering': potential == keyValue }" @click="toggle(potential)" :auto-close-combo2="!multiple">
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.indexOf(potential) >= 0" @input="toggle(potential)"/>
 				<slot name="value" :value="potential"><span v-html="getPrettyFormatted(potential)"></span></slot>
 			</li>
 		</ul
 		><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && calculating && calculatingValue">
-			<li class="n-input-combo-dropdown-value n-input-combo-dropdown-calculating-value" :auto-close="autoclose">
+			<li class="n-input-combo-dropdown-value n-input-combo-dropdown-calculating-value" :auto-close-combo2="autoclose">
 				<span v-content="calculatingValue"></span>
 			</li>
 		</ul
 		><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-else-if="showValues && emptyValue">
-			<li class="n-input-combo-dropdown-value n-input-combo-dropdown-empty-value" :auto-close="autoclose">
+			<li class="n-input-combo-dropdown-value n-input-combo-dropdown-empty-value" :auto-close-combo2="autoclose">
 				<span v-content="emptyValue"></span>
 			</li>
 		</ul>
 	</div>
 </template>
-
