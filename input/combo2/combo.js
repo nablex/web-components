@@ -219,6 +219,13 @@ Vue.component("n-input-combo2", {
 			}
 			return entry;
 		},
+		getPlainFormatted: function(entry) {
+			var formatted = this.getFormatted(entry);
+			if (formatted && formatted.replace) {
+				formatted = formatted.replace(/<[^>]+>/g, "");
+			}
+			return formatted;
+		},
 		isEqual: function(entry1, entry2) {
 			if (this.extracter) {
 				return this.extracter(entry1) == this.extracter(entry2);
@@ -283,7 +290,7 @@ Vue.component("n-input-combo2", {
 				valueToSearch = null;
 			}
 			// if we are in the singular usecase and the search matches the formatted value of the current item, don't search for that
-			if (!this.multiple && this.rawValues.length && this.getFormatted(this.rawValues[0]) == valueToSearch) {
+			if (!this.multiple && this.rawValues.length && this.getPlainFormatted(this.rawValues[0]) == valueToSearch) {
 				valueToSearch = null;
 			}
 			if (this.hasSearched) {
@@ -496,7 +503,7 @@ Vue.component("n-input-combo2", {
 			else {
 				// update the search text to match the formatted value
 				// this will also trigger a new search without text which is a good thing
-				this.search = this.getFormatted(this.rawValues[0]);
+				this.search = this.getPlainFormatted(this.rawValues[0]);
 				this.$emit("input", 
 					this.getExtracted(this.rawValues[0]), 
 					this.getFormatted(this.rawValues[0]), 
