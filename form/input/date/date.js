@@ -217,7 +217,7 @@ Vue.component("n-form-date", {
 			this.date = this.formatValue(this.value);
 		}
 		else if (typeof(this.value) == "string") {
-			var parsed = this.parser ? this.parser(this.value) : new Date(this.value);
+			var parsed = this.valueToDate(this.value);
 			this.date = this.formatValue(parsed);
 			// if it should not be stringified and we have a string, emit that
 			if (!this.stringified) {
@@ -268,7 +268,7 @@ Vue.component("n-form-date", {
 				this.$emit("input", value);
 			}
 			else {
-				this.$emit("input", this.parser ? this.parser(value) : new Date(value), value);
+				this.$emit("input", this.valueToDate(value), value);
 				this.$emit("label", value);
 			}
 		},
@@ -286,8 +286,7 @@ Vue.component("n-form-date", {
 			if (value == "") {
 				value = null;
 			}
-			var parsed = value == null ? null
-				: (this.parser ? this.parser(value) : new Date(value));
+			var parsed = value == null ? null : this.valueToDate(value);
 			// it is "a" value but not a parseable value
 			if ((value != null && (parsed == null || !parsed.getTime))
 					// or it is not a valid date
@@ -369,27 +368,27 @@ Vue.component("n-form-date", {
 			}
 			else if (this.secondsTimestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
-					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
+					newValue = this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime() / 1000, this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.timestamp) {
 				if (!this.value || this.formatValue(this.value) != newValue) {
-					newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
+					newValue = this.valueToDate(newValue);
 					this.$emit("input", newValue.getTime(), this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else if (this.stringify) {
 				if (this.value != newValue) {
-					newValue = this.formatValue(this.parser ? this.parser(newValue) : new Date(newValue))
+					newValue = this.formatValue(this.valueToDate(newValue));
 					this.$emit("input", newValue, this.formatValue(newValue));
 					this.$emit("label", this.formatValue(newValue));
 				}
 			}
 			else {
-				newValue = this.parser ? this.parser(newValue) : this.valueToDate(newValue);
+				newValue = this.valueToDate(newValue);
 				if (newValue && newValue.getTime) {
 					var value = this.value;
 					if ( typeof(value) == "string" ) {
