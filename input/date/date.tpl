@@ -48,14 +48,17 @@
 			<n-form-text type="number"
 				v-model="hours"
 				v-if="includeHours"
+				:timeout="600"
 				@input="select(date)"/>
 			<n-form-text type="number"
 				v-model="minutes"
 				v-if="includeMinutes"
+				:timeout="600"
 				@input="select(date)"/>
 			<n-form-text type="number"
 				v-model="seconds"
 				v-if="includeSeconds"
+				:timeout="600"
 				@input="select(date)"/>
 		</div>
 		<div class="n-input-date-legend" v-if="allow">
