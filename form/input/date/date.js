@@ -162,6 +162,10 @@ Vue.component("n-form-date", {
 		after: {
 			type: String,
 			required: false
+		},
+		localTime: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-date",
@@ -342,15 +346,17 @@ Vue.component("n-form-date", {
 			if (this.parser) {
 				return this.parser(value);
 			}
-			if (!this.includeHours) {
-				// if we don't have hours, we want to use UTC
-				value += "T00:00:00Z"
-			}
-			else if (!this.includeMinutes) {
-				value += ":00:00Z"
-			}
-			else if (!this.includeSeconds) {
-				value += ":00Z";
+			if (!this.localTime) {
+				if (!this.includeHours) {
+					// if we don't have hours, we want to use UTC
+					value += "T00:00:00Z"
+				}
+				else if (!this.includeMinutes) {
+					value += ":00:00Z"
+				}
+				else if (!this.includeSeconds) {
+					value += ":00Z";
+				}
 			}
 			if (value && value.match && value.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}[\s]+[0-9]{2}:[0-9]{2}:[0-9]{2}.*$/)) {
 				value = value.replace(/([0-9]{4}-[0-9]{2}-[0-9]{2})[\s]+([0-9]{2}:[0-9]{2}:[0-9]{2}.*)$/, "$1T$2");
@@ -428,6 +434,9 @@ Vue.component("n-form-date", {
 				}
 				else {
 					this.date = formatted;
+					// @2023-12-21: noticed that when you are updating the value (from the outside) with the exact same value that it already has (at least formatted), the label is reset
+					// we emit this to enforce the label primarily
+					this.$emit("input", newValue, this.formatValue(newValue));
 				}
 				// unset the last parsed, we had a successful roundtrip
 				// someone might want to alter it externally
