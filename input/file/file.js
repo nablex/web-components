@@ -42,7 +42,7 @@ Vue.component("n-input-file", {
 		deleteIcon: {
 			type: String,
 			required: false,
-			default: "fa fa-times"			
+			default: "times"
 		},
 		restrictionMessage: {
 			type: String,
