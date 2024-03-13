@@ -78,6 +78,11 @@ Vue.component("n-input-combo2", {
 			type: Boolean,
 			default: false
 		},
+		disabled: {
+			type: Boolean,
+			required: false,
+			default: false
+		},
 		timeout: {
 			type: Number,
 			default: 600

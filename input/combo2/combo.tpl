@@ -15,7 +15,9 @@
 					</span>
 				</div>
 			</div>
-			<input :disabled="!allowTyping" 
+			<input
+				:readonly="!allowTyping"
+				:disabled="disabled"
 				ref="searchInput"
 				v-model="search" 
 				@keypress.enter="commitKeyValue"
