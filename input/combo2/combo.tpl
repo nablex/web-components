@@ -1,6 +1,6 @@
 <template id="n-input-combo2">
 	<div class="n-input-combo2" v-auto-close.combo2="function() { showValues = false }" tabindex="-1" @keydown.tab="showValues=false">
-		<div class="n-input-combo2-input-container" @click="showValues = true" :class="{'has-suffix': showAmount && rawValues.length}">
+		<div class="n-input-combo2-input-container" @click="click" :class="{'has-suffix': showAmount && rawValues.length}">
 			<div class="n-input-combo-tag-container" v-if="showTags && multiple && rawValues.length">
 				<div v-if="hiddenAmount" class="is-tag" :class="getChildComponentClasses('combo-tag')">
 					<span class="is-text">
@@ -26,7 +26,7 @@
 				@keydown.down="moveDown"
 				@keydown.tab="showValues = false"
 				:placeholder="currentPlaceholder"
-				@focus="showValues = true"
+				@focus="focus"
 				:after="showAmount ? rawValues.length : null" />
 			<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>
 		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues.length" ref="valueList">

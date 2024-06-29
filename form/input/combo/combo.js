@@ -199,6 +199,10 @@ Vue.component("n-form-combo", {
 		deleteTagIcon: {
 			type: String,
 			default: "times"
+		},
+		loadOnFocus: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-combo",

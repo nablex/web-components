@@ -4,6 +4,10 @@ Vue.component("n-input-combo2", {
 		value: {
 			required: true
 		},
+		// if you have a value, you can pass in a label preventing the need to resolve it to visualize it
+		initialRawValues: {
+			type: Array
+		},
 		name: {
 			required: false,
 		},
@@ -107,10 +111,18 @@ Vue.component("n-input-combo2", {
 			type: Boolean,
 			required: false,
 			default: true
+		},
+		// by default we load once and don't reload unless necessary
+		// you can also reload the data on focus, assuming external values will have triggered a change in the listing
+		loadOnFocus: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data: function() {
 		return {
+			// whether or not the data should be reloaded if it is needed
+			dirty: false,
 			showValues: false,
 			// when you are allowed to type, filter the results
 			search: null,
@@ -136,7 +148,16 @@ Vue.component("n-input-combo2", {
 		}
 	},
 	created: function() {
-		this.load();
+		// if we have a value, check if we have a label, if not, we must initialize
+		if (this.value != null) {
+			if (this.initialRawValues != null && this.initialRawValues.length) {
+				nabu.utils.arrays.merge(this.rawValues, this.initialRawValues);
+				this.synchronize(this.value);
+			}
+			else {
+				this.synchronize(this.value);
+			}
+		}
 	},
 	computed: {
 		visibleRawValues: function() {
@@ -195,6 +216,23 @@ Vue.component("n-input-combo2", {
 		}
 	},
 	methods: {
+		markDirty: function() {
+			this.dirty = true;
+		},
+		click: function() {
+			// the click should only do something if the input box is disabled in which case we can't trigger the focus
+			if (!this.disabled && !this.allowTyping) {
+				// load if necessary
+				this.load();
+				this.showValues = true;
+			}
+		},
+		focus: function() {
+			if (!this.disabled) {
+				this.load();
+				this.showValues = true;
+			}
+		},
 		deselect: function(rawValue) {
 			if (rawValue == null) {
 				this.rawValues.splice(0);
@@ -298,15 +336,20 @@ Vue.component("n-input-combo2", {
 			if (!this.multiple && this.rawValues.length && this.getPlainFormatted(this.rawValues[0]) == valueToSearch) {
 				valueToSearch = null;
 			}
-			if (this.hasSearched) {
-				if (valueToSearch == this.lastSearch) {
-					return;
+			// if the combo is not marked as dirty, only reload if necessary
+			if (!this.dirty) {
+				if (this.hasSearched) {
+					if (valueToSearch == this.lastSearch) {
+						return;
+					}
+				}
+				else {
+					this.hasSearched = true;
 				}
 			}
-			else {
-				this.hasSearched = true;
-			}
 			this.lastSearch = valueToSearch;
+			// unset dirty, we are recalculating!
+			this.dirty = false;
 			
 			var self = this;
 			self.calculating = true;
@@ -382,8 +425,13 @@ Vue.component("n-input-combo2", {
 						var missing = [];
 						// if we have an extracter, we need to extract all the values from the potential to match them with the ones we have
 						var toMatch = this.extracter ? this.potentialValues.map(function(x) { return self.extracter(x) }) : this.potentialValues;
-						this.rawValues.splice(0);
-						nabu.utils.arrays.merge(this.rawValues, values.map(function(single) {
+						
+						// don't trigger until we have to
+						// at first we were immediately targetting the rawValues array, but because of the async nature of the resolve (usually), the watcher would trigger twice, first updating the value to null, then the proper value
+						// however, any update listeners might conclude (incorrectly) that the value was updated
+						var localRawValues = [];
+						
+						nabu.utils.arrays.merge(localRawValues, values.map(function(single) {
 							var index = toMatch.indexOf(single);
 							if (index < 0) {
 								missing.push(single);
@@ -392,7 +440,7 @@ Vue.component("n-input-combo2", {
 						}));
 						// if we can't resolve it against the initial listing, use the resolver (if it exists)
 						if (missing.length && this.resolver != null) {
-							var result = this.resolver(this.isMultiple ? missing : missing[0]);
+							var result = this.resolver(this.multiple ? missing : missing[0]);
 							var mergeValues = function(actualValues) {
 								if (!(actualValues instanceof Array)) {
 									actualValues = [actualValues];
@@ -400,10 +448,10 @@ Vue.component("n-input-combo2", {
 								var toMatch = self.extracter ? actualValues.map(function(x) { return self.extracter(x) }) : actualValues;
 								var remove = [];
 								missing.forEach(function(single) {
-									var targetIndex = self.values.indexOf(single);
+									var targetIndex = values.indexOf(single);
 									var matchIndex = toMatch.indexOf(single);
 									if (matchIndex >= 0) {
-										self.rawValues.splice(targetIndex, 1, toMatch[matchIndex]);
+										localRawValues.splice(targetIndex, 1, actualValues[matchIndex]);
 									}
 									else {
 										remove.unshift(single);
@@ -411,13 +459,17 @@ Vue.component("n-input-combo2", {
 									}
 								});
 								remove.forEach(function(single) {
-									var targetIndex = self.values.indexOf(single);
+									var targetIndex = values.indexOf(single);
 									// remove the null placeholder
-									self.rawValues.splice(targetIndex, 1);
+									localRawValues.splice(targetIndex, 1);
 									// remove the value that we can not resolve
-									self.values.splice(targetIndex, 1);
+									values.splice(targetIndex, 1);
 								});
-								self.emitLabel();
+								// add the necessary splice parameters
+								localRawValues.unshift(self.rawValues.length);
+								localRawValues.unshift(0);
+								self.rawValues.splice.apply(self.rawValues, localRawValues);
+								//self.emitLabel();
 							};
 							if (result != null && result.then) {
 								result.then(mergeValues);
@@ -507,7 +559,8 @@ Vue.component("n-input-combo2", {
 			}
 			else {
 				// update the search text to match the formatted value
-				// this will also trigger a new search without text which is a good thing
+				// we don't actually want to reload the values at this point which is why we set the boolean
+				this.searchUpdatedSelf = true;
 				this.search = this.getPlainFormatted(this.rawValues[0]);
 				this.$emit("input", 
 					this.getExtracted(this.rawValues[0]), 
@@ -525,15 +578,20 @@ Vue.component("n-input-combo2", {
 			}
 		}},
 		search: function(newValue) {
-			// if you emptied it out 
-			if (!this.multiple && this.nillable && (newValue == null || newValue.trim() == "")) {
-				this.$emit("input", null);
+			if (this.searchUpdatedSelf) {
+				this.searchUpdatedSelf = false;
 			}
-			if (this.searchTimer) {
-				clearTimeout(this.searchTimer);
-				this.searchTimer = null;
+			else {
+				// if you emptied it out 
+				if (!this.multiple && this.nillable && (newValue == null || newValue.trim() == "")) {
+					this.$emit("input", null);
+				}
+				if (this.searchTimer) {
+					clearTimeout(this.searchTimer);
+					this.searchTimer = null;
+				}
+				this.searchTimer = setTimeout(this.load, 600);
 			}
-			this.searchTimer = setTimeout(this.load, 600);
 		}
 	}
 });
