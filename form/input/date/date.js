@@ -166,6 +166,10 @@ Vue.component("n-form-date", {
 		localTime: {
 			type: Boolean,
 			default: false
+		},
+		translator: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-date",
@@ -298,7 +302,7 @@ Vue.component("n-form-date", {
 				messages.push({
 					severity: "error",
 					code: "type",
-					title: "%{validation:This is not a valid date: {actual}}",
+					title: "%{validation::This is not a valid date: {actual}}",
 					values: {
 						actual: value,
 						expected: "date"
@@ -310,7 +314,7 @@ Vue.component("n-form-date", {
 				messages.push({
 					severity: "error",
 					code: "allowed",
-					title: "%{validation:This date is not allowed: {actual}}",
+					title: "%{validation::This date is not allowed: {actual}}",
 					priority: 1,
 					variables: {
 						actual: value					

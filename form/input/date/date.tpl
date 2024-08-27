@@ -28,6 +28,7 @@
 		</n-form-text>
 		
 		<n-input-date 
+			:translator="translator"
 			:formatter="formatter" 
 			:parser="parser"
 			:minimum="minimum"

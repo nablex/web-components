@@ -65,8 +65,7 @@
 						"url": "form/input/date/date.gcss"
 					}, 
 					"date.js": {
-						"url": "form/input/date/date.js",
-						"template": true
+						"url": "form/input/date/date.js"
 					}
 				},
 				"date-picker": {
