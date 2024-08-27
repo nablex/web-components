@@ -7,15 +7,13 @@
 					"url": "input/date/date.sass"
 				}, 
 				"date.tpl": {
-					"url": "input/date/date.tpl",
-					"template": true
+					"url": "input/date/date.tpl"
 				}, 
 				"date.gcss": {
 					"url": "input/date/date.gcss"
 				}, 
 				"date.js": {
-					"url": "input/date/date.js",
-					"template": true
+					"url": "input/date/date.js"
 				}
 			}, 
 			"file": {

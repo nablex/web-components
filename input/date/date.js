@@ -51,6 +51,10 @@ Vue.component("n-input-date", {
 		},
 		"default": {
 			required: false
+		},
+		translator: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-input-date",
@@ -221,6 +225,11 @@ Vue.component("n-input-date", {
 				this.$emit("input", this.format(date));
 			}
 		},
+		translate: function(value) {
+			// slightly messed up regex to avoid %{} replacement if templating is turned on (backwards compatibility)
+			return this.translator ? this.translator(value) : 
+				(value && value.replace ? value.replace(/%[{](?:[a-zA-Z]+[:]+|)([^}]+)}/, "$1") : value);
+		},
 		// TODO: refactor to reuse select()
 		selectYear: function(year) {
 			if (year) {
@@ -294,20 +303,31 @@ Vue.component("n-input-date", {
 		}
 	},
 	computed: {
+		days: function() {
+			var days = [];
+			days.push(this.translate("%{date::Mo}"));
+			days.push(this.translate("%{date::Tu}"));
+			days.push(this.translate("%{date::We}"));
+			days.push(this.translate("%{date::Th}"));
+			days.push(this.translate("%{date::Fr}"));
+			days.push(this.translate("%{date::Sa}"));
+			days.push(this.translate("%{date::Su}"));
+			return days;
+		},
 		months: function() {
 			var months = [];
-			months.push("%{date:January}");
-			months.push("%{date:February}");
-			months.push("%{date:March}");
-			months.push("%{date:April}");
-			months.push("%{date:May}");
-			months.push("%{date:June}");
-			months.push("%{date:July}");
-			months.push("%{date:August}");
-			months.push("%{date:September}");
-			months.push("%{date:October}");
-			months.push("%{date:November}");
-			months.push("%{date:December}");
+			months.push(this.translate("%{date::January}"));
+			months.push(this.translate("%{date::February}"));
+			months.push(this.translate("%{date::March}"));
+			months.push(this.translate("%{date::April}"));
+			months.push(this.translate("%{date::May}"));
+			months.push(this.translate("%{date::June}"));
+			months.push(this.translate("%{date::July}"));
+			months.push(this.translate("%{date::August}"));
+			months.push(this.translate("%{date::September}"));
+			months.push(this.translate("%{date::October}"));
+			months.push(this.translate("%{date::November}"));
+			months.push(this.translate("%{date::December}"));
 			return months;
 		},
 		weeks: function() {

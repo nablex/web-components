@@ -27,13 +27,7 @@
 					</th>
 				</tr>
 				<tr class="days">
-					<th>%{date:Mo}</th>
-					<th>%{date:Tu}</th>
-					<th>%{date:We}</th>
-					<th>%{date:Th}</th>
-					<th>%{date:Fr}</th>
-					<th>%{date:Sa}</th>
-					<th>%{date:Su}</th>
+					<th v-for="day in days">{{day}}</th>
 				</tr>
 			</thead>
 			<tbody>
