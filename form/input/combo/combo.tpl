@@ -54,7 +54,7 @@
 			<slot name="suffix"><div class="is-suffix" v-if="suffix || suffixIcon"><icon v-if="suffixIcon" :name="suffixIcon"/><span class="is-text" v-html="suffix"></span></div></slot>
 		</div>
 		<slot v-else class="is-read-only">
-			<span class="is-readable">{{ valueLabel ? valueLabel : (formatter && value ? formatter(value) : value) }}</span>
+			<span class="is-readable">{{ valueLabel ? valueLabel : (!extracter && formatter && value ? formatter(value) : value) }}</span>
 		</slot>
 
 		<n-messages :messages="messages" v-if="messages && messages.length"/>
