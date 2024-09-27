@@ -15,21 +15,48 @@
 					</span>
 				</div>
 			</div>
-			<input
-				:readonly="!allowTyping"
-				:disabled="disabled"
-				ref="searchInput"
-				v-model="search" 
-				@keypress.enter="commitKeyValue"
-				@keyup.esc="showValues = false"
-				@keydown.up="moveUp"
-				@keydown.down="moveDown"
-				@keydown.tab="showValues = false"
-				:placeholder="currentPlaceholder"
-				@focus="focus"
-				:after="showAmount ? rawValues.length : null" />
-			<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>
+			<template v-if="!searchInDropdown">
+				<input
+					:readonly="!allowTyping"
+					:disabled="disabled"
+					ref="searchInput"
+					v-model="search" 
+					@keypress.enter="commitKeyValue"
+					@keyup.esc="showValues = false"
+					@keydown.up="moveUp"
+					@keydown.down="moveDown"
+					@keydown.tab="showValues = false"
+					:placeholder="currentPlaceholder"
+					@focus="focus"
+					:after="showAmount ? rawValues.length : null" />
+				<span class="is-suffix" v-if="showAmount && rawValues.length">{{rawValues.length}}</span>
+			</template>
+			<template v-else-if="rawValues.length">
+				<span class="is-pretty-value" v-html="getPrettyFormatted(rawValues[0])" @click="focus"></span>
+			</template>
+			<template v-else-if="currentPlaceholder">
+				<span class="is-pretty-value" v-content="currentPlaceholder" @click="focus"></span>
+			</template>
+			<template v-else>
+				<span class="is-pretty-value" @click="focus"></span>
+			</template>
 		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues.length" ref="valueList">
+			<li v-if="searchInDropdown" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value">
+				<n-form-checkbox tabindex="-1" v-if="useCheckbox && multiple" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
+				<input
+					class="n-input-combo-dropdown-search"
+					:readonly="!allowTyping"
+					:disabled="disabled"
+					ref="searchInput"
+					v-model="search" 
+					@keypress.enter="commitKeyValue"
+					@keyup.esc="showValues = false"
+					@keydown.up="moveUp"
+					@keydown.down="moveDown"
+					@keydown.tab="showValues = false"
+					@focus="focus"
+					:after="showAmount ? rawValues.length : null" />
+			</li>
 			<li v-if="multiple && selectAllValue" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value" :class="{'selected-all': rawValues.length == potentialValues.length, 'selected-partial': rawValues.length < potentialValues.length}" @click="toggleAll">
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<span v-content="potentialValues.length == rawValues.length && resetValue ? resetValue : selectAllValue"></span>

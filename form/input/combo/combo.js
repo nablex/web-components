@@ -180,6 +180,10 @@ Vue.component("n-form-combo", {
 			type: String,
 			required: false
 		},
+		searchInDropdown: {
+			type: Boolean,
+			required: false
+		},
 		useCheckbox: {
 			type: Boolean,
 			default: false

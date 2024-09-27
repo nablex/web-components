@@ -74,6 +74,10 @@ Vue.component("n-input-combo2", {
 			type: String,
 			required: false
 		},
+		searchInDropdown: {
+			type: Boolean,
+			required: false
+		},
 		useCheckbox: {
 			type: Boolean,
 			default: false

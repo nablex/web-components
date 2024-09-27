@@ -10,6 +10,7 @@
 		<div class="is-content-wrapper" v-if="edit">
 			<slot name="prefix"><div class="is-prefix" v-if="prefix || prefixIcon"><icon v-if="prefixIcon" :name="prefixIcon"/><span class="is-text" v-html="prefix" v-if="prefix"></span></div></slot>
 			<component :is="comboType" v-show="edit" 
+				:search-in-dropdown="searchInDropdown"
 				:load-on-focus="loadOnFocus"
 				:empty-value="emptyValue"
 				:reset-value="resetValue"
