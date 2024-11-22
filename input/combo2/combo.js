@@ -452,9 +452,20 @@ Vue.component("n-input-combo2", {
 							}
 							return index >= 0 ? self.potentialValues[index] : null;
 						}));
+						var resolver = this.resolver;
+						if (resolver == null && this.items != null && this.items.length > 0) {
+							resolver = function(entry) {
+								if (!(entry instanceof Array)) {
+									entry = [entry];
+								}
+								return self.items.filter(function(x) {
+									return entry.indexOf(self.extracter ? self.extracter(x) : x) >= 0;
+								})
+							}
+						}
 						// if we can't resolve it against the initial listing, use the resolver (if it exists)
-						if (missing.length && this.resolver != null) {
-							var result = this.resolver(this.multiple ? missing : missing[0]);
+						if (missing.length && resolver != null) {
+							var result = resolver(this.multiple ? missing : missing[0]);
 							var mergeValues = function(actualValues) {
 								if (!(actualValues instanceof Array)) {
 									actualValues = [actualValues];
