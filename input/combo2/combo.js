@@ -384,6 +384,16 @@ Vue.component("n-input-combo2", {
 				if (result && result.then) {
 					result.then(function(result) {
 						self.potentialValues.splice(0);
+						// check if it contains an array!
+						if (result != null && !(result instanceof Array)) {
+							Object.keys(result).forEach(function(key) {
+								if (!(result instanceof Array)) {
+									if (result[key] instanceof Array) {
+										result = result[key];
+									}
+								}	
+							});
+						}
 						if (result instanceof Array) {
 							nabu.utils.arrays.merge(self.potentialValues, normalize(result));
 						}
