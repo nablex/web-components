@@ -86,8 +86,7 @@
 				},
 				"combo": {
 					"combo.js": {
-						"url": "form/input/combo/combo.js",
-						"template": true
+						"url": "form/input/combo/combo.js"
 					}, 
 					"combo.tpl": {
 						"url": "form/input/combo/combo.tpl"
@@ -123,8 +122,7 @@
 				}, 
 				"check-list": {
 					"check-list.js": {
-						"url": "form/input/check-list/check-list.js",
-						"template": true
+						"url": "form/input/check-list/check-list.js"
 					}, 
 					"check-list.tpl": {
 						"url": "form/input/check-list/check-list.tpl"
@@ -151,8 +149,7 @@
 						"url": "form/input/radio/radio.tpl"
 					}, 
 					"radio.js": {
-						"url": "form/input/radio/radio.js",
-						"template": true
+						"url": "form/input/radio/radio.js"
 					}, 
 					"radio.sass": {
 						"url": "form/input/radio/radio.sass"
@@ -163,8 +160,7 @@
 						"url": "form/input/location/location.tpl"
 					},
 					"location.js": {
-						"url": "form/input/location/location.js",
-						"template": true
+						"url": "form/input/location/location.js"
 					}
 				},
 				"address": {

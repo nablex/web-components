@@ -232,7 +232,7 @@ Vue.component("n-form-location", {
 				if (!this.allowVague && this.resolvedType != "street_address") {
 					messages.push({
 						code: "vague",
-						title: "%{validation:The address is not specific enough}",
+						title: "%{validation::The address is not specific enough}",
 						component: this,
 						context: [],
 						severity: "error",

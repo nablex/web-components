@@ -137,7 +137,7 @@ Vue.component("n-form-checkbox-list", {
 			
 			var existingRequired = messages.filter(function(x) { return x.code == "required" })[0];
 			if (existingRequired) {
-				existingRequired.title = "%{validation:You must choose at least one option}";
+				existingRequired.title = "%{validation::You must choose at least one option}";
 			}
 			else if (this.mandatory && this.value.length == 0) {
 				messages.push({
@@ -145,7 +145,7 @@ Vue.component("n-form-checkbox-list", {
 					severity: "error",
 					soft: true,
 					priority: 0,
-					title: "%{validation:You must choose at least one option}"
+					title: "%{validation::You must choose at least one option}"
 				});
 			}
 			

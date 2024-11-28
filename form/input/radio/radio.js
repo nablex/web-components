@@ -115,14 +115,14 @@ Vue.component("n-form-radio", {
 			
 			var existingRequired = messages.filter(function(x) { return x.code == "required" })[0];
 			if (existingRequired) {
-				existingRequired.title = "%{validation:You must choose an option}";
+				existingRequired.title = "%{validation::You must choose an option}";
 			}
 			else if (!this.chosen && this.mustChoose) {
 				var message = {
 					soft: false,
 					severity: "error",
 					code: "required",
-					title: "%{validation:You must choose an option}",
+					title: "%{validation::You must choose an option}",
 					priority: 0,
 					values: {
 						actual: false,
@@ -139,7 +139,7 @@ Vue.component("n-form-radio", {
 			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
 			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
 			if (requiredMessage && this.$refs && this.$refs.combo && this.$refs.combo.content) {
-				requiredMessage.title = "%{validation:Please choose a value}";
+				requiredMessage.title = "%{validation::Please choose a value}";
 				requiredMessage.actual = this.$refs.combo.content;
 			}
 			for (var i = 0; i < messages.length; i++) {

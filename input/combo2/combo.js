@@ -548,7 +548,10 @@ Vue.component("n-input-combo2", {
 				}
 			}
 			else {
-				this.rawValues.splice(index, 1);
+				// we only want to allow deselection if you have at least one other value or it can be reset to nill
+				if (this.rawValues.length >= 2 || this.nillable) {
+					this.rawValues.splice(index, 1);
+				}
 			}
 		}
 	},

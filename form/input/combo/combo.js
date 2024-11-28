@@ -235,7 +235,7 @@ Vue.component("n-form-combo", {
 			// if we have an error that the value is required but you did type something, you typed something invalid, let's reflect that in the message title
 			var requiredMessage = messages.filter(function(x) { return x.code == "required" })[0];
 			if (requiredMessage && this.$refs && this.$refs.combo && this.$refs.combo.content) {
-				requiredMessage.title = "%{validation:The value you entered is invalid}";
+				requiredMessage.title = "%{validation::The value you entered is invalid}";
 				requiredMessage.actual = this.$refs.combo.content;
 			}
 			for (var i = 0; i < messages.length; i++) {

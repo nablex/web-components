@@ -40,7 +40,7 @@
 			<template v-else>
 				<span class="is-pretty-value" @click="focus"></span>
 			</template>
-		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && potentialValues.length" ref="valueList">
+		</div><ul class="n-input-combo-dropdown n-input-combo-dropdown-values" v-if="showValues && (potentialValues.length || searchInDropdown)" ref="valueList">
 			<li v-if="searchInDropdown" class="n-input-combo-dropdown-value n-input-combo-dropdown-select-all-value">
 				<n-form-checkbox tabindex="-1" v-if="useCheckbox && multiple" :value="rawValues.length == potentialValues.length" @input="toggleAll"/>
 				<input
