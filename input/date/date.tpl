@@ -57,7 +57,7 @@
 		</div>
 		<div class="n-input-date-legend" v-if="allow">
 			<span class="n-input-date-available">{{$services.translator.translate("%{date::Available Dates}")}}</span>
-			<span class="n-input-date-selected">{{$services.translator.translate("%{date::Selected Date}"}}</span>
+			<span class="n-input-date-selected">{{$services.translator.translate("%{date::Selected Date}")}}</span>
 		</div>
 	</div>
 </template>
