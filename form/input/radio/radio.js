@@ -43,7 +43,13 @@ Vue.component("n-form-radio", {
 		},
 		items: {
 			type: Array,
-			required: true
+			required: true,
+			default: function() {
+				return []
+			}
+		},
+		filter: {
+			type: Function
 		},
 		validator: {
 			type: Function,
@@ -90,13 +96,28 @@ Vue.component("n-form-radio", {
 		};
 	},
 	created: function() {
-		// if we received an extracter, the current value is an extract from one of the items
-		if (this.extracter && this.value) {
+		if (this.filter) {
 			var self = this;
-			this.actualValue = this.items.filter(function(x) { return self.extracter(x) == self.value })[0];
+			this.filter().then(function(result) {
+				self.items.splice(0);
+				// check if it contains an array!
+				if (result != null && !(result instanceof Array)) {
+					Object.keys(result).forEach(function(key) {
+						if (!(result instanceof Array)) {
+							if (result[key] instanceof Array) {
+								result = result[key];
+							}
+						}	
+					});
+				}
+				if (result instanceof Array) {
+					nabu.utils.arrays.merge(self.items, result);
+					self.synchronizeValue();
+				}
+			});
 		}
 		else {
-			this.actualValue = this.value;
+			this.synchronizeValue();
 		}
 	},
 	computed: {
@@ -109,6 +130,16 @@ Vue.component("n-form-radio", {
 		}
 	},
 	methods: {
+		synchronizeValue: function() {
+			// if we received an extracter, the current value is an extract from one of the items
+			if (this.extracter && this.value) {
+				var self = this;
+				this.actualValue = this.items.filter(function(x) { return self.extracter(x) == self.value })[0];
+			}
+			else {
+				this.actualValue = this.value;
+			}
+		},
 		validate: function(soft) {
 			this.messages.splice(0, this.messages.length);
 			var messages = nabu.utils.schema.json.validate(this.definition, this.value, this.mandatory);
