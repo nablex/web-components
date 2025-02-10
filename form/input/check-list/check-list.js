@@ -1,6 +1,3 @@
-Vue.component("n-form-checkbox-list-configure", {
-	template: "#n-form-checkbox-list-configure",
-});
 Vue.component("n-form-checkbox-list", {
 	template: "#n-form-checkbox-list",
 	props: {
@@ -43,7 +40,13 @@ Vue.component("n-form-checkbox-list", {
 		},
 		items: {
 			type: Array,
-			required: true
+			required: true,
+			default: function() {
+				return []
+			}
+		},
+		filter: {
+			type: Function
 		},
 		validator: {
 			type: Function,
@@ -89,6 +92,28 @@ Vue.component("n-form-checkbox-list", {
 			// corresponding labels
 			labels: []
 		};
+	},
+	created: function() {
+		if (this.filter) {
+			var self = this;
+			this.filter().then(function(result) {
+				self.items.splice(0);
+				// check if it contains an array!
+				if (result != null && !(result instanceof Array)) {
+					Object.keys(result).forEach(function(key) {
+						if (!(result instanceof Array)) {
+							if (result[key] instanceof Array) {
+								result = result[key];
+							}
+						}	
+					});
+				}
+				if (result instanceof Array) {
+					nabu.utils.arrays.merge(self.items, result);
+					self.synchronizeValue();
+				}
+			});
+		}
 	},
 	mounted: function() {
 		if (!this.value || !(this.value instanceof Array)) {
@@ -169,21 +194,4 @@ Vue.component("n-form-checkbox-list", {
 			return messages;
 		}
 	}
-});
-
-window.addEventListener("load", function() {
-	application.bootstrap(function($services) {
-		nabu.page.provide("page-form-list-input", { 
-			component: "n-form-checkbox-list", 
-			configure: "n-form-checkbox-list-configure", 
-			name: "checkbox-list",
-			namespace: "nabu.page"
-		});
-		nabu.page.provide("page-form-input", { 
-			component: "n-form-checkbox-list", 
-			configure: "n-form-checkbox-list-configure", 
-			name: "checkbox-list",
-			namespace: "nabu.page"
-		});
-	});
 });
