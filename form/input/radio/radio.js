@@ -98,23 +98,30 @@ Vue.component("n-form-radio", {
 	created: function() {
 		if (this.filter) {
 			var self = this;
-			this.filter().then(function(result) {
-				self.items.splice(0);
-				// check if it contains an array!
-				if (result != null && !(result instanceof Array)) {
-					Object.keys(result).forEach(function(key) {
-						if (!(result instanceof Array)) {
-							if (result[key] instanceof Array) {
-								result = result[key];
-							}
-						}	
-					});
-				}
-				if (result instanceof Array) {
-					nabu.utils.arrays.merge(self.items, result);
-					self.synchronizeValue();
-				}
-			});
+			var result = this.filter();
+			if (result && result.then) {
+				result.then(function(result) {
+					self.items.splice(0);
+					// check if it contains an array!
+					if (result != null && !(result instanceof Array)) {
+						Object.keys(result).forEach(function(key) {
+							if (!(result instanceof Array)) {
+								if (result[key] instanceof Array) {
+									result = result[key];
+								}
+							}	
+						});
+					}
+					if (result instanceof Array) {
+						nabu.utils.arrays.merge(self.items, result);
+						self.synchronizeValue();
+					}
+				});
+			}
+			else if (result instanceof Array) {
+				nabu.utils.arrays.merge(self.items, result);
+				self.synchronizeValue();
+			}
 		}
 		else {
 			this.synchronizeValue();
