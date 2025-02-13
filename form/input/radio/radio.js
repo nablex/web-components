@@ -41,6 +41,10 @@ Vue.component("n-form-radio", {
 			type: Boolean,
 			required: false
 		},
+		disabler: {
+			type: Function,
+			required: false
+		},
 		items: {
 			type: Array,
 			required: true,
@@ -137,6 +141,14 @@ Vue.component("n-form-radio", {
 		}
 	},
 	methods: {
+		isDisabled: function(item) {
+			if (this.disabler) {
+				return this.disabler(item);
+			}
+			else {
+				return this.disabled;
+			}
+		},
 		synchronizeValue: function() {
 			// if we received an extracter, the current value is an extract from one of the items
 			if (this.extracter && this.value) {

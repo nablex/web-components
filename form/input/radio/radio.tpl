@@ -10,7 +10,7 @@
 				<input ref="input" 
 					type="radio" 
 					:name="name"
-					:disabled="!edit || disabled"
+					:disabled="!edit || isDisabled(item)"
 					:value="extracter ? extracter(item) : item"
 					v-checked="(!mustChoose || chosen) && value == (extracter ? extracter(item) : item)"
 					@input="select(item)"
