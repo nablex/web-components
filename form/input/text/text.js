@@ -76,7 +76,6 @@ Vue.component("n-form-text", {
 			default: true
 		},
 		timeout: {
-			type: Number,
 			required: false
 		},
 		maximum: {
@@ -377,9 +376,14 @@ Vue.component("n-form-text", {
 				var valueToValidate = this.value;
 			}
 			else {
-				var valueToValidate = this.edit ? this.$refs.input.value : this.value;	
+				var valueToValidate = this.edit ? this.$refs.input.value : this.value;
+				if (this.trim && valueToValidate && valueToValidate.trim) {
+					valueToValidate = valueToValidate.trim();
+				}
+				if (valueToValidate == "") {
+					valueToValidate = null;
+				}
 			}
-			
 			if (this.parser && valueToValidate != null) {
 				valueToValidate = this.parser(valueToValidate);
 			}
@@ -504,11 +508,11 @@ Vue.component("n-form-text", {
 			if (this.trim && typeof(value) != "undefined" && value != null) {
 				value = value.trim();
 			}
+			// empty string means empty text field, we assume it is null then
+			if (value == "") {
+				value = null;
+			}
 			if (value != this.value) {
-				// empty string means empty text field, we assume it is null then
-				if (value == "") {
-					value = null;
-				}
 				if (this.timer) {
 					clearTimeout(this.timer);
 					this.timer = null;
@@ -624,6 +628,3 @@ HTMLInputElement.prototype.insertAtCaret = function(text) {
 		this.value += text;
 	}
 };
-
-
-
