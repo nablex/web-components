@@ -233,6 +233,9 @@ Vue.component("n-input-combo2", {
 		},
 		focus: function() {
 			if (!this.disabled) {
+				if (this.loadOnFocus) {
+					this.dirty = true;
+				}
 				this.load();
 				this.showValues = true;
 			}

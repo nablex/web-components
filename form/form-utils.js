@@ -34,16 +34,44 @@ nabu.utils.vue.form = {
 		}
 		if (messages && messages.length && codes) {
 			messages.forEach(function(x) {
-				if (codes[x.code]) {
-					if (typeof(codes[x.code]) == "string") {
-						x.title = codes[x.code];
-						x.title = nabu.utils.vue.form.replaceVariables(x.title, x);
+				if (x.code) {
+					// suppose you have a code "required" on a field "sessionSchedule[0].start"
+					// by default we will translate the code "required" into "must exist" or something
+					// however, in some cases you may want to have a more specific code for the start or for everything in sessionschedule
+					// in that case, we use the context which is reverse sorted, so it would be "start, 0, sessionSchedule" in this example
+					// we want to check for "sessionSchedule.start.required", then "sessionSchedule.required", only then "required"
+					var codeToUse = null;
+					if (x.context instanceof Array) {
+						var contextToCheck = "";
+						for (var i = x.context.length - 1; i >= 0; i--) {
+							// cast to string and see if it is a number
+							if (("" + x.context[i]).match(/^[0-9]+$/)) {
+								continue;
+							}
+							if (contextToCheck != "") {
+								contextToCheck += ".";
+							}
+							contextToCheck += x.context[i];
+							// we only make it more specific as we go, so if get more specific matches, we use it
+							if (codes[contextToCheck + "." + x.code]) {
+								codeToUse = codes[contextToCheck + "." + x.code];
+							}
+						}
 					}
-					else {
-						Object.keys(codes[x.code]).forEach(function(key) {
-							x[key] = codes[x.code][key];
-							x[key] = nabu.utils.vue.form.replaceVariables(x[key], x);
-						});
+					if (codeToUse == null) {
+						codeToUse = codes[x.code];
+					}
+					if (codeToUse) {
+						if (typeof(codeToUse) == "string") {
+							x.title = codeToUse;
+							x.title = nabu.utils.vue.form.replaceVariables(x.title, x);
+						}
+						else {
+							Object.keys(codeToUse).forEach(function(key) {
+								x[key] = codeToUse[key];
+								x[key] = nabu.utils.vue.form.replaceVariables(x[key], x);
+							});
+						}
 					}
 				}
 			});
