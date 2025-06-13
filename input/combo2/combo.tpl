@@ -17,6 +17,8 @@
 			</div>
 			<template v-if="!searchInDropdown">
 				<input
+					data-1p-ignore
+					data-lpignore="true"
 					:readonly="!allowTyping"
 					:disabled="disabled"
 					ref="searchInput"

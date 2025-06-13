@@ -224,6 +224,10 @@ Vue.component("n-form-date", {
 		if (this.value instanceof Date || typeof(this.value) == "number") {
 			this.date = this.formatValue(this.value);
 		}
+		// if it is a number but in a string or something, parse it
+		else if (this.value != null && !isNaN(this.value)) {
+			this.date = this.formatValue(parseInt(this.value));
+		}
 		else if (typeof(this.value) == "string") {
 			var parsed = this.valueToDate(this.value);
 			this.date = this.formatValue(parsed);

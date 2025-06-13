@@ -44,7 +44,7 @@
 			</li>
 		</ul>
 		<div class="is-content-wrapper">
-			<div @keydown.tab="tab($event)" class="is-inline-editor" :placeholder="placeholder" v-html-once="value ? value : ''" ref="editor" @paste="paste($event)" :contenteditable="edit" @keyup="update" @blur="update" @input="update"></div>
+			<div @keydown.tab="tab($event)" class="is-inline-editor" :placeholder="placeholder" v-html-basic="localValue" ref="editor" @paste="paste($event)" :contenteditable="edit && !disabled" @keyup="update" @blur="update" @input="update"></div>
 		</div>
 		<n-messages :messages="messages" v-if="messages && messages.length"/>
 		<div class="is-content-after" v-if="after" v-html="after"></div>

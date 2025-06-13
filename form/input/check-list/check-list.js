@@ -121,8 +121,12 @@ Vue.component("n-form-checkbox-list", {
 		}
 	},
 	mounted: function() {
-		if (!this.value || !(this.value instanceof Array)) {
-			this.$emit("input", []);	
+		// @2025-05-20: IF you have a value which is not an array, it is probably useful, convert it to array rather than tossing it
+		if (this.value != null && !(this.value instanceof Array)) {
+			this.$emit("input", [this.value]);
+		}
+		else if (!this.value || !(this.value instanceof Array)) {
+			this.$emit("input", []);
 		}
 		// if we already have items, let's fill up the labels
 		else if (this.value.length) {

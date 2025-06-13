@@ -25,7 +25,9 @@
 				:deleteIcon='deleteIcon'
 				:timeout='timeout'
 				:max-file-size='maxFileSize ? parseInt(maxFileSize) : null'
-				:disabled='disabled'/>
+				:disabled='disabled'>
+				<slot :browse="browse" :remove="removeFile"/>
+			</n-input-file>
 		</div>
 		<div class="is-read-only" v-else>
 			<slot><span class="is-readable">%{Selected {{ files.length  }} files}</span></slot>

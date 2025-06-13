@@ -530,6 +530,11 @@ Vue.component("n-form-text", {
 					this.calculateOffset(value);
 				}
 				var valueToEmit = this.parser && value != null ? this.parser(value) : value;
+				if (valueToEmit == "") {
+					valueToEmit = null;
+				}
+				// force the visual value to be the same
+				this.localValue = this.formatter && valueToEmit != null ? this.formatter(valueToEmit) : valueToEmit;
 				// always emit the change event, it is not subject to timeout
 				this.$emit("change", valueToEmit);
 				// we always set this because we want to preemptively send it in case of commit with timeout anyway

@@ -78,6 +78,10 @@ Vue.component("n-form-richtext", {
 		showMenu: {
 			type: Boolean,
 			default: true
+		},
+		disabled: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-richtext",
@@ -88,7 +92,10 @@ Vue.component("n-form-richtext", {
 			showBlock: false,
 			showJustify: false,
 			showDecoration: false,
-			color: "#000000"
+			color: "#000000",
+			// a copy of the value to prevent rerendering constantly but DO allow outside setting of the value
+			localValue: null,
+			internalSet: false
 		};
 	},
 	computed: {
@@ -98,6 +105,10 @@ Vue.component("n-form-richtext", {
 		mandatory: function() {
 			return nabu.utils.vue.form.mandatory(this);
 		}
+	},
+	created: function() {
+		// initialize as the same
+		this.localValue = this.value;	
 	},
 	methods: {
 		update: function($event) {
@@ -112,10 +123,12 @@ Vue.component("n-form-richtext", {
 					var self = this;
 					var self = this;
 					this.timer = setTimeout(function() {
+						self.internalSet = true;
 						self.$emit("input", content);
 					}, this.timeout);
 				}
 				else {
+					this.internalSet = true;
 					this.$emit("input", content);
 				}
 			}
@@ -148,7 +161,7 @@ Vue.component("n-form-richtext", {
 				if (this.supportLinkType) {
 					type = prompt("Link Type (optional)");
 				}
-				classes = prompt("Link classes");
+				var classes = prompt("Link classes");
 				if (type) {
 					document.execCommand("insertHTML", false, "<a class='" + classes + "' target='_blank' type='" + type + "' href='" + link + "' rel='noreferer noopener nofollow'>" + window.getSelection() + "</a>");
 				}
@@ -203,6 +216,16 @@ Vue.component("n-form-richtext", {
 		applyColor: function() {
 			document.execCommand("insertHTML", null, "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
 		}
+	},
+	watch: {
+		value: function(newValue) {
+			if (this.internalSet) {
+				this.internalSet = false;
+			}
+			else {
+				this.localValue = newValue;
+			}
+		}
 	}
 });
 
@@ -211,4 +234,14 @@ Vue.directive("html-once", {
 		element.innerHTML = binding.value;
 	}
 });
-
+// @2025-06-11: weird issue where a rich text field starts empty, I type in "test", then (due to external forces) set the value to "null" but the rich text retains "test"
+// if i switch the external value back to test, it still remains "test" and if i switch to null a second time, it DOES update to an empty value
+// not sure why but that is but hence this directive
+Vue.directive("html-basic", {
+	bind: function(element, binding) {
+		element.innerHTML = binding.value == null ? "" : binding.value;
+	},
+	update: function(element, binding) {
+		element.innerHTML = binding.value == null ? "" : binding.value;
+	}
+});
