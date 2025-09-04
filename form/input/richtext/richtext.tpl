@@ -6,21 +6,21 @@
 		<div class="is-content-before" v-if="before" v-html="before"></div>
 		<ul class="is-menu is-variant-toolbar" v-if="edit && showMenu">
 			<li class="is-column" v-if="supportBlocks">
-				<span class="is-button is-size-xsmall is-variant-primary"><icon name="th-large"/><span class="is-text">Block</span></span>
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="th-large"/><span class="is-text">{{translate("%{richtext::Block}")}}</span></span>
 				<ul class="is-row">
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('p')"><icon name="paragraph"/><span class="is-text">Paragraph</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h1')"><icon name="heading"/><span class="is-text">H1</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h2')"><icon name="heading"/><span class="is-text">H2</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h3')"><icon name="heading"/><span class="is-text">H3</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h4')"><icon name="heading"/><span class="is-text">H4</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h5')"><icon name="heading"/><span class="is-text">H5</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h6')"><icon name="heading"/><span class="is-text">H6</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="insertTable"><icon name="table"/><span class="is-text">Table</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="list"><icon name="list"/><span class="is-text">List</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('p')"><icon name="paragraph"/><span class="is-text">{{translate("%{richtext::Paragraph}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h1')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H1}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h2')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H2}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h3')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H3}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h4')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H4}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h5')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H5}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="wrap('h6')"><icon name="heading"/><span class="is-text">{{translate("%{richtext::H6}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="insertTable"><icon name="table"/><span class="is-text">{{translate("%{richtext::Table}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="list"><icon name="list"/><span class="is-text">{{translate("%{richtext::List}")}}</span></button></li>
 				</ul>
 			</li>
 			<li class="is-column">
-				<span class="is-button is-size-xsmall is-variant-primary"><icon name="align-justify"/><span class="is-text">Justify</span></span>
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="align-justify"/><span class="is-text">{{translate("%{richtext::Justify}")}}</span></span>
 				<ul class="is-row">
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyCenter')"><icon name="align-center"/><span class="is-text">Center</span></button></li>
 					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="justify('justifyLeft')"><icon name="align-left"/><span class="is-text">Left</span></button></li>
@@ -31,14 +31,14 @@
 				</ul>
 			</li>
 			<li class="is-column">
-				<span class="is-button is-size-xsmall is-variant-primary"><icon name="font"/><span class="is-text">Decoration</span></span>
+				<span class="is-button is-size-xsmall is-variant-primary"><icon name="font"/><span class="is-text">{{translate("%{richtext::Decoration}")}}</span></span>
 				<ul class="is-row">
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="bold"><icon name="bold"/><span class="is-text">Bold</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="italic"><icon name="italic"/><span class="is-text">Italic</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="underline"><icon name="underline"/><span class="is-text">Line</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="clean"><icon name="eraser"/><span class="is-text">Plain</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="link"><icon name="link"/><span class="is-text">Link</span></button></li>
-					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="applyColor()"><icon name="paint-brush"/><span class="is-text">Paint</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="bold"><icon name="bold"/><span class="is-text">{{translate("%{richtext::Bold}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="italic"><icon name="italic"/><span class="is-text">{{translate("%{richtext::Italic}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="underline"><icon name="underline"/><span class="is-text">{{translate("%{richtext::Line}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="clean"><icon name="eraser"/><span class="is-text">{{translate("%{richtext::Plain}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="link"><icon name="link"/><span class="is-text">{{translate("%{richtext::Link}")}}</span></button></li>
+					<li class="is-column"><button class="is-button is-variant-secondary is-size-xsmall" @click="applyColor()"><icon name="paint-brush"/><span class="is-text">{{translate("%{richtext::Paint}")}}</span></button></li>
 					<li class="is-column is-height-min-2 is-align-stretch"><input type="color" v-model="color" class="is-content is-color-secondary is-width-max"></li>
 				</ul>
 			</li>

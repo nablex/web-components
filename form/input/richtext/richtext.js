@@ -82,6 +82,10 @@ Vue.component("n-form-richtext", {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		translator: {
+			type: Function,
+			required: false
 		}
 	},
 	template: "#n-form-richtext",
@@ -215,6 +219,11 @@ Vue.component("n-form-richtext", {
 		},
 		applyColor: function() {
 			document.execCommand("insertHTML", null, "<span style='color:" + this.color + "'>" + window.getSelection() + "</span>");
+		},
+		translate: function(value) {
+			// slightly messed up regex to avoid %{} replacement if templating is turned on (backwards compatibility)
+			return this.translator ? this.translator(value) : 
+				(value && value.replace ? value.replace(/%[{](?:[a-zA-Z]+[:]+|)([^}]+)}/, "$1") : value);
 		}
 	},
 	watch: {

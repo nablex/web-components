@@ -121,6 +121,11 @@ Vue.component("n-input-combo2", {
 		loadOnFocus: {
 			type: Boolean,
 			default: false
+		},
+		// automatically select the first value if nothing has been selected yet
+		autoselectSingle: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data: function() {
@@ -152,8 +157,12 @@ Vue.component("n-input-combo2", {
 		}
 	},
 	created: function() {
+		// if we have no value but we force an autoselect, load it all
+		if (this.value == null && this.autoselectSingle) {
+			this.load();
+		}
 		// if we have a value, check if we have a label, if not, we must initialize
-		if (this.value != null) {
+		else if (this.value != null) {
 			if (this.initialRawValues != null && this.initialRawValues.length) {
 				nabu.utils.arrays.merge(this.rawValues, this.initialRawValues);
 				this.synchronize(this.value);
@@ -379,6 +388,9 @@ Vue.component("n-input-combo2", {
 			if (this.items) {
 				self.potentialValues.splice(0);
 				nabu.utils.arrays.merge(this.potentialValues, normalize(this.items));
+				if (self.autoselectSingle && self.value == null && self.potentialValues.length > 0) {
+					self.toggle(self.potentialValues[0]);
+				}
 				self.calculating = false;
 				self.showIfFocus();
 			}
@@ -399,6 +411,9 @@ Vue.component("n-input-combo2", {
 						}
 						if (result instanceof Array) {
 							nabu.utils.arrays.merge(self.potentialValues, normalize(result));
+							if (self.autoselectSingle && self.value == null && self.potentialValues.length > 0) {
+								self.toggle(self.potentialValues[0]);
+							}
 						}
 						self.calculating = false;
 						self.showIfFocus();
@@ -407,6 +422,9 @@ Vue.component("n-input-combo2", {
 				else if (result instanceof Array) {
 					self.potentialValues.splice(0);
 					nabu.utils.arrays.merge(self.potentialValues, normalize(result));
+					if (self.autoselectSingle && self.value == null && self.potentialValues.length > 0) {
+						self.toggle(self.potentialValues[0]);
+					}
 					self.calculating = false;
 					self.showIfFocus();
 				}
@@ -600,12 +618,20 @@ Vue.component("n-input-combo2", {
 				);
 			}
 		},
-		value: {deep: true, handler: function() {
+		value: {deep: true, handler: function(newValue) {
 			if (this.updating) {
 				this.updating = false;
 			}
 			else {
-				this.synchronize(this.value);
+				this.synchronize(newValue);
+			}
+			if (newValue == null && this.autoselectSingle) {
+				var self = this;
+				Vue.nextTick(function() {
+					if (self.potentialValues.length > 0) {
+						self.toggle(self.potentialValues[0]);
+					}
+				})
 			}
 		}},
 		search: function(newValue) {
