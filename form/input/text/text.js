@@ -204,6 +204,11 @@ Vue.component("n-form-text", {
 		validateOnBlur: {
 			type: Boolean,
 			default: false
+		},
+		// if you choose type "date", do you want to parse the date as an object?
+		parseDate: {
+			type: Boolean,
+			default: false
 		}
 	},
 	template: "#n-form-text",
@@ -219,7 +224,7 @@ Vue.component("n-form-text", {
 		};
 	},
 	created: function() {
-		this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+		this.localValue = this.formatValue(this.value);
 		if (this.masker) {
 			this.localValue = this.value != null ? this.masker(this.value) : this.value;
 		}
@@ -273,6 +278,21 @@ Vue.component("n-form-text", {
 		}
 	},
 	methods: {
+		formatValue: function(value) {
+			if (!this.formatter && this.type == "date" && value instanceof Date) {
+				var formatted = value.toISOString();
+				formatted = formatted.substring(0, formatted.indexOf("T"));
+				return formatted;
+			}
+			return this.formatter && value != null ? this.formatter(value) : value;
+		},
+		parseValue: function(value) {
+			if (!this.parser && this.type == "date" && value != null && this.parseDate) {
+				// the string constructor _should_ use UTC, but force it anyway
+				return new Date(value + "T00:00:00Z");
+			}
+			return this.parser && value != null ? this.parser(value) : value;
+		},
 		attemptSubmit: function() {
 			var el = this.$el;
 			while (el) {
@@ -359,7 +379,7 @@ Vue.component("n-form-text", {
 				this.$refs.input.select();
 			}
 			if (this.masker) {
-				this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+				this.localValue = this.formatValue(this.value);
 			}
 		},
 		blur: function (value) {
@@ -385,7 +405,7 @@ Vue.component("n-form-text", {
 				}
 			}
 			if (this.parser && valueToValidate != null) {
-				valueToValidate = this.parser(valueToValidate);
+				valueToValidate = this.parseValue(valueToValidate);
 			}
 			// reset current messages
 			this.messages.splice(0);
@@ -521,20 +541,20 @@ Vue.component("n-form-text", {
 				if (this.type == "range") {
 					if (this.exclusiveMinimum != null && this.minimum != null && value < this.minimum) {
 						value = this.minimum;
-						this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+						this.localValue = this.formatValue(this.value);
 					}
 					if (this.exclusiveMaximum != null && this.maximum != null && value > this.maximum) {
 						value = this.maximum;
-						this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+						this.localValue = this.formatValue(this.value);
 					}					
 					this.calculateOffset(value);
 				}
-				var valueToEmit = this.parser && value != null ? this.parser(value) : value;
+				var valueToEmit = this.parseValue(value);
 				if (valueToEmit == "") {
 					valueToEmit = null;
 				}
 				// force the visual value to be the same
-				this.localValue = this.formatter && valueToEmit != null ? this.formatter(valueToEmit) : valueToEmit;
+				this.localValue = this.formatValue(valueToEmit);
 				// always emit the change event, it is not subject to timeout
 				this.$emit("change", valueToEmit);
 				// we always set this because we want to preemptively send it in case of commit with timeout anyway
@@ -574,7 +594,7 @@ Vue.component("n-form-text", {
 			// remove local messages
 			this.messages.splice(0);
 			if (!this.blurred) {
-				this.localValue = this.formatter && this.value != null ? this.formatter(this.value) : this.value;
+				this.localValue = this.formatValue(this.value);
 			}
 			else {
 				this.localValue = this.masker && this.value != null ? this.masker(this.value) : this.value;
