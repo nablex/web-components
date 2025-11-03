@@ -2,7 +2,7 @@
 	<div class="is-form-combo" :class="[mandatory ? 'is-required' : 'is-optional',{ 'is-invalid': valid != null && !valid },{ 'is-valid': valid != null && valid }]">
 		
 		<div class="is-label-wrapper" v-if="label || info">
-			<label class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
+			<label :for="name" class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
 
 		<div class="is-content-before" v-if="before" v-html="before"></div>

@@ -1,7 +1,7 @@
 <template id="n-form-radio">
 	<div class="is-form-radio-list" :class="[{ 'is-required': mandatory, 'is-optional': !mandatory, 'is-hidden': hide, 'is-invalid': valid != null && !valid, 'is-valid': valid != null && valid, 'has-prefix': !!prefix, 'has-suffix': !!suffix, 'has-before': !!before, 'has-after': !!after, 'has-label': !!label, 'has-info': !!info }, type ? 'is-form-text-' + type : null ]">
 		<div class="is-label-wrapper" v-if="label || info">
-			<label class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
+			<label :for="name" class="is-label" v-if="label"><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
 		<div class="is-content-before" v-if="before" v-html="before"></div>
 

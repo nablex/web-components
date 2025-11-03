@@ -150,9 +150,8 @@ nabu.utils.vue.form = {
 			return priorityA - priorityB;
 		});
 		var handled = false;
-		if (mode == "component") {
-			localMessages.push(messages[0]);
-			handled = true;
+		if (mode == "form") {
+			// we don't want local messages
 		}
 		else if (component.mode != null) {
 			var amount = parseInt(component.mode);
@@ -163,6 +162,10 @@ nabu.utils.vue.form = {
 				amount = Math.min(amount, messages.length);
 			}
 			nabu.utils.arrays.merge(localMessages, messages.slice(0, amount));
+			handled = true;
+		}
+		else if (mode == "component" || mode == null) {
+			localMessages.push(messages[0]);
 			handled = true;
 		}
 		if (handled == true) {

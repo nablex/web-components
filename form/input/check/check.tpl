@@ -17,6 +17,7 @@
 			/><label  
 				@click="toggleValue(); $event.stopPropagation()" 
 				class="is-label" 
+				:for="name"
 				><span class="is-label-content" v-html="label"></span><n-info :icon="infoIcon" v-if="info"><span v-html="info"></span></n-info></label>
 		</div>
 		<slot name="messages" :messages="messages">
