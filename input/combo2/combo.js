@@ -327,7 +327,11 @@ Vue.component("n-input-combo2", {
 		moveKeyValue: function(amount) {
 			// only relevant if you can see something
 			this.showValues = true;
-			this.initializeKeyValue();
+			if(this.keyValue === null) {
+				this.initializeKeyValue();
+				amount = 0; // we just initialised, don't change the index again
+			}
+			
 			if (this.keyValue != null) {
 				var index = this.potentialValues.indexOf(this.keyValue);
 				index += amount;
