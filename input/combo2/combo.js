@@ -298,6 +298,9 @@ Vue.component("n-input-combo2", {
 				this.showValues = true;
 			}
 		},
+		clearKeyValue: function() {
+			this.keyValue = null
+		},
 		initializeKeyValue: function() {
 			// if you have no key value yet, we just take the first one
 			if (this.keyValue == null) {
@@ -577,6 +580,11 @@ Vue.component("n-input-combo2", {
 		}
 	},
 	watch: {
+		showValues: function(showValues) {
+			if (showValues === false) {
+				this.clearKeyValue();
+			}
+		},
 		calculating: function(newValue) {
 			if (!newValue && !this.initialized) {
 				if (this.value != null) {
