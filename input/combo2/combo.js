@@ -565,6 +565,7 @@ Vue.component("n-input-combo2", {
 		},
 		toggle: function(entry) {
 			var index = this.rawValues.indexOf(entry);
+			// this entry was not selected yet
 			if (index < 0) {
 				if (!this.multiple) {
 					this.rawValues.splice(0);
@@ -575,11 +576,15 @@ Vue.component("n-input-combo2", {
 					this.showValues = false;
 				}
 			}
+			// this entry was already selected
 			else {
 				// we only want to allow deselection if you have at least one other value or it can be reset to nill
 				if (this.rawValues.length >= 2 || this.nillable) {
 					this.rawValues.splice(index, 1);
 				}
+
+				// clear the search input when (de)selecting an option
+				this.search = "";
 			}
 		}
 	},
