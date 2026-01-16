@@ -2,6 +2,7 @@
 	<div class="is-form-date" v-auto-close.date-picker="function() { show = false }">
 		<n-form-text class="n-form-date-input" 
 			@focus="focus" 
+			@blur="$emit('blur')"
 			:pattern="pattern ? pattern : dynamicPattern" 
 			:pattern-comment="patternComment"
 			v-model="date" 
