@@ -18,7 +18,8 @@
 					},
 					"qr-bootstrap.js": {
 						"url": "form/input/qr/bootstrap.js"
-					}
+					},
+					"something": "this is a test"
 				}
 			}
 		}
