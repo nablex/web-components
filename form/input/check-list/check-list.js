@@ -94,31 +94,7 @@ Vue.component("n-form-checkbox-list", {
 		};
 	},
 	created: function() {
-		if (this.filter) {
-			var self = this;
-			var result = this.filter();
-			if (result && result.then) {
-				result.then(function(result) {
-					self.items.splice(0);
-					// check if it contains an array!
-					if (result != null && !(result instanceof Array)) {
-						Object.keys(result).forEach(function(key) {
-							if (!(result instanceof Array)) {
-								if (result[key] instanceof Array) {
-									result = result[key];
-								}
-							}	
-						});
-					}
-					if (result instanceof Array) {
-						nabu.utils.arrays.merge(self.items, result);
-					}
-				});
-			}
-			else if (result instanceof Array) {
-				nabu.utils.arrays.merge(self.items, result);
-			}
-		}
+		this.load();
 	},
 	mounted: function() {
 		// @2025-05-20: IF you have a value which is not an array, it is probably useful, convert it to array rather than tossing it
@@ -148,6 +124,37 @@ Vue.component("n-form-checkbox-list", {
 		}
 	},
 	methods: {
+		load: function() {
+			if (this.filter) {
+				var self = this;
+				var result = this.filter();
+				if (result && result.then) {
+					result.then(function(result) {
+						self.items.splice(0);
+						// check if it contains an array!
+						if (result != null && !(result instanceof Array)) {
+							Object.keys(result).forEach(function(key) {
+								if (!(result instanceof Array)) {
+									if (result[key] instanceof Array) {
+										result = result[key];
+									}
+								}
+							});
+						}
+						if (result instanceof Array) {
+							nabu.utils.arrays.merge(self.items, result);
+						}
+					});
+				}
+				else if (result instanceof Array) {
+					this.items.splice(0);
+					nabu.utils.arrays.merge(this.items, result);
+				}
+			}
+		},
+		markDirty: function() {
+			this.load();
+		},
 		isChecked: function(item) {
 			var value = this.extracter ? this.extracter(item) : item;
 			return this.value && this.value.indexOf(value) >= 0;
