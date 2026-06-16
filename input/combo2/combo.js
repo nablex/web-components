@@ -298,6 +298,9 @@ Vue.component("n-input-combo2", {
 				this.showValues = true;
 			}
 		},
+		clearKeyValue: function() {
+			this.keyValue = null
+		},
 		initializeKeyValue: function() {
 			// if you have no key value yet, we just take the first one
 			if (this.keyValue == null) {
@@ -324,7 +327,11 @@ Vue.component("n-input-combo2", {
 		moveKeyValue: function(amount) {
 			// only relevant if you can see something
 			this.showValues = true;
-			this.initializeKeyValue();
+			if(this.keyValue === null) {
+				this.initializeKeyValue();
+				amount = 0; // we just initialised, don't change the index again
+			}
+			
 			if (this.keyValue != null) {
 				var index = this.potentialValues.indexOf(this.keyValue);
 				index += amount;
@@ -558,6 +565,7 @@ Vue.component("n-input-combo2", {
 		},
 		toggle: function(entry) {
 			var index = this.rawValues.indexOf(entry);
+			// this entry was not selected yet
 			if (index < 0) {
 				if (!this.multiple) {
 					this.rawValues.splice(0);
@@ -568,15 +576,24 @@ Vue.component("n-input-combo2", {
 					this.showValues = false;
 				}
 			}
+			// this entry was already selected
 			else {
 				// we only want to allow deselection if you have at least one other value or it can be reset to nill
 				if (this.rawValues.length >= 2 || this.nillable) {
 					this.rawValues.splice(index, 1);
 				}
+
+				// clear the search input when (de)selecting an option
+				this.search = "";
 			}
 		}
 	},
 	watch: {
+		showValues: function(showValues) {
+			if (showValues === false) {
+				this.clearKeyValue();
+			}
+		},
 		calculating: function(newValue) {
 			if (!newValue && !this.initialized) {
 				if (this.value != null) {
